@@ -68,6 +68,7 @@ configuration = vcenter_lookup_bridge_client.Configuration(
 
 # Configure HTTP basic authorization: basicAuth
 configuration = vcenter_lookup_bridge_client.Configuration(
+    host = "http://localhost/vcenter-lookup-bridge/api/v1",
     username = os.environ["USERNAME"],
     password = os.environ["PASSWORD"]
 )
@@ -76,15 +77,17 @@ configuration = vcenter_lookup_bridge_client.Configuration(
 # Enter a context with an instance of the API client
 with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = vcenter_lookup_bridge_client.AdminsApi(api_client)
+    api_instance = vcenter_lookup_bridge_client.VmFoldersApi(api_client)
 
+    # List VM Folders
     try:
-        # Flush Caches
-        api_response = api_instance.flush_caches()
-        print("The response of AdminsApi->flush_caches:\n")
-        pprint(api_response)
+        api_response = api_instance.list_vm_folders()
+        print(f"Success: {api_response.success}")
+        for vm_folder in api_response.results:
+            print(f"  VM_Folder name: {vm_folder.name}, vcenter: {vm_folder.vcenter}")
+
     except ApiException as e:
-        print("Exception when calling AdminsApi->flush_caches: %s\n" % e)
+        print(f"Exception when calling VMsApi->list_vm_folders: {e}")
 
 ```
 
