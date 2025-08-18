@@ -58,25 +58,14 @@ class TestClustersApi:
         results = response.results
         assert results is not None
 
-        instance_uuids = []
-        for result in results:
-            if (
-                result.vm_instance_uuid is not None
-                and result.vm_instance_uuid not in instance_uuids
-            ):
-                instance_uuids.append(result.vm_instance_uuid)
         # １件のクラスタのみ返却されることをチェック
-        # assert len(results) == 1
-        assert len(instance_uuids) == 1
+        assert len(results) == 1
 
-        # レスポンスデータがスキーマに適合していることを存在チェック
-        for result in results:
-            assert isinstance(result, ClusterResponseSchema)
+        # レスポンスデータがスキーマに適合していることをチェック
+        assert isinstance(results[0], ClusterResponseSchema)
 
         # 期待した値を返していることをチェック
-        for result, expected_result in zip(
-            results, api_dataset.EXPECTED_SINGLE_VM_SNAPSHOTS
-        ):
+        for result, expected_result in zip(results, api_dataset.EXPECTED_CLUSTER):
             assert result.name == expected_result["name"]
             assert result.status == expected_result["status"]
             assert result.hosts == expected_result["hosts"]
@@ -89,7 +78,7 @@ class TestClustersApi:
         try:
             # 存在しないクラスタ名でAPIを呼び出し
             response = clusters_api.list_clusters(
-                **api_dataset.INVALID_GET_PARAMETERS_VM_INSTANCE_UUID
+                **api_dataset.INVALID_GET_PARAMETERS_CLUSTER
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
@@ -108,10 +97,10 @@ class TestClustersApi:
                     f"存在しないクラスタ取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
-    def test_get_vm_not_found_with_invalid_vcenter(self, clusters_api):
+    def test_get_cluster_not_found_with_invalid_vcenter(self, clusters_api):
         """存在しないvCenterを指定し、クラスタ取得のテスト"""
         try:
-            # 存在しないVMのインスタンスUUIDでAPIを呼び出し
+            # 存在しないvCenterでAPIを呼び出し
             response = clusters_api.list_clusters(
                 **api_dataset.INVALID_GET_PARAMETERS_VCENTER
             )
@@ -146,9 +135,7 @@ class TestClustersApi:
         assert isinstance(results, list)
 
         # 期待した件数のクラスタが返却されることをチェック
-        assert len(results) == len(
-            api_dataset.EXPECTED_MULTI_VM_SNAPSHOT_LIST["results"]
-        )
+        assert len(results) == len(api_dataset.EXPECTED_CLUSTER_LIST["results"])
 
         for result in results:
             # レスポンスデータがスキーマに適合していることをチェック
@@ -156,12 +143,12 @@ class TestClustersApi:
 
         # ページネーション情報がスキーマに適合していることをチェック
         pagination = response.pagination
-        assert isinstance(pagination, PaginationInfo)
+        assert pagination is None
 
         # 期待結果との比較
         for result, expected_result in zip(
             results,
-            api_dataset.EXPECTED_MULTI_VM_SNAPSHOT_LIST["results"],
+            api_dataset.EXPECTED_CLUSTER_LIST["results"],
         ):
             assert result.name == expected_result["name"]
             assert result.status == expected_result["status"]
@@ -177,7 +164,7 @@ class TestClustersApi:
 
         # max_resultsに制限（<=1000)を超える値を指定してAPIを呼び出し
         try:
-            response = clusters_api.list_vcenters(
+            response = clusters_api.list_clusters(
                 **api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS
             )
 
@@ -237,15 +224,7 @@ class TestClustersApi:
 
         # ページネーション情報のチェック
         pagination = response.pagination
-        assert isinstance(pagination, PaginationInfo)
-
-        # 期待結果との比較
-        expected_pagination = api_dataset.EXPECTED_MULTI_VM_SNAPSHOT_LIST["pagination"]
-        assert pagination.total_count == expected_pagination["totalCount"]
-        assert pagination.offset == expected_pagination["offset"]
-        assert pagination.limit == expected_pagination["limit"]
-        assert pagination.has_next == expected_pagination["hasNext"]
-        assert pagination.has_previous == expected_pagination["hasPrevious"]
+        assert pagination is None
 
         # データ件数のチェック（per_page以下であることを確認）
         assert len(response.results) <= 100
@@ -253,22 +232,3 @@ class TestClustersApi:
         print(
             f"✅ ページネーション付きVMスナップショットリスト取得テスト成功: ページ1, 1ページあたり100件"
         )
-
-    def test_list_clusters_empty_result(self, clusters_api):
-        """空の結果を返すフィルターのテスト"""
-        try:
-            # 存在しない条件でフィルタリング。例外が発生することを期待する。
-            response = clusters_api.list_vm_snapshots(
-                **api_dataset.INVALID_LIST_PARAMETERS_VM_FOLDERS
-            )
-
-        except Exception as e:
-            # HTTPステータス404が例外として投げられる
-            if "404" in str(e):
-                print(
-                    f"✅ 空の結果フィルターテスト成功: 404エラーが正しく返されました: {str(e)}"
-                )
-            else:
-                pytest.fail(
-                    f"空の結果フィルターテストで予期しないエラーが発生しました: {str(e)}"
-                )

@@ -45,7 +45,7 @@ def vm_snapshots_api(api_client):
 class TestVmSnapshotsApi:
     """VMs API unit test"""
 
-    def test_get_vm_success(self, vm_snapshots_api):
+    def test_get_vm_snapshots_success(self, vm_snapshots_api):
         """単一VMスナップショット取得の成功テスト"""
         # APIを呼び出し
         response = vm_snapshots_api.get_vm_snapshots(**api_dataset.VALID_GET_PARAMETERS)

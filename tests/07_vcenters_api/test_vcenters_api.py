@@ -58,7 +58,7 @@ class TestVcentersApi:
         results = response.results
         assert results is not None
 
-        # １件の仮想マシンのみ返却されることをチェック
+        # １件のvCenterのみ返却されることをチェック
         assert len(results) == 1
 
         # レスポンスデータがスキーマに適合していることをチェック

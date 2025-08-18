@@ -3,7 +3,7 @@
 import json
 
 """
-クラスタAPIのテストで使用する期待するレスポンスデータ
+CLUSTERS APIのテストで使用する期待するレスポンスデータ
 """
 
 VALID_VCENTER = "simulator02"
@@ -25,7 +25,7 @@ INVALID_GET_PARAMETERS_VCENTER = {
 }
 
 # クラスタ取得のパラメータ(クラスタが存在しない)
-INVALID_GET_PARAMETERS_VM_INSTANCE_UUID = {
+INVALID_GET_PARAMETERS_CLUSTER = {
     "clusters": INVALID_CLUSTERS,
     "vcenter": VALID_VCENTER,
 }
@@ -59,210 +59,53 @@ INVALID_LIST_PARAMETERS_OFFSET = {
 
 
 # 単一VMのレスポンス例
-EXPECTED_SINGLE_VM_SNAPSHOTS = json.loads(
+EXPECTED_CLUSTER = json.loads(
     """
 [
-    {
-      "name": "Restore Point 2024-03-11 5:30:20",
-      "id": 743,
-      "parentId": -1,
-      "description": "test snapshot01",
-      "createTime": "2024/03/11 05:33:16",
-      "hasChild": true,
-      "vmName": "bk-test-win01_replica",
-      "vmInstanceUuid": "5013f8e7-7343-4ae5-e9c8-33458e73562c",
-      "vmFolder": "devel3",
-      "vcenter": "simulator02",
-      "datacenter": "KanagawaDC"
-    },
-    {
-      "name": "Restore Point 2024-03-11 6:00:26",
-      "id": 745,
-      "parentId": 743,
-      "description": "test snapshot02",
-      "createTime": "2024/03/11 06:04:28",
-      "hasChild": true,
-      "vmName": "bk-test-win01_replica",
-      "vmInstanceUuid": "5013f8e7-7343-4ae5-e9c8-33458e73562c",
-      "vmFolder": "devel3",
-      "vcenter": "simulator02",
-      "datacenter": "KanagawaDC"
-    },
-    {
-      "name": "Restore Point 2024-03-11 6:30:30",
-      "id": 747,
-      "parentId": 745,
-      "description": "test snapshot03",
-      "createTime": "2024/03/11 06:33:23",
-      "hasChild": true,
-      "vmName": "bk-test-win01_replica",
-      "vmInstanceUuid": "5013f8e7-7343-4ae5-e9c8-33458e73562c",
-      "vmFolder": "devel3",
-      "vcenter": "simulator02",
-      "datacenter": "KanagawaDC"
-    },
-    {
-      "name": "Restore Point 2024-03-11 7:00:32",
-      "id": 749,
-      "parentId": 747,
-      "description": "test snapshot04",
-      "createTime": "2024/03/11 07:02:58",
-      "hasChild": true,
-      "vmName": "bk-test-win01_replica",
-      "vmInstanceUuid": "5013f8e7-7343-4ae5-e9c8-33458e73562c",
-      "vmFolder": "devel3",
-      "vcenter": "simulator02",
-      "datacenter": "KanagawaDC"
-    },
-    {
-      "name": "Restore Point 2024-03-11 7:30:36",
-      "id": 751,
-      "parentId": 749,
-      "description": "test snapshot05",
-      "createTime": "2024/03/11 07:33:14",
-      "hasChild": true,
-      "vmName": "bk-test-win01_replica",
-      "vmInstanceUuid": "5013f8e7-7343-4ae5-e9c8-33458e73562c",
-      "vmFolder": "devel3",
-      "vcenter": "simulator02",
-      "datacenter": "KanagawaDC"
-    },
-    {
-      "name": "Restore Point 2024-03-11 8:00:19",
-      "id": 753,
-      "parentId": 751,
-      "description": "test snapshot06",
-      "createTime": "2024/03/11 08:03:10",
-      "hasChild": true,
-      "vmName": "bk-test-win01_replica",
-      "vmInstanceUuid": "5013f8e7-7343-4ae5-e9c8-33458e73562c",
-      "vmFolder": "devel3",
-      "vcenter": "simulator02",
-      "datacenter": "KanagawaDC"
-    },
-    {
-      "name": "Restore Point 2024-03-11 8:30:30",
-      "id": 755,
-      "parentId": 753,
-      "description": "test snapshot07",
-      "createTime": "2024/03/11 08:33:22",
-      "hasChild": false,
-      "vmName": "bk-test-win01_replica",
-      "vmInstanceUuid": "5013f8e7-7343-4ae5-e9c8-33458e73562c",
-      "vmFolder": "devel3",
-      "vcenter": "simulator02",
-      "datacenter": "KanagawaDC"
-    }
-  ]
+  {
+      "name": "cluster-99",
+      "status": "green",
+      "hosts": [
+        "mini5.moriyama.internal",
+        "mini4.moriyama.internal"
+      ],
+      "vcenter": "simulator02"
+  }
+]
 """
 )
 
 # VMリストのレスポンス例
-EXPECTED_MULTI_VM_SNAPSHOT_LIST = json.loads(
+EXPECTED_CLUSTER_LIST = json.loads(
     """
 {
   "results": [
     {
-      "name": "Restore Point 2024-03-11 5:30:20",
-      "id": 743,
-      "parentId": -1,
-      "description": "test snapshot01",
-      "createTime": "2024/03/11 05:33:16",
-      "hasChild": true,
-      "vmName": "bk-test-win01_replica",
-      "vmInstanceUuid": "5013f8e7-7343-4ae5-e9c8-33458e73562c",
-      "vmFolder": "devel3",
-      "vcenter": "simulator02",
-      "datacenter": "KanagawaDC"
+      "name": "Cluster-1",
+      "status": "green",
+      "hosts": [
+        "esx09-r02.p01.2389a0898727466ca2347b.japaneast.avs.azure.com",
+        "esx01-r04.p01.2389a0898727466ca2347b.japaneast.avs.azure.com",
+        "esx02-r07.p01.2389a0898727466ca2347b.japaneast.avs.azure.com",
+        "esx05-r06.p01.2389a0898727466ca2347b.japaneast.avs.azure.com",
+        "esx04-r21.p01.2389a0898727466ca2347b.japaneast.avs.azure.com",
+        "esx11-r01.p01.2389a0898727466ca2347b.japaneast.avs.azure.com"
+      ],
+      "vcenter": "simulator01"
     },
     {
-      "name": "Restore Point 2024-03-11 6:00:26",
-      "id": 745,
-      "parentId": 743,
-      "description": "test snapshot02",
-      "createTime": "2024/03/11 06:04:28",
-      "hasChild": true,
-      "vmName": "bk-test-win01_replica",
-      "vmInstanceUuid": "5013f8e7-7343-4ae5-e9c8-33458e73562c",
-      "vmFolder": "devel3",
-      "vcenter": "simulator02",
-      "datacenter": "KanagawaDC"
-    },
-    {
-      "name": "Restore Point 2024-03-11 6:30:30",
-      "id": 747,
-      "parentId": 745,
-      "description": "test snapshot03",
-      "createTime": "2024/03/11 06:33:23",
-      "hasChild": true,
-      "vmName": "bk-test-win01_replica",
-      "vmInstanceUuid": "5013f8e7-7343-4ae5-e9c8-33458e73562c",
-      "vmFolder": "devel3",
-      "vcenter": "simulator02",
-      "datacenter": "KanagawaDC"
-    },
-    {
-      "name": "Restore Point 2024-03-11 7:00:32",
-      "id": 749,
-      "parentId": 747,
-      "description": "test snapshot04",
-      "createTime": "2024/03/11 07:02:58",
-      "hasChild": true,
-      "vmName": "bk-test-win01_replica",
-      "vmInstanceUuid": "5013f8e7-7343-4ae5-e9c8-33458e73562c",
-      "vmFolder": "devel3",
-      "vcenter": "simulator02",
-      "datacenter": "KanagawaDC"
-    },
-    {
-      "name": "Restore Point 2024-03-11 7:30:36",
-      "id": 751,
-      "parentId": 749,
-      "description": "test snapshot05",
-      "createTime": "2024/03/11 07:33:14",
-      "hasChild": true,
-      "vmName": "bk-test-win01_replica",
-      "vmInstanceUuid": "5013f8e7-7343-4ae5-e9c8-33458e73562c",
-      "vmFolder": "devel3",
-      "vcenter": "simulator02",
-      "datacenter": "KanagawaDC"
-    },
-    {
-      "name": "Restore Point 2024-03-11 8:00:19",
-      "id": 753,
-      "parentId": 751,
-      "description": "test snapshot06",
-      "createTime": "2024/03/11 08:03:10",
-      "hasChild": true,
-      "vmName": "bk-test-win01_replica",
-      "vmInstanceUuid": "5013f8e7-7343-4ae5-e9c8-33458e73562c",
-      "vmFolder": "devel3",
-      "vcenter": "simulator02",
-      "datacenter": "KanagawaDC"
-    },
-    {
-      "name": "Restore Point 2024-03-11 8:30:30",
-      "id": 755,
-      "parentId": 753,
-      "description": "test snapshot07",
-      "createTime": "2024/03/11 08:33:22",
-      "hasChild": false,
-      "vmName": "bk-test-win01_replica",
-      "vmInstanceUuid": "5013f8e7-7343-4ae5-e9c8-33458e73562c",
-      "vmFolder": "devel3",
-      "vcenter": "simulator02",
-      "datacenter": "KanagawaDC"
+      "name": "cluster-99",
+      "status": "green",
+      "hosts": [
+        "mini5.moriyama.internal",
+        "mini4.moriyama.internal"
+      ],
+      "vcenter": "simulator02"
     }
   ],
   "success": true,
-  "message": "7件のスナップショット情報を取得しました。",
-  "pagination": {
-    "totalCount": 7,
-    "offset": 0,
-    "limit": 100,
-    "hasNext": false,
-    "hasPrevious": false
-  }
+  "message": "2件のクラスタを取得しました。",
+  "pagination": null
 }
 """
 )
