@@ -74,3 +74,6 @@ test-results/
 allure-results/
 allure-reports/
 
+# working directory
+work/
+
