@@ -55,7 +55,8 @@ EXPECTED_VCENTER = json.loads(
 {
       "name": "simulator02",
       "hostName": "host.docker.internal",
-      "port": 18989
+      "port": 18989,
+      "description": "vCenterシミュレータ#2"
 }
 """
 )
@@ -68,12 +69,14 @@ EXPECTED_VCENTER_LIST = json.loads(
     {
       "name": "simulator01",
       "hostName": "host.docker.internal",
-      "port": 8989
+      "port": 8989,
+      "description": "vCenterシミュレータ#1"
     },
     {
       "name": "simulator02",
-      "hostName": "host.docker.internal",
-      "port": 18989
+      "hostName": "localhost",
+      "port": 18989,
+      "description": "vCenterシミュレータ#2"
     }
   ],
   "success": true,

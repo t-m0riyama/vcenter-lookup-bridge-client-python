@@ -6,6 +6,7 @@ vCenterのレスポンススキーマ
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**description** | **str** | このvCenterの説明を示します。 | 
 **host_name** | **str** | vCenterのホスト名を示します。 | 
 **name** | **str** |  | 
 **port** | **int** | vCenterのポート番号を示します。 | 

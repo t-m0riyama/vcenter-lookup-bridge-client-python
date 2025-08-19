@@ -53,6 +53,7 @@ class TestVcentersApi:
         assert results[0].name == test_dataset.EXPECTED_VCENTER["name"]
         assert results[0].host_name == test_dataset.EXPECTED_VCENTER["hostName"]
         assert results[0].port == test_dataset.EXPECTED_VCENTER["port"]
+        assert results[0].description == test_dataset.EXPECTED_VCENTER["description"]
 
         print(f"✅ VCENTER取得テスト成功: {results[0].name}")
 
@@ -114,6 +115,7 @@ class TestVcentersApi:
             assert result.name == expected_result["name"]
             assert result.host_name == expected_result["hostName"]
             assert result.port == expected_result["port"]
+            assert result.description == expected_result["description"]
 
         print(
             f"✅ VCENTERリスト取得テスト成功: {len(response.results)}件のVMが見つかりました"

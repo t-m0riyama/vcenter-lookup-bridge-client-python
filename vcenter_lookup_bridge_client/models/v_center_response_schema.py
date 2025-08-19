@@ -26,10 +26,11 @@ class VCenterResponseSchema(BaseModel):
     """
     vCenterのレスポンススキーマ
     """ # noqa: E501
+    description: StrictStr = Field(description="このvCenterの説明を示します。")
     host_name: StrictStr = Field(description="vCenterのホスト名を示します。", alias="hostName")
     name: Optional[StrictStr]
     port: StrictInt = Field(description="vCenterのポート番号を示します。")
-    __properties: ClassVar[List[str]] = ["hostName", "name", "port"]
+    __properties: ClassVar[List[str]] = ["description", "hostName", "name", "port"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -87,6 +88,7 @@ class VCenterResponseSchema(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "description": obj.get("description"),
             "hostName": obj.get("hostName"),
             "name": obj.get("name"),
             "port": obj.get("port")
