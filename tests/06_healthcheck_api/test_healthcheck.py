@@ -12,10 +12,12 @@ from vcenter_lookup_bridge_client.models.healthcheck_response_schema import (
     HealthcheckSchema,
 )
 
+
 @pytest.fixture
 def api_name():
     """API名のフィクスチャ"""
     return "healthcheck_api"
+
 
 @pytest.fixture
 def api_instance(api_client):
@@ -26,7 +28,7 @@ def api_instance(api_client):
 class TestHealthcheckApi:
     """Healthcheck API unit test"""
 
-    def test_healthcheck(self, api_instance, api_dataset):
+    def test_healthcheck(self, api_instance, test_dataset):
         """Healthcheck APIのテスト"""
         # APIを呼び出し
         response = api_instance.get_service_status()
@@ -41,7 +43,7 @@ class TestHealthcheckApi:
         assert isinstance(results, HealthcheckSchema)
 
         # 期待結果との比較
-        expected_results = api_dataset.EXPECTED_HEALTHCHECK_STATUS["results"]
+        expected_results = test_dataset.EXPECTED_HEALTHCHECK_STATUS["results"]
         assert results.status == expected_results["status"]
         assert (
             results.vcenter_service_instances

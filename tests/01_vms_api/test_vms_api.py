@@ -18,6 +18,7 @@ def api_name():
     """API名のフィクスチャ"""
     return "vms_api"
 
+
 @pytest.fixture
 def api_instance(api_client):
     """VMs APIのフィクスチャ"""
@@ -27,10 +28,10 @@ def api_instance(api_client):
 class TestVmsApi:
     """VMs API unit test"""
 
-    def test_get_vm_success(self, api_instance, api_dataset):
+    def test_get_vm_success(self, api_instance, test_dataset):
         """単一VM取得の成功テスト"""
         # APIを呼び出し
-        response = api_instance.get_vm(**api_dataset.VALID_GET_PARAMETERS)
+        response = api_instance.get_vm(**test_dataset.VALID_GET_PARAMETERS)
 
         # レスポンスの基本チェック
         assert response is not None
@@ -47,35 +48,37 @@ class TestVmsApi:
         assert isinstance(results[0], VmResponseSchema)
 
         # 期待した値を返していることをチェック
-        assert results[0].name == api_dataset.EXPECTED_VM["name"]
-        assert results[0].uuid == api_dataset.EXPECTED_VM["uuid"]
-        assert results[0].instance_uuid == api_dataset.EXPECTED_VM["instanceUuid"]
-        assert results[0].vcenter == api_dataset.EXPECTED_VM["vcenter"]
-        assert results[0].datacenter == api_dataset.EXPECTED_VM["datacenter"]
-        assert results[0].cluster == api_dataset.EXPECTED_VM["cluster"]
-        assert results[0].esxi_hostname == api_dataset.EXPECTED_VM["esxiHostname"]
-        assert results[0].power_state == api_dataset.EXPECTED_VM["powerState"]
-        assert results[0].num_cpu == api_dataset.EXPECTED_VM["numCpu"]
-        assert results[0].memory_size_mb == api_dataset.EXPECTED_VM["memorySizeMB"]
-        assert results[0].vm_path_name == api_dataset.EXPECTED_VM["vmPathName"]
-        assert results[0].guest_full_name == api_dataset.EXPECTED_VM["guestFullName"]
-        assert results[0].hostname == api_dataset.EXPECTED_VM["hostname"]
-        assert results[0].ip_address == api_dataset.EXPECTED_VM["ipAddress"]
-        assert results[0].template == api_dataset.EXPECTED_VM["template"]
-        assert results[0].hw_version == api_dataset.EXPECTED_VM["hwVersion"]
-        assert results[0].disk_devices == api_dataset.EXPECTED_VM["diskDevices"]
-        assert results[0].network_devices == api_dataset.EXPECTED_VM["networkDevices"]
+        assert results[0].name == test_dataset.EXPECTED_VM["name"]
+        assert results[0].uuid == test_dataset.EXPECTED_VM["uuid"]
+        assert results[0].instance_uuid == test_dataset.EXPECTED_VM["instanceUuid"]
+        assert results[0].vcenter == test_dataset.EXPECTED_VM["vcenter"]
+        assert results[0].datacenter == test_dataset.EXPECTED_VM["datacenter"]
+        assert results[0].cluster == test_dataset.EXPECTED_VM["cluster"]
+        assert results[0].esxi_hostname == test_dataset.EXPECTED_VM["esxiHostname"]
+        assert results[0].power_state == test_dataset.EXPECTED_VM["powerState"]
+        assert results[0].num_cpu == test_dataset.EXPECTED_VM["numCpu"]
+        assert results[0].memory_size_mb == test_dataset.EXPECTED_VM["memorySizeMB"]
+        assert results[0].vm_path_name == test_dataset.EXPECTED_VM["vmPathName"]
+        assert results[0].guest_full_name == test_dataset.EXPECTED_VM["guestFullName"]
+        assert results[0].hostname == test_dataset.EXPECTED_VM["hostname"]
+        assert results[0].ip_address == test_dataset.EXPECTED_VM["ipAddress"]
+        assert results[0].template == test_dataset.EXPECTED_VM["template"]
+        assert results[0].hw_version == test_dataset.EXPECTED_VM["hwVersion"]
+        assert results[0].disk_devices == test_dataset.EXPECTED_VM["diskDevices"]
+        assert results[0].network_devices == test_dataset.EXPECTED_VM["networkDevices"]
         # vm_folderはNoneであることをチェック
         assert results[0].vm_folder is None
 
         print(f"✅ VM取得テスト成功: {results[0].name}")
 
-    def test_get_vm_not_found_with_invalid_vm_instance_uuid(self, api_instance, api_dataset):
+    def test_get_vm_not_found_with_invalid_vm_instance_uuid(
+        self, api_instance, test_dataset
+    ):
         """存在しないVM取得のテスト"""
         try:
             # 存在しないVMのインスタンスUUIDでAPIを呼び出し
             response = api_instance.get_vm(
-                **api_dataset.INVALID_GET_PARAMETERS_VM_INSTANCE_UUID
+                **test_dataset.INVALID_GET_PARAMETERS_VM_INSTANCE_UUID
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
@@ -92,11 +95,13 @@ class TestVmsApi:
                     f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
-    def test_get_vm_not_found_with_invalid_vcenter(self, api_instance, api_dataset):
+    def test_get_vm_not_found_with_invalid_vcenter(self, api_instance, test_dataset):
         """存在しないVM取得のテスト"""
         try:
             # 存在しないVMのインスタンスUUIDでAPIを呼び出し
-            response = api_instance.get_vm(**api_dataset.INVALID_GET_PARAMETERS_VCENTER)
+            response = api_instance.get_vm(
+                **test_dataset.INVALID_GET_PARAMETERS_VCENTER
+            )
 
             # 例外が発生し、以降の行は実行されないことを期待する
             pytest.fail(
@@ -114,10 +119,10 @@ class TestVmsApi:
                     f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
-    def test_list_vms_success(self, api_instance, api_dataset):
+    def test_list_vms_success(self, api_instance, test_dataset):
         """VMリスト取得の成功テスト"""
         # APIを呼び出し
-        response = api_instance.list_vms(**api_dataset.VALID_LIST_PARAMETERS)
+        response = api_instance.list_vms(**test_dataset.VALID_LIST_PARAMETERS)
 
         # レスポンスの基本チェック
         assert response is not None
@@ -128,7 +133,7 @@ class TestVmsApi:
         assert isinstance(results, list)
 
         # 期待した件数の仮想マシンが返却されることをチェック
-        assert len(results) == len(api_dataset.EXPECTED_VM_LIST["results"])
+        assert len(results) == len(test_dataset.EXPECTED_VM_LIST["results"])
 
         for result in results:
             # レスポンスデータがスキーマに適合していることをチェック
@@ -140,7 +145,7 @@ class TestVmsApi:
 
         # 期待結果との比較
         for result, expected_result in zip(
-            results, api_dataset.EXPECTED_VM_LIST["results"]
+            results, test_dataset.EXPECTED_VM_LIST["results"]
         ):
             assert result.name == expected_result["name"]
             assert result.uuid == expected_result["uuid"]
@@ -165,18 +170,18 @@ class TestVmsApi:
             f"✅ VMリスト取得テスト成功: {len(response.results)}件のVMが見つかりました"
         )
 
-    def test_list_vms_with_invalid_max_results(self, api_instance, api_dataset):
+    def test_list_vms_with_invalid_max_results(self, api_instance, test_dataset):
         """VMリスト取得のテスト（max_resultsパラメータの制限が有効であることを確認）"""
 
         # max_resultsに制限（<=1000)を超える値を指定してAPIを呼び出し
         try:
             response = api_instance.list_vms(
-                **api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS
+                **test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
             pytest.fail(
-                f"max_resultsに制限を超える値(>1000, {api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS['max_results']})を指定したテストでエラーが発生しました"
+                f"max_resultsに制限を超える値(>1000, {test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS['max_results']})を指定したテストでエラーが発生しました"
             )
 
         except pydantic.ValidationError as e:
@@ -187,12 +192,12 @@ class TestVmsApi:
         # max_resultsに制限（>=1)を超える値を指定してAPIを呼び出し
         try:
             response = api_instance.list_vms(
-                **api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2
+                **test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
             pytest.fail(
-                f"max_resultsに制限を超える値(<0, {api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2['max_results']})を指定したテストでエラーが発生しました"
+                f"max_resultsに制限を超える値(<0, {test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2['max_results']})を指定したテストでエラーが発生しました"
             )
 
         except pydantic.ValidationError as e:
@@ -200,11 +205,13 @@ class TestVmsApi:
                 f"✅ max_resultsに制限を超える値(<0)を指定した場合、正しくエラーが返却されました: {e}"
             )
 
-    def test_list_vms_with_invalid_offset(self, api_instance, api_dataset):
+    def test_list_vms_with_invalid_offset(self, api_instance, test_dataset):
         """VMリスト取得のテスト（パラメータ制限が有効であることを確認）"""
         # offsetに制限を超える値をを指定してAPIを呼び出し
         try:
-            response = api_instance.list_vms(**api_dataset.INVALID_LIST_PARAMETERS_OFFSET)
+            response = api_instance.list_vms(
+                **test_dataset.INVALID_LIST_PARAMETERS_OFFSET
+            )
 
             # 例外が発生し、以降の行は実行されないことを期待する
             pytest.fail(f"offsetに制限を超える値を指定したテストでエラーが発生しました")
@@ -214,10 +221,10 @@ class TestVmsApi:
                 f"✅ offsetに制限を超える値(<0)を指定した場合、正しくエラーが返却されました: {e}"
             )
 
-    def test_list_vms_with_pagination(self, api_instance, api_dataset):
+    def test_list_vms_with_pagination(self, api_instance, test_dataset):
         """ページネーション付きVMリスト取得のテスト"""
         # ページネーションパラメータを指定してAPIを呼び出し
-        response = api_instance.list_vms(**api_dataset.VALID_LIST_PARAMETERS)
+        response = api_instance.list_vms(**test_dataset.VALID_LIST_PARAMETERS)
 
         # レスポンスの基本チェック
         assert response is not None
@@ -231,7 +238,7 @@ class TestVmsApi:
         assert isinstance(pagination, PaginationInfo)
 
         # 期待結果との比較
-        expected_pagination = api_dataset.EXPECTED_VM_LIST["pagination"]
+        expected_pagination = test_dataset.EXPECTED_VM_LIST["pagination"]
         assert pagination.total_count == expected_pagination["totalCount"]
         assert pagination.offset == expected_pagination["offset"]
         assert pagination.limit == expected_pagination["limit"]
@@ -245,12 +252,12 @@ class TestVmsApi:
             f"✅ ページネーション付きVMリスト取得テスト成功: ページ1, 1ページあたり100件"
         )
 
-    def test_list_vms_empty_result(self, api_instance, api_dataset):
+    def test_list_vms_empty_result(self, api_instance, test_dataset):
         """空の結果を返すフィルターのテスト"""
         try:
             # 存在しない条件でフィルタリング。例外が発生することを期待する。
             response = api_instance.list_vms(
-                **api_dataset.INVALID_LIST_PARAMETERS_VM_FOLDERS
+                **test_dataset.INVALID_LIST_PARAMETERS_VM_FOLDERS
             )
 
         except Exception as e:

@@ -14,10 +14,12 @@ from vcenter_lookup_bridge_client.models.admin_response_schema import (
     AdminResponseSchema,
 )
 
+
 @pytest.fixture
 def api_name():
     """API名のフィクスチャ"""
     return "admins_api"
+
 
 @pytest.fixture
 def api_instance(api_client):
@@ -28,22 +30,22 @@ def api_instance(api_client):
 class TestAdminsApi:
     """Admins API Cache management unit test"""
 
-    def test_flush_cache_success(self, api_instance, api_dataset):
+    def test_flush_cache_success(self, api_instance, test_dataset):
         """キャッシュクリアの成功テスト"""
         # APIを呼び出し
         response = api_instance.flush_caches()
 
         # レスポンスの基本チェック
         assert response is not None
-        assert response.success is api_dataset.EXPECTED_FLUSH_CACHE["success"]
-        assert response.message == api_dataset.EXPECTED_FLUSH_CACHE["message"]
+        assert response.success is test_dataset.EXPECTED_FLUSH_CACHE["success"]
+        assert response.message == test_dataset.EXPECTED_FLUSH_CACHE["message"]
 
         # レスポンスがスキーマに適合していることをチェック
         assert isinstance(response, AdminResponseSchema)
 
         # レスポンスデータ本体のチェック
         results = response.results
-        assert results == api_dataset.EXPECTED_FLUSH_CACHE["results"]
+        assert results == test_dataset.EXPECTED_FLUSH_CACHE["results"]
 
         # ページネーション情報は非サポートであることをチェック
         pagination = response.pagination
@@ -51,22 +53,22 @@ class TestAdminsApi:
 
         print(f"✅ ADMINS API キャッシュクリアテスト成功")
 
-    def test_reset_ws_session_success(self, api_instance, api_dataset):
+    def test_reset_ws_session_success(self, api_instance, test_dataset):
         """Web Service Sessionリセットの成功テスト"""
         # APIを呼び出し
         response = api_instance.reset_ws_session()
 
         # レスポンスの基本チェック
         assert response is not None
-        assert response.success is api_dataset.EXPECTED_RESET_WS_SESSION["success"]
-        assert response.message == api_dataset.EXPECTED_RESET_WS_SESSION["message"]
+        assert response.success is test_dataset.EXPECTED_RESET_WS_SESSION["success"]
+        assert response.message == test_dataset.EXPECTED_RESET_WS_SESSION["message"]
 
         # レスポンスがスキーマに適合していることをチェック
         assert isinstance(response, AdminResponseSchema)
 
         # レスポンスデータ本体のチェック
         results = response.results
-        assert results == api_dataset.EXPECTED_RESET_WS_SESSION["results"]
+        assert results == test_dataset.EXPECTED_RESET_WS_SESSION["results"]
 
         # ページネーション情報は非サポートであることをチェック
         pagination = response.pagination

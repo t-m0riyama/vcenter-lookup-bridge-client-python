@@ -12,10 +12,12 @@ from vcenter_lookup_bridge_client.models.v_center_response_schema import (
     VCenterResponseSchema,
 )
 
+
 @pytest.fixture
 def api_name():
     """API名のフィクスチャ"""
     return "vcenters_api"
+
 
 @pytest.fixture
 def api_instance(api_client):
@@ -26,11 +28,11 @@ def api_instance(api_client):
 class TestVcentersApi:
     """vCenters API unit test"""
 
-    def test_get_vcenter_success(self, api_instance, api_dataset):
+    def test_get_vcenter_success(self, api_instance, test_dataset):
         """単一vCenter取得(vCenter指定)の成功テスト"""
         # APIを呼び出し
         response = api_instance.list_vcenters(
-            **api_dataset.VALID_LIST_PARAMETERS_VCENTER
+            **test_dataset.VALID_LIST_PARAMETERS_VCENTER
         )
 
         # レスポンスの基本チェック
@@ -48,18 +50,20 @@ class TestVcentersApi:
         assert isinstance(results[0], VCenterResponseSchema)
 
         # 期待結果との比較
-        assert results[0].name == api_dataset.EXPECTED_VCENTER["name"]
-        assert results[0].host_name == api_dataset.EXPECTED_VCENTER["hostName"]
-        assert results[0].port == api_dataset.EXPECTED_VCENTER["port"]
+        assert results[0].name == test_dataset.EXPECTED_VCENTER["name"]
+        assert results[0].host_name == test_dataset.EXPECTED_VCENTER["hostName"]
+        assert results[0].port == test_dataset.EXPECTED_VCENTER["port"]
 
         print(f"✅ VCENTER取得テスト成功: {results[0].name}")
 
-    def test_list_vcenter_not_found_with_invalid_vcenter(self, api_instance, api_dataset):
+    def test_list_vcenter_not_found_with_invalid_vcenter(
+        self, api_instance, test_dataset
+    ):
         """存在しないVCENTER取得のテスト(vCenter指定)"""
         try:
             # 存在しないvCenterでAPIを呼び出し
             response = api_instance.list_vcenters(
-                **api_dataset.INVALID_LIST_PARAMETERS_VCENTER
+                **test_dataset.INVALID_LIST_PARAMETERS_VCENTER
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
@@ -78,10 +82,10 @@ class TestVcentersApi:
                     f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
-    def test_list_vcenters_success(self, api_instance, api_dataset):
+    def test_list_vcenters_success(self, api_instance, test_dataset):
         """vCenterリスト取得の成功テスト"""
         # APIを呼び出し
-        response = api_instance.list_vcenters(**api_dataset.VALID_LIST_PARAMETERS)
+        response = api_instance.list_vcenters(**test_dataset.VALID_LIST_PARAMETERS)
 
         # レスポンスの基本チェック
         assert response is not None
@@ -92,7 +96,7 @@ class TestVcentersApi:
         assert isinstance(results, list)
 
         # 期待した件数の仮想マシンが返却されることをチェック
-        assert len(results) == len(api_dataset.EXPECTED_VCENTER_LIST["results"])
+        assert len(results) == len(test_dataset.EXPECTED_VCENTER_LIST["results"])
 
         for result in results:
             # レスポンスデータがスキーマに適合していることをチェック
@@ -105,7 +109,7 @@ class TestVcentersApi:
         # 期待結果との比較
         for result, expected_result in zip(
             results,
-            api_dataset.EXPECTED_VCENTER_LIST["results"],
+            test_dataset.EXPECTED_VCENTER_LIST["results"],
         ):
             assert result.name == expected_result["name"]
             assert result.host_name == expected_result["hostName"]
@@ -115,11 +119,11 @@ class TestVcentersApi:
             f"✅ VCENTERリスト取得テスト成功: {len(response.results)}件のVMが見つかりました"
         )
 
-    def test_list_vcenters_with_pagination(self, api_instance, api_dataset):
+    def test_list_vcenters_with_pagination(self, api_instance, test_dataset):
         """ページネーション付きVMリスト取得のテスト（ページネーション機能は非サポート）"""
         # ページネーションパラメータを指定してAPIを呼び出し
         response = api_instance.list_vcenters(
-            **api_dataset.VALID_LIST_PARAMETERS_VCENTER
+            **test_dataset.VALID_LIST_PARAMETERS_VCENTER
         )
 
         # レスポンスの基本チェック

@@ -14,10 +14,12 @@ from vcenter_lookup_bridge_client.models.vm_folder_response_schema import (
     VmFolderResponseSchema,
 )
 
+
 @pytest.fixture
 def api_name():
     """API名のフィクスチャ"""
     return "vm_folders_api"
+
 
 @pytest.fixture
 def api_instance(api_client):
@@ -28,11 +30,11 @@ def api_instance(api_client):
 class TestVmFoldersApi:
     """VM Folders API unit test"""
 
-    def test_get_vm_folder_success(self, api_instance, api_dataset):
+    def test_get_vm_folder_success(self, api_instance, test_dataset):
         """単一VMフォルダ取得(vCenter, vm_folders指定)の成功テスト"""
         # APIを呼び出し
         response = api_instance.list_vm_folders(
-            **api_dataset.VALID_LIST_PARAMETERS_VCENTER_VM_FOLDERS
+            **test_dataset.VALID_LIST_PARAMETERS_VCENTER_VM_FOLDERS
         )
 
         # レスポンスの基本チェック
@@ -50,17 +52,19 @@ class TestVmFoldersApi:
         assert isinstance(results[0], VmFolderResponseSchema)
 
         # 期待結果との比較
-        assert results[0].name == api_dataset.EXPECTED_VM_FOLDER["name"]
-        assert results[0].vcenter == api_dataset.EXPECTED_VM_FOLDER["vcenter"]
+        assert results[0].name == test_dataset.EXPECTED_VM_FOLDER["name"]
+        assert results[0].vcenter == test_dataset.EXPECTED_VM_FOLDER["vcenter"]
 
         print(f"✅ VM取得テスト成功: {results[0].name}")
 
-    def test_list_vm_folder_not_found_with_invalid_vm_folder(self, api_instance, api_dataset):
+    def test_list_vm_folder_not_found_with_invalid_vm_folder(
+        self, api_instance, test_dataset
+    ):
         """存在しないVM FOLDER取得のテスト(vm_folders指定)"""
         try:
             # 存在しないフォルダ名でVM FOLDERS APIを呼び出し
             response = api_instance.list_vm_folders(
-                **api_dataset.INVALID_LIST_PARAMETERS_VM_FOLDERS
+                **test_dataset.INVALID_LIST_PARAMETERS_VM_FOLDERS
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
@@ -79,12 +83,14 @@ class TestVmFoldersApi:
                     f"存在しないVM FOLDER取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
-    def test_list_vm_folder_not_found_with_invalid_vcenter(self, api_instance, api_dataset):
+    def test_list_vm_folder_not_found_with_invalid_vcenter(
+        self, api_instance, test_dataset
+    ):
         """存在しないVM FOLDER取得のテスト(vCenter指定)"""
         try:
             # 存在しないvCenterでAPIを呼び出し
             response = api_instance.list_vm_folders(
-                **api_dataset.INVALID_LIST_PARAMETERS_VCENTER
+                **test_dataset.INVALID_LIST_PARAMETERS_VCENTER
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
@@ -103,11 +109,11 @@ class TestVmFoldersApi:
                     f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
-    def test_list_vm_folders_success(self, api_instance, api_dataset):
+    def test_list_vm_folders_success(self, api_instance, test_dataset):
         """VM FOLDERリスト取得の成功テスト"""
         # APIを呼び出し
         response = api_instance.list_vm_folders(
-            **api_dataset.VALID_LIST_PARAMETERS_VCENTER
+            **test_dataset.VALID_LIST_PARAMETERS_VCENTER
         )
 
         # レスポンスの基本チェック
@@ -119,7 +125,7 @@ class TestVmFoldersApi:
         assert isinstance(results, list)
 
         # 期待した件数の仮想マシンが返却されることをチェック
-        assert len(results) == len(api_dataset.EXPECTED_VM_FOLDER_LIST["results"])
+        assert len(results) == len(test_dataset.EXPECTED_VM_FOLDER_LIST["results"])
 
         for result in results:
             # レスポンスデータがスキーマに適合していることをチェック
@@ -132,7 +138,7 @@ class TestVmFoldersApi:
         # 期待結果との比較
         for result, expected_result in zip(
             results,
-            api_dataset.EXPECTED_VM_FOLDER_LIST["results"],
+            test_dataset.EXPECTED_VM_FOLDER_LIST["results"],
         ):
             assert result.name == expected_result["name"]
             assert result.vcenter == expected_result["vcenter"]
@@ -141,18 +147,18 @@ class TestVmFoldersApi:
             f"✅ VM FOLDERリスト取得テスト成功: {len(response.results)}件のVMが見つかりました"
         )
 
-    def test_list_vm_folders_with_invalid_max_results(self, api_instance, api_dataset):
+    def test_list_vm_folders_with_invalid_max_results(self, api_instance, test_dataset):
         """VM FOLDERリスト取得のテスト（max_resultsパラメータの制限が有効であることを確認）"""
 
         # max_resultsに制限（<=1000)を超える値を指定してAPIを呼び出し
         try:
             response = api_instance.list_vm_folders(
-                **api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS
+                **test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
             pytest.fail(
-                f"max_resultsに制限を超える値(>1000, {api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS['max_results']})を指定したテストでエラーが発生しました"
+                f"max_resultsに制限を超える値(>1000, {test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS['max_results']})を指定したテストでエラーが発生しました"
             )
 
         except pydantic.ValidationError as e:
@@ -163,12 +169,12 @@ class TestVmFoldersApi:
         # max_resultsに制限（>=1)を超える値を指定してAPIを呼び出し
         try:
             response = api_instance.list_vm_folders(
-                **api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2
+                **test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
             pytest.fail(
-                f"max_resultsに制限を超える値(<0, {api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2['max_results']})を指定したテストでエラーが発生しました"
+                f"max_resultsに制限を超える値(<0, {test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2['max_results']})を指定したテストでエラーが発生しました"
             )
 
         except pydantic.ValidationError as e:
@@ -176,12 +182,12 @@ class TestVmFoldersApi:
                 f"✅ max_resultsに制限を超える値(<0)を指定した場合、正しくエラーが返却されました: {e}"
             )
 
-    def test_list_vm_folders_with_invalid_offset(self, api_instance, api_dataset):
+    def test_list_vm_folders_with_invalid_offset(self, api_instance, test_dataset):
         """VM FOLDERリスト取得のテスト（パラメータ制限が有効であることを確認）"""
         # offsetに制限を超える値をを指定してAPIを呼び出し
         try:
             response = api_instance.list_vm_folders(
-                **api_dataset.INVALID_LIST_PARAMETERS_OFFSET
+                **test_dataset.INVALID_LIST_PARAMETERS_OFFSET
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
@@ -192,11 +198,11 @@ class TestVmFoldersApi:
                 f"✅ offsetに制限を超える値(<0)を指定した場合、正しくエラーが返却されました: {e}"
             )
 
-    def test_list_vm_folders_with_pagination(self, api_instance, api_dataset):
+    def test_list_vm_folders_with_pagination(self, api_instance, test_dataset):
         """ページネーション付きVMリスト取得のテスト"""
         # ページネーションパラメータを指定してAPIを呼び出し
         response = api_instance.list_vm_folders(
-            **api_dataset.VALID_LIST_PARAMETERS_VCENTER
+            **test_dataset.VALID_LIST_PARAMETERS_VCENTER
         )
 
         # レスポンスの基本チェック
@@ -211,7 +217,7 @@ class TestVmFoldersApi:
         assert isinstance(pagination, PaginationInfo)
 
         # 期待結果との比較
-        expected_pagination = api_dataset.EXPECTED_VM_FOLDER_LIST["pagination"]
+        expected_pagination = test_dataset.EXPECTED_VM_FOLDER_LIST["pagination"]
         assert pagination.total_count == expected_pagination["totalCount"]
         assert pagination.offset == expected_pagination["offset"]
         assert pagination.limit == expected_pagination["limit"]

@@ -14,10 +14,12 @@ from vcenter_lookup_bridge_client.models.cluster_response_schema import (
     ClusterResponseSchema,
 )
 
+
 @pytest.fixture
 def api_name():
     """API名のフィクスチャ"""
     return "clusters_api"
+
 
 @pytest.fixture
 def api_instance(api_client):
@@ -28,10 +30,10 @@ def api_instance(api_client):
 class TestClustersApi:
     """Clusters API unit test"""
 
-    def test_get_cluster_success(self, api_instance, api_dataset):
+    def test_get_cluster_success(self, api_instance, test_dataset):
         """単一クラスタ取得の成功テスト"""
         # APIを呼び出し
-        response = api_instance.list_clusters(**api_dataset.VALID_GET_PARAMETERS)
+        response = api_instance.list_clusters(**test_dataset.VALID_GET_PARAMETERS)
 
         # レスポンスの基本チェック
         assert response is not None
@@ -48,7 +50,7 @@ class TestClustersApi:
         assert isinstance(results[0], ClusterResponseSchema)
 
         # 期待した値を返していることをチェック
-        for result, expected_result in zip(results, api_dataset.EXPECTED_CLUSTER):
+        for result, expected_result in zip(results, test_dataset.EXPECTED_CLUSTER):
             assert result.name == expected_result["name"]
             assert result.status == expected_result["status"]
             assert result.hosts == expected_result["hosts"]
@@ -56,12 +58,14 @@ class TestClustersApi:
 
         print(f"✅ クラスタ取得テスト成功")
 
-    def test_get_cluster_not_found_with_invalid_cluster(self, api_instance, api_dataset):
+    def test_get_cluster_not_found_with_invalid_cluster(
+        self, api_instance, test_dataset
+    ):
         """存在しないクラスタ取得のテスト"""
         try:
             # 存在しないクラスタ名でAPIを呼び出し
             response = api_instance.list_clusters(
-                **api_dataset.INVALID_GET_PARAMETERS_CLUSTER
+                **test_dataset.INVALID_GET_PARAMETERS_CLUSTER
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
@@ -80,12 +84,14 @@ class TestClustersApi:
                     f"存在しないクラスタ取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
-    def test_get_cluster_not_found_with_invalid_vcenter(self, api_instance, api_dataset):
+    def test_get_cluster_not_found_with_invalid_vcenter(
+        self, api_instance, test_dataset
+    ):
         """存在しないvCenterを指定し、クラスタ取得のテスト"""
         try:
             # 存在しないvCenterでAPIを呼び出し
             response = api_instance.list_clusters(
-                **api_dataset.INVALID_GET_PARAMETERS_VCENTER
+                **test_dataset.INVALID_GET_PARAMETERS_VCENTER
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
@@ -104,10 +110,10 @@ class TestClustersApi:
                     f"存在しないクラスタ取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
-    def test_list_clusters_success(self, api_instance, api_dataset):
+    def test_list_clusters_success(self, api_instance, test_dataset):
         """クラスタリスト取得の成功テスト"""
         # APIを呼び出し
-        response = api_instance.list_clusters(**api_dataset.VALID_LIST_PARAMETERS)
+        response = api_instance.list_clusters(**test_dataset.VALID_LIST_PARAMETERS)
 
         # レスポンスの基本チェック
         assert response is not None
@@ -118,7 +124,7 @@ class TestClustersApi:
         assert isinstance(results, list)
 
         # 期待した件数のクラスタが返却されることをチェック
-        assert len(results) == len(api_dataset.EXPECTED_CLUSTER_LIST["results"])
+        assert len(results) == len(test_dataset.EXPECTED_CLUSTER_LIST["results"])
 
         for result in results:
             # レスポンスデータがスキーマに適合していることをチェック
@@ -131,7 +137,7 @@ class TestClustersApi:
         # 期待結果との比較
         for result, expected_result in zip(
             results,
-            api_dataset.EXPECTED_CLUSTER_LIST["results"],
+            test_dataset.EXPECTED_CLUSTER_LIST["results"],
         ):
             assert result.name == expected_result["name"]
             assert result.status == expected_result["status"]
@@ -142,18 +148,18 @@ class TestClustersApi:
             f"✅ クラスタリスト取得テスト成功: {len(response.results)}件のクラスタが見つかりました"
         )
 
-    def test_list_vcenters_with_invalid_max_results(self, api_instance, api_dataset):
+    def test_list_vcenters_with_invalid_max_results(self, api_instance, test_dataset):
         """クラスタリスト取得のテスト（max_resultsパラメータの制限が有効であることを確認）"""
 
         # max_resultsに制限（<=1000)を超える値を指定してAPIを呼び出し
         try:
             response = api_instance.list_clusters(
-                **api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS
+                **test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
             pytest.fail(
-                f"max_resultsに制限を超える値(>1000, {api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS['max_results']})を指定したテストでエラーが発生しました"
+                f"max_resultsに制限を超える値(>1000, {test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS['max_results']})を指定したテストでエラーが発生しました"
             )
 
         except pydantic.ValidationError as e:
@@ -164,12 +170,12 @@ class TestClustersApi:
         # max_resultsに制限（>=1)を超える値を指定してAPIを呼び出し
         try:
             response = api_instance.list_clusters(
-                **api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2
+                **test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
             pytest.fail(
-                f"max_resultsに制限を超える値(<0, {api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2['max_results']})を指定したテストでエラーが発生しました"
+                f"max_resultsに制限を超える値(<0, {test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2['max_results']})を指定したテストでエラーが発生しました"
             )
 
         except pydantic.ValidationError as e:
@@ -177,12 +183,12 @@ class TestClustersApi:
                 f"✅ max_resultsに制限を超える値(<0)を指定した場合、正しくエラーが返却されました: {e}"
             )
 
-    def test_list_clusters_with_invalid_offset(self, api_instance, api_dataset):
+    def test_list_clusters_with_invalid_offset(self, api_instance, test_dataset):
         """クラスタリスト取得のテスト（パラメータ制限が有効であることを確認）"""
         # offsetに制限を超える値をを指定してAPIを呼び出し
         try:
             response = api_instance.list_clusters(
-                **api_dataset.INVALID_LIST_PARAMETERS_OFFSET
+                **test_dataset.INVALID_LIST_PARAMETERS_OFFSET
             )
 
             # 例外が発生し、以降の行は実行されないことを期待する
@@ -193,10 +199,10 @@ class TestClustersApi:
                 f"✅ offsetに制限を超える値(<0)を指定した場合、正しくエラーが返却されました: {e}"
             )
 
-    def test_list_clusters_with_pagination(self, api_instance, api_dataset):
+    def test_list_clusters_with_pagination(self, api_instance, test_dataset):
         """ページネーション付きクラスタリスト取得のテスト"""
         # ページネーションパラメータを指定してAPIを呼び出し
-        response = api_instance.list_clusters(**api_dataset.VALID_LIST_PARAMETERS)
+        response = api_instance.list_clusters(**test_dataset.VALID_LIST_PARAMETERS)
 
         # レスポンスの基本チェック
         assert response is not None
