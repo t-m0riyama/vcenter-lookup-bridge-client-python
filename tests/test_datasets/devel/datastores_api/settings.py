@@ -7,7 +7,7 @@ DATASTORES APIのテストで使用する期待するレスポンスデータ
 """
 
 VALID_VCENTER = "devel"
-VALID_TAG_CATEGORY = "system-id"
+VALID_TAG_CATEGORY = "system_id"
 VALID_TAGS = ["devel"]
 VALID_TAGS_MULTI = ["devel", "home"]
 INVALID_VCENTER = "non-existent-vcenter"
