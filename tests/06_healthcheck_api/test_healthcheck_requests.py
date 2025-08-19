@@ -8,6 +8,8 @@ import os
 import pytest
 import requests
 import importlib
+import urllib3
+from requests.auth import HTTPBasicAuth
 from typing import Dict, Any
 
 dataset_name = f"tests.test_datasets.{os.environ['TEST_DATASET']}"
@@ -30,9 +32,20 @@ class TestHealthcheck:
     def test_healthcheck(self, api_config):
         """Healthcheck APIのテスト(requestsモジュール版)"""
         try:
+            # Suppress only the single warning from urllib3.
+            urllib3.disable_warnings(category=urllib3.exceptions.InsecureRequestWarning)
+
             # ヘルスチェックエンドポイントを使用して接続をテスト
-            health_url = f"{api_config.host}/healthcheck"
-            response = requests.get(health_url, timeout=10)
+            health_url = f"{api_config.host}/healthcheck/"
+            response = requests.get(
+                health_url,
+                auth=HTTPBasicAuth(
+                    api_server_settings.VALID_API_SERVER_SETTINGS["username"],
+                    api_server_settings.VALID_API_SERVER_SETTINGS["password"],
+                ),
+                verify=api_server_settings.VALID_API_SERVER_SETTINGS["verify_ssl"],
+                timeout=10,
+            )
 
             # 接続が成功することを確認
             assert response.status_code in [200]
@@ -45,5 +58,5 @@ class TestHealthcheck:
             )
         except Exception as e:
             pytest.fail(
-                f"Healthcheck APIのテスト(requestsモジュール版)でエラーが発生しました: {str(e)}"
+                f"Healthcheck APIのテスト(requestsモジュール版)でエラーが発生しました: {health_url} {str(e)}"
             )

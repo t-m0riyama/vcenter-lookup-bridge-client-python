@@ -3,7 +3,7 @@
 import json
 
 """
-DATASTORES APIのテストで使用する期待するレスポンスデータ
+PORTGROUPS APIのテストで使用する期待するレスポンスデータ
 """
 
 VALID_VCENTER = "devel"
@@ -15,7 +15,7 @@ INVALID_TAG_CATEGORY = "non-existent-tag-category"
 INVALID_TAGS = ["non-existent-tag1", "non-existent-tag2"]
 
 
-# DATASTOREリストのパラメータ(正常, 全vCenter)
+# PORTGROUPSリストのパラメータ(正常, 全vCenter)
 VALID_LIST_PARAMETERS = {
     "tag_category": VALID_TAG_CATEGORY,
     "tags": VALID_TAGS,
@@ -23,7 +23,7 @@ VALID_LIST_PARAMETERS = {
     "max_results": 100,
 }
 
-# DATASTOREリストのパラメータ(正常, 全vCenter, 複数タグ)
+# PORTGROUPSリストのパラメータ(正常, 全vCenter, 複数タグ)
 VALID_LIST_PARAMETERS_MULTI_TAGS = {
     "tag_category": VALID_TAG_CATEGORY,
     "tags": VALID_TAGS_MULTI,
@@ -31,7 +31,7 @@ VALID_LIST_PARAMETERS_MULTI_TAGS = {
     "max_results": 100,
 }
 
-# DATASTOREリストのパラメータ(正常, 指定vCenter)
+# PORTGROUPSリストのパラメータ(正常, 指定vCenter)
 VALID_LIST_PARAMETERS_VCENTER = {
     "tag_category": VALID_TAG_CATEGORY,
     "tags": VALID_TAGS,
@@ -40,7 +40,7 @@ VALID_LIST_PARAMETERS_VCENTER = {
     "max_results": 100,
 }
 
-# DATASTOREリストのパラメータ(tag_categoryが存在しない)
+# PORTGROUPSリストのパラメータ(tag_categoryが存在しない)
 INVALID_LIST_PARAMETERS_TAG_CATEGORY = {
     "tag_category": INVALID_TAG_CATEGORY,
     "tags": VALID_TAGS,
@@ -49,7 +49,7 @@ INVALID_LIST_PARAMETERS_TAG_CATEGORY = {
     "max_results": 100,
 }
 
-# DATASTOREリストのパラメータ(tagsが存在しない)
+# PORTGROUPSリストのパラメータ(tagsが存在しない)
 INVALID_LIST_PARAMETERS_TAGS = {
     "tag_category": VALID_TAG_CATEGORY,
     "tags": INVALID_TAGS,
@@ -58,7 +58,7 @@ INVALID_LIST_PARAMETERS_TAGS = {
     "max_results": 100,
 }
 
-# DATASTOREリストのパラメータ(vCenterが存在しない)
+# PORTGROUPSリストのパラメータ(vCenterが存在しない)
 INVALID_LIST_PARAMETERS_VCENTER = {
     "tag_category": VALID_TAG_CATEGORY,
     "tags": VALID_TAGS,
@@ -67,7 +67,7 @@ INVALID_LIST_PARAMETERS_VCENTER = {
     "max_results": 100,
 }
 
-# DATASTOREリストのパラメータ(max_resultsが1000を超える)
+# PORTGROUPSリストのパラメータ(max_resultsが1000を超える)
 INVALID_LIST_PARAMETERS_MAX_RESULTS = {
     "tag_category": VALID_TAG_CATEGORY,
     "tags": VALID_TAGS,
@@ -76,7 +76,7 @@ INVALID_LIST_PARAMETERS_MAX_RESULTS = {
     "max_results": 1001,  # max_results <= 1000
 }
 
-# DATASTOREリストのパラメータ(max_resultsが負の値)
+# PORTGROUPSリストのパラメータ(max_resultsが負の値)
 INVALID_LIST_PARAMETERS_MAX_RESULTS2 = {
     "tag_category": VALID_TAG_CATEGORY,
     "tags": VALID_TAGS,
@@ -85,7 +85,7 @@ INVALID_LIST_PARAMETERS_MAX_RESULTS2 = {
     "max_results": -1,  # max_results >= 1
 }
 
-# DATASTOREリストのパラメータ(offsetが負の値)
+# PORTGROUPSリストのパラメータ(offsetが負の値)
 INVALID_LIST_PARAMETERS_OFFSET = {
     "tag_category": VALID_TAG_CATEGORY,
     "tags": VALID_TAGS,
@@ -93,31 +93,34 @@ INVALID_LIST_PARAMETERS_OFFSET = {
     "max_results": 100,
 }
 
-# DATASTOREリストのレスポンス例
-EXPECTED_DATASTORE_LIST = json.loads(
+# PORTGROUPSリストのレスポンス例
+EXPECTED_PORTGROUPS_LIST = json.loads(
     """
 {
     "results": [
     {
-      "name": "vmware-ds01",
+      "name": "mng-net",
       "vcenter": "devel",
       "tag_category": "system-id",
       "tags": [
-        "home",
         "devel"
       ],
-      "capacityGB": 5436,
-      "freeSpaceGB": 2640,
-      "type": "NFS41",
-      "hosts": [
-        "mini5.moriyama.internal"
-      ]
+      "hosts": []
+    },
+    {
+      "name": "nested-net",
+      "vcenter": "devel",
+      "tag_category": "system-id",
+      "tags": [
+        "devel"
+      ],
+      "hosts": []
     }
   ],
   "success": true,
-  "message": "1件のデータストア情報を取得しました。",
+  "message": "2件のポートグループ情報を取得しました。",
   "pagination": {
-    "totalCount": 1,
+    "totalCount": 2,
     "offset": 0,
     "limit": 100,
     "hasNext": false,
@@ -127,31 +130,45 @@ EXPECTED_DATASTORE_LIST = json.loads(
 """
 )
 
-# DATASTOREリストのレスポンス例
-EXPECTED_DATASTORE_LIST_MULTI_TAGS = json.loads(
+# PORTGROUPSリストのレスポンス例
+EXPECTED_PORTGROUPS_LIST_MULTI_TAGS = json.loads(
     """
 {
     "results": [
     {
-      "name": "vmware-ds01",
+      "name": "mng-net",
       "vcenter": "devel",
       "tag_category": "system-id",
       "tags": [
-        "home",
         "devel"
       ],
-      "capacityGB": 5436,
-      "freeSpaceGB": 2640,
-      "type": "NFS41",
+      "hosts": []
+    },
+    {
+      "name": "nested-net",
+      "vcenter": "devel",
+      "tag_category": "system-id",
+      "tags": [
+        "devel"
+      ],
+      "hosts": []
+    },
+    {
+      "name": "VM Network",
+      "vcenter": "devel",
+      "tag_category": "system-id",
+      "tags": [
+        "home"
+      ],
       "hosts": [
         "mini5.moriyama.internal"
       ]
     }
   ],
   "success": true,
-  "message": "1件のデータストア情報を取得しました。",
+  "message": "3件のポートグループ情報を取得しました。",
   "pagination": {
-    "totalCount": 1,
+    "totalCount": 3,
     "offset": 0,
     "limit": 100,
     "hasNext": false,

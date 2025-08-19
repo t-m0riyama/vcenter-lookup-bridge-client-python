@@ -1,43 +1,26 @@
 # coding: utf-8
 
 """
-vCenter Lookup Bridge API - ADMINS API キャッシュ管理テスト
+vCenter Lookup Bridge API - ADMINS APIテスト
 """
 
-import os
 import pydantic
 import pytest
-import importlib
 from typing import Dict, Any
 
-dataset_name = f"tests.test_datasets.{os.environ['TEST_DATASET']}"
-api_server_settings = importlib.import_module(
-    f"{dataset_name}.shared.api_server_settings"
-)
-api_dataset = importlib.import_module(f"{dataset_name}.admins_api.settings")
-
 import vcenter_lookup_bridge_client
-from vcenter_lookup_bridge_client.configuration import Configuration
 from vcenter_lookup_bridge_client.models.pagination_info import PaginationInfo
 from vcenter_lookup_bridge_client.models.admin_response_schema import (
     AdminResponseSchema,
 )
 
+@pytest.fixture
+def api_name():
+    """API名のフィクスチャ"""
+    return "admins_api"
 
 @pytest.fixture
-def api_config():
-    """API設定のフィクスチャ"""
-    return Configuration(**api_server_settings.VALID_API_SERVER_SETTINGS)
-
-
-@pytest.fixture
-def api_client(api_config):
-    """APIクライアントのフィクスチャ"""
-    return vcenter_lookup_bridge_client.ApiClient(api_config)
-
-
-@pytest.fixture
-def admins_api(api_client):
+def api_instance(api_client):
     """Admins APIのフィクスチャ"""
     return vcenter_lookup_bridge_client.AdminsApi(api_client)
 
@@ -45,10 +28,10 @@ def admins_api(api_client):
 class TestAdminsApi:
     """Admins API Cache management unit test"""
 
-    def test_flush_cache_success(self, admins_api):
+    def test_flush_cache_success(self, api_instance, api_dataset):
         """キャッシュクリアの成功テスト"""
         # APIを呼び出し
-        response = admins_api.flush_caches()
+        response = api_instance.flush_caches()
 
         # レスポンスの基本チェック
         assert response is not None
@@ -68,10 +51,10 @@ class TestAdminsApi:
 
         print(f"✅ ADMINS API キャッシュクリアテスト成功")
 
-    def test_reset_ws_session_success(self, admins_api):
+    def test_reset_ws_session_success(self, api_instance, api_dataset):
         """Web Service Sessionリセットの成功テスト"""
         # APIを呼び出し
-        response = admins_api.reset_ws_session()
+        response = api_instance.reset_ws_session()
 
         # レスポンスの基本チェック
         assert response is not None

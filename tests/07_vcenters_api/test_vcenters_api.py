@@ -4,38 +4,21 @@
 vCenter Lookup Bridge API - vCenters APIテスト
 """
 
-import os
 import pytest
-import importlib
 from typing import Dict, Any
 
-dataset_name = f"tests.test_datasets.{os.environ['TEST_DATASET']}"
-api_server_settings = importlib.import_module(
-    f"{dataset_name}.shared.api_server_settings"
-)
-api_dataset = importlib.import_module(f"{dataset_name}.vcenters_api.settings")
-
 import vcenter_lookup_bridge_client
-from vcenter_lookup_bridge_client.configuration import Configuration
 from vcenter_lookup_bridge_client.models.v_center_response_schema import (
     VCenterResponseSchema,
 )
 
+@pytest.fixture
+def api_name():
+    """API名のフィクスチャ"""
+    return "vcenters_api"
 
 @pytest.fixture
-def api_config():
-    """API設定のフィクスチャ"""
-    return Configuration(**api_server_settings.VALID_API_SERVER_SETTINGS)
-
-
-@pytest.fixture
-def api_client(api_config):
-    """APIクライアントのフィクスチャ"""
-    return vcenter_lookup_bridge_client.ApiClient(api_config)
-
-
-@pytest.fixture
-def vcenters_api(api_client):
+def api_instance(api_client):
     """vCenters APIのフィクスチャ"""
     return vcenter_lookup_bridge_client.VcentersApi(api_client)
 
@@ -43,10 +26,10 @@ def vcenters_api(api_client):
 class TestVcentersApi:
     """vCenters API unit test"""
 
-    def test_get_vcenter_success(self, vcenters_api):
+    def test_get_vcenter_success(self, api_instance, api_dataset):
         """単一vCenter取得(vCenter指定)の成功テスト"""
         # APIを呼び出し
-        response = vcenters_api.list_vcenters(
+        response = api_instance.list_vcenters(
             **api_dataset.VALID_LIST_PARAMETERS_VCENTER
         )
 
@@ -71,11 +54,11 @@ class TestVcentersApi:
 
         print(f"✅ VCENTER取得テスト成功: {results[0].name}")
 
-    def test_list_vcenter_not_found_with_invalid_vcenter(self, vcenters_api):
+    def test_list_vcenter_not_found_with_invalid_vcenter(self, api_instance, api_dataset):
         """存在しないVCENTER取得のテスト(vCenter指定)"""
         try:
             # 存在しないvCenterでAPIを呼び出し
-            response = vcenters_api.list_vcenters(
+            response = api_instance.list_vcenters(
                 **api_dataset.INVALID_LIST_PARAMETERS_VCENTER
             )
 
@@ -95,10 +78,10 @@ class TestVcentersApi:
                     f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
-    def test_list_vcenters_success(self, vcenters_api):
+    def test_list_vcenters_success(self, api_instance, api_dataset):
         """vCenterリスト取得の成功テスト"""
         # APIを呼び出し
-        response = vcenters_api.list_vcenters(**api_dataset.VALID_LIST_PARAMETERS)
+        response = api_instance.list_vcenters(**api_dataset.VALID_LIST_PARAMETERS)
 
         # レスポンスの基本チェック
         assert response is not None
@@ -132,10 +115,10 @@ class TestVcentersApi:
             f"✅ VCENTERリスト取得テスト成功: {len(response.results)}件のVMが見つかりました"
         )
 
-    def test_list_vcenters_with_pagination(self, vcenters_api):
+    def test_list_vcenters_with_pagination(self, api_instance, api_dataset):
         """ページネーション付きVMリスト取得のテスト（ページネーション機能は非サポート）"""
         # ページネーションパラメータを指定してAPIを呼び出し
-        response = vcenters_api.list_vcenters(
+        response = api_instance.list_vcenters(
             **api_dataset.VALID_LIST_PARAMETERS_VCENTER
         )
 

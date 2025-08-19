@@ -54,7 +54,7 @@ EXPECTED_VCENTER = json.loads(
     """
 {
       "name": "simulator02",
-      "hostName": "localhost",
+      "hostName": "host.docker.internal",
       "port": 18989
 }
 """
@@ -67,12 +67,12 @@ EXPECTED_VCENTER_LIST = json.loads(
     "results": [
     {
       "name": "simulator01",
-      "hostName": "localhost",
+      "hostName": "host.docker.internal",
       "port": 8989
     },
     {
       "name": "simulator02",
-      "hostName": "localhost",
+      "hostName": "host.docker.internal",
       "port": 18989
     }
   ],

@@ -4,40 +4,23 @@
 vCenter Lookup Bridge API - VM SNAPSHOTS APIテスト
 """
 
-import os
 import pydantic
 import pytest
-import importlib
 from typing import Dict, Any
 
-dataset_name = f"tests.test_datasets.{os.environ['TEST_DATASET']}"
-api_server_settings = importlib.import_module(
-    f"{dataset_name}.shared.api_server_settings"
-)
-api_dataset = importlib.import_module(f"{dataset_name}.vm_snapshots_api.settings")
-
 import vcenter_lookup_bridge_client
-from vcenter_lookup_bridge_client.configuration import Configuration
 from vcenter_lookup_bridge_client.models.pagination_info import PaginationInfo
 from vcenter_lookup_bridge_client.models.vm_snapshot_response_schema import (
     VmSnapshotResponseSchema,
 )
 
+@pytest.fixture
+def api_name():
+    """API名のフィクスチャ"""
+    return "vm_snapshots_api"
 
 @pytest.fixture
-def api_config():
-    """API設定のフィクスチャ"""
-    return Configuration(**api_server_settings.VALID_API_SERVER_SETTINGS)
-
-
-@pytest.fixture
-def api_client(api_config):
-    """APIクライアントのフィクスチャ"""
-    return vcenter_lookup_bridge_client.ApiClient(api_config)
-
-
-@pytest.fixture
-def vm_snapshots_api(api_client):
+def api_instance(api_client):
     """VMs APIのフィクスチャ"""
     return vcenter_lookup_bridge_client.VmSnapshotsApi(api_client)
 
@@ -45,10 +28,10 @@ def vm_snapshots_api(api_client):
 class TestVmSnapshotsApi:
     """VMs API unit test"""
 
-    def test_get_vm_snapshots_success(self, vm_snapshots_api):
+    def test_get_vm_snapshots_success(self, api_instance, api_dataset):
         """単一VMスナップショット取得の成功テスト"""
         # APIを呼び出し
-        response = vm_snapshots_api.get_vm_snapshots(**api_dataset.VALID_GET_PARAMETERS)
+        response = api_instance.get_vm_snapshots(**api_dataset.VALID_GET_PARAMETERS)
 
         # レスポンスの基本チェック
         assert response is not None
@@ -92,12 +75,12 @@ class TestVmSnapshotsApi:
         print(f"✅ VMスナップショット取得テスト成功")
 
     def test_get_vm_snapshots_not_found_with_invalid_vm_instance_uuid(
-        self, vm_snapshots_api
+        self, api_instance, api_dataset
     ):
         """存在しないVMスナップショット取得のテスト"""
         try:
             # 存在しないVMのインスタンスUUIDでAPIを呼び出し
-            response = vm_snapshots_api.get_vm_snapshots(
+            response = api_instance.get_vm_snapshots(
                 **api_dataset.INVALID_GET_PARAMETERS_VM_INSTANCE_UUID
             )
 
@@ -115,11 +98,11 @@ class TestVmSnapshotsApi:
                     f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
-    def test_get_vm_snapshot_not_found_with_invalid_vcenter(self, vm_snapshots_api):
+    def test_get_vm_snapshot_not_found_with_invalid_vcenter(self, api_instance, api_dataset):
         """存在しないVM取得のテスト"""
         try:
             # 存在しないVMのインスタンスUUIDでAPIを呼び出し
-            response = vm_snapshots_api.get_vm_snapshots(
+            response = api_instance.get_vm_snapshots(
                 **api_dataset.INVALID_GET_PARAMETERS_VCENTER
             )
 
@@ -139,10 +122,10 @@ class TestVmSnapshotsApi:
                     f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
-    def test_list_vm_snapshots_success(self, vm_snapshots_api):
+    def test_list_vm_snapshots_success(self, api_instance, api_dataset):
         """VMスナップショットリスト取得の成功テスト"""
         # APIを呼び出し
-        response = vm_snapshots_api.list_vm_snapshots(
+        response = api_instance.list_vm_snapshots(
             **api_dataset.VALID_LIST_PARAMETERS
         )
 
@@ -188,12 +171,12 @@ class TestVmSnapshotsApi:
             f"✅ VMスナップショットリスト取得テスト成功: {len(response.results)}件のVMスナップショットが見つかりました"
         )
 
-    def test_list_vm_snapshots_with_invalid_max_results(self, vm_snapshots_api):
+    def test_list_vm_snapshots_with_invalid_max_results(self, api_instance, api_dataset):
         """VMスナップショットリスト取得のテスト（max_resultsパラメータの制限が有効であることを確認）"""
 
         # max_resultsに制限（<=1000)を超える値を指定してAPIを呼び出し
         try:
-            response = vm_snapshots_api.list_vm_snapshots(
+            response = api_instance.list_vm_snapshots(
                 **api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS
             )
 
@@ -209,7 +192,7 @@ class TestVmSnapshotsApi:
 
         # max_resultsに制限（>=1)を超える値を指定してAPIを呼び出し
         try:
-            response = vm_snapshots_api.list_vm_snapshots(
+            response = api_instance.list_vm_snapshots(
                 **api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2
             )
 
@@ -223,11 +206,11 @@ class TestVmSnapshotsApi:
                 f"✅ max_resultsに制限を超える値(<0)を指定した場合、正しくエラーが返却されました: {e}"
             )
 
-    def test_list_vm_snapshots_with_invalid_offset(self, vm_snapshots_api):
+    def test_list_vm_snapshots_with_invalid_offset(self, api_instance, api_dataset):
         """VMスナップショットリスト取得のテスト（パラメータ制限が有効であることを確認）"""
         # offsetに制限を超える値をを指定してAPIを呼び出し
         try:
-            response = vm_snapshots_api.list_vm_snapshots(
+            response = api_instance.list_vm_snapshots(
                 **api_dataset.INVALID_LIST_PARAMETERS_OFFSET
             )
 
@@ -239,10 +222,10 @@ class TestVmSnapshotsApi:
                 f"✅ offsetに制限を超える値(<0)を指定した場合、正しくエラーが返却されました: {e}"
             )
 
-    def test_list_vm_snapshots_with_pagination(self, vm_snapshots_api):
+    def test_list_vm_snapshots_with_pagination(self, api_instance, api_dataset):
         """ページネーション付きVMスナップショットリスト取得のテスト"""
         # ページネーションパラメータを指定してAPIを呼び出し
-        response = vm_snapshots_api.list_vm_snapshots(
+        response = api_instance.list_vm_snapshots(
             **api_dataset.VALID_LIST_PARAMETERS
         )
 
@@ -272,11 +255,11 @@ class TestVmSnapshotsApi:
             f"✅ ページネーション付きVMスナップショットリスト取得テスト成功: ページ1, 1ページあたり100件"
         )
 
-    def test_list_vms_empty_result(self, vm_snapshots_api):
+    def test_list_vms_empty_result(self, api_instance, api_dataset):
         """空の結果を返すフィルターのテスト"""
         try:
             # 存在しない条件でフィルタリング。例外が発生することを期待する。
-            response = vm_snapshots_api.list_vm_snapshots(
+            response = api_instance.list_vm_snapshots(
                 **api_dataset.INVALID_LIST_PARAMETERS_VM_FOLDERS
             )
 

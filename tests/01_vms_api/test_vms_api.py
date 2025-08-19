@@ -4,38 +4,22 @@
 vCenter Lookup Bridge API - VMs APIテスト
 """
 
-import os
 import pydantic
 import pytest
-import importlib
 from typing import Dict, Any
 
-dataset_name = f"tests.test_datasets.{os.environ['TEST_DATASET']}"
-api_server_settings = importlib.import_module(
-    f"{dataset_name}.shared.api_server_settings"
-)
-api_dataset = importlib.import_module(f"{dataset_name}.vms_api.settings")
-
 import vcenter_lookup_bridge_client
-from vcenter_lookup_bridge_client.configuration import Configuration
 from vcenter_lookup_bridge_client.models.pagination_info import PaginationInfo
 from vcenter_lookup_bridge_client.models.vm_response_schema import VmResponseSchema
 
 
 @pytest.fixture
-def api_config():
-    """API設定のフィクスチャ"""
-    return Configuration(**api_server_settings.VALID_API_SERVER_SETTINGS)
-
-
-@pytest.fixture
-def api_client(api_config):
-    """APIクライアントのフィクスチャ"""
-    return vcenter_lookup_bridge_client.ApiClient(api_config)
-
+def api_name():
+    """API名のフィクスチャ"""
+    return "vms_api"
 
 @pytest.fixture
-def vms_api(api_client):
+def api_instance(api_client):
     """VMs APIのフィクスチャ"""
     return vcenter_lookup_bridge_client.VmsApi(api_client)
 
@@ -43,10 +27,10 @@ def vms_api(api_client):
 class TestVmsApi:
     """VMs API unit test"""
 
-    def test_get_vm_success(self, vms_api):
+    def test_get_vm_success(self, api_instance, api_dataset):
         """単一VM取得の成功テスト"""
         # APIを呼び出し
-        response = vms_api.get_vm(**api_dataset.VALID_GET_PARAMETERS)
+        response = api_instance.get_vm(**api_dataset.VALID_GET_PARAMETERS)
 
         # レスポンスの基本チェック
         assert response is not None
@@ -86,11 +70,11 @@ class TestVmsApi:
 
         print(f"✅ VM取得テスト成功: {results[0].name}")
 
-    def test_get_vm_not_found_with_invalid_vm_instance_uuid(self, vms_api):
+    def test_get_vm_not_found_with_invalid_vm_instance_uuid(self, api_instance, api_dataset):
         """存在しないVM取得のテスト"""
         try:
             # 存在しないVMのインスタンスUUIDでAPIを呼び出し
-            response = vms_api.get_vm(
+            response = api_instance.get_vm(
                 **api_dataset.INVALID_GET_PARAMETERS_VM_INSTANCE_UUID
             )
 
@@ -108,11 +92,11 @@ class TestVmsApi:
                     f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
-    def test_get_vm_not_found_with_invalid_vcenter(self, vms_api):
+    def test_get_vm_not_found_with_invalid_vcenter(self, api_instance, api_dataset):
         """存在しないVM取得のテスト"""
         try:
             # 存在しないVMのインスタンスUUIDでAPIを呼び出し
-            response = vms_api.get_vm(**api_dataset.INVALID_GET_PARAMETERS_VCENTER)
+            response = api_instance.get_vm(**api_dataset.INVALID_GET_PARAMETERS_VCENTER)
 
             # 例外が発生し、以降の行は実行されないことを期待する
             pytest.fail(
@@ -130,10 +114,10 @@ class TestVmsApi:
                     f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
-    def test_list_vms_success(self, vms_api):
+    def test_list_vms_success(self, api_instance, api_dataset):
         """VMリスト取得の成功テスト"""
         # APIを呼び出し
-        response = vms_api.list_vms(**api_dataset.VALID_LIST_PARAMETERS)
+        response = api_instance.list_vms(**api_dataset.VALID_LIST_PARAMETERS)
 
         # レスポンスの基本チェック
         assert response is not None
@@ -181,12 +165,12 @@ class TestVmsApi:
             f"✅ VMリスト取得テスト成功: {len(response.results)}件のVMが見つかりました"
         )
 
-    def test_list_vms_with_invalid_max_results(self, vms_api):
+    def test_list_vms_with_invalid_max_results(self, api_instance, api_dataset):
         """VMリスト取得のテスト（max_resultsパラメータの制限が有効であることを確認）"""
 
         # max_resultsに制限（<=1000)を超える値を指定してAPIを呼び出し
         try:
-            response = vms_api.list_vms(
+            response = api_instance.list_vms(
                 **api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS
             )
 
@@ -202,7 +186,7 @@ class TestVmsApi:
 
         # max_resultsに制限（>=1)を超える値を指定してAPIを呼び出し
         try:
-            response = vms_api.list_vms(
+            response = api_instance.list_vms(
                 **api_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2
             )
 
@@ -216,11 +200,11 @@ class TestVmsApi:
                 f"✅ max_resultsに制限を超える値(<0)を指定した場合、正しくエラーが返却されました: {e}"
             )
 
-    def test_list_vms_with_invalid_offset(self, vms_api):
+    def test_list_vms_with_invalid_offset(self, api_instance, api_dataset):
         """VMリスト取得のテスト（パラメータ制限が有効であることを確認）"""
         # offsetに制限を超える値をを指定してAPIを呼び出し
         try:
-            response = vms_api.list_vms(**api_dataset.INVALID_LIST_PARAMETERS_OFFSET)
+            response = api_instance.list_vms(**api_dataset.INVALID_LIST_PARAMETERS_OFFSET)
 
             # 例外が発生し、以降の行は実行されないことを期待する
             pytest.fail(f"offsetに制限を超える値を指定したテストでエラーが発生しました")
@@ -230,10 +214,10 @@ class TestVmsApi:
                 f"✅ offsetに制限を超える値(<0)を指定した場合、正しくエラーが返却されました: {e}"
             )
 
-    def test_list_vms_with_pagination(self, vms_api):
+    def test_list_vms_with_pagination(self, api_instance, api_dataset):
         """ページネーション付きVMリスト取得のテスト"""
         # ページネーションパラメータを指定してAPIを呼び出し
-        response = vms_api.list_vms(**api_dataset.VALID_LIST_PARAMETERS)
+        response = api_instance.list_vms(**api_dataset.VALID_LIST_PARAMETERS)
 
         # レスポンスの基本チェック
         assert response is not None
@@ -261,11 +245,11 @@ class TestVmsApi:
             f"✅ ページネーション付きVMリスト取得テスト成功: ページ1, 1ページあたり100件"
         )
 
-    def test_list_vms_empty_result(self, vms_api):
+    def test_list_vms_empty_result(self, api_instance, api_dataset):
         """空の結果を返すフィルターのテスト"""
         try:
             # 存在しない条件でフィルタリング。例外が発生することを期待する。
-            response = vms_api.list_vms(
+            response = api_instance.list_vms(
                 **api_dataset.INVALID_LIST_PARAMETERS_VM_FOLDERS
             )
 
