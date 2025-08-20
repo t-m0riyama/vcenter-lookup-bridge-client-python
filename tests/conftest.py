@@ -5,7 +5,26 @@ import urllib3
 
 import vcenter_lookup_bridge_client
 from vcenter_lookup_bridge_client.configuration import Configuration
+from py.xml import html
 
+
+def pytest_html_report_title(report):
+   report.title = 'vcenter-lookup-bridge-client Test results'
+
+
+def pytest_html_results_table_header(cells):
+    cells.insert(2, html.th('Description'))
+
+
+def pytest_html_results_table_row(report, cells):
+    cells.insert(2, html.td(report.description))
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+    report.description = str(item.function.__doc__)
 
 @pytest.fixture
 def dataset_name():
