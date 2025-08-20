@@ -41,35 +41,32 @@ class TestVmsApi:
         results = response.results
         assert results is not None
 
-        # １件の仮想マシンのみ返却されることをチェック
-        assert len(results) == 1
-
         # レスポンスデータがスキーマに適合していることを存在チェック
-        assert isinstance(results[0], VmResponseSchema)
+        assert isinstance(results, VmResponseSchema)
 
         # 期待した値を返していることをチェック
-        assert results[0].name == test_dataset.EXPECTED_VM["name"]
-        assert results[0].uuid == test_dataset.EXPECTED_VM["uuid"]
-        assert results[0].instance_uuid == test_dataset.EXPECTED_VM["instanceUuid"]
-        assert results[0].vcenter == test_dataset.EXPECTED_VM["vcenter"]
-        assert results[0].datacenter == test_dataset.EXPECTED_VM["datacenter"]
-        assert results[0].cluster == test_dataset.EXPECTED_VM["cluster"]
-        assert results[0].esxi_hostname == test_dataset.EXPECTED_VM["esxiHostname"]
-        assert results[0].power_state == test_dataset.EXPECTED_VM["powerState"]
-        assert results[0].num_cpu == test_dataset.EXPECTED_VM["numCpu"]
-        assert results[0].memory_size_mb == test_dataset.EXPECTED_VM["memorySizeMB"]
-        assert results[0].vm_path_name == test_dataset.EXPECTED_VM["vmPathName"]
-        assert results[0].guest_full_name == test_dataset.EXPECTED_VM["guestFullName"]
-        assert results[0].hostname == test_dataset.EXPECTED_VM["hostname"]
-        assert results[0].ip_address == test_dataset.EXPECTED_VM["ipAddress"]
-        assert results[0].template == test_dataset.EXPECTED_VM["template"]
-        assert results[0].hw_version == test_dataset.EXPECTED_VM["hwVersion"]
-        assert results[0].disk_devices == test_dataset.EXPECTED_VM["diskDevices"]
-        assert results[0].network_devices == test_dataset.EXPECTED_VM["networkDevices"]
+        assert results.name == test_dataset.EXPECTED_VM["name"]
+        assert results.uuid == test_dataset.EXPECTED_VM["uuid"]
+        assert results.instance_uuid == test_dataset.EXPECTED_VM["instanceUuid"]
+        assert results.vcenter == test_dataset.EXPECTED_VM["vcenter"]
+        assert results.datacenter == test_dataset.EXPECTED_VM["datacenter"]
+        assert results.cluster == test_dataset.EXPECTED_VM["cluster"]
+        assert results.esxi_hostname == test_dataset.EXPECTED_VM["esxiHostname"]
+        assert results.power_state == test_dataset.EXPECTED_VM["powerState"]
+        assert results.num_cpu == test_dataset.EXPECTED_VM["numCpu"]
+        assert results.memory_size_mb == test_dataset.EXPECTED_VM["memorySizeMB"]
+        assert results.vm_path_name == test_dataset.EXPECTED_VM["vmPathName"]
+        assert results.guest_full_name == test_dataset.EXPECTED_VM["guestFullName"]
+        assert results.hostname == test_dataset.EXPECTED_VM["hostname"]
+        assert results.ip_address == test_dataset.EXPECTED_VM["ipAddress"]
+        assert results.template == test_dataset.EXPECTED_VM["template"]
+        assert results.hw_version == test_dataset.EXPECTED_VM["hwVersion"]
+        assert results.disk_devices == test_dataset.EXPECTED_VM["diskDevices"]
+        assert results.network_devices == test_dataset.EXPECTED_VM["networkDevices"]
         # vm_folderはNoneであることをチェック
-        assert results[0].vm_folder is None
+        assert results.vm_folder is None
 
-        print(f"✅ VM取得テスト成功: {results[0].name}")
+        print(f"✅ VM取得テスト成功: {results.name}")
 
     def test_get_vm_not_found_with_invalid_vm_instance_uuid(
         self, api_instance, test_dataset

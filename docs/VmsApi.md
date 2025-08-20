@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 
 # **get_vm**
-> VmListResponseSchema get_vm(vm_instance_uuid, vcenter)
+> VmGetResponseSchema get_vm(vm_instance_uuid, vcenter)
 
 Get Vm
 
@@ -21,7 +21,7 @@ Get Vm
 
 ```python
 import vcenter_lookup_bridge_client
-from vcenter_lookup_bridge_client.models.vm_list_response_schema import VmListResponseSchema
+from vcenter_lookup_bridge_client.models.vm_get_response_schema import VmGetResponseSchema
 from vcenter_lookup_bridge_client.rest import ApiException
 from pprint import pprint
 
@@ -70,7 +70,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**VmListResponseSchema**](VmListResponseSchema.md)
+[**VmGetResponseSchema**](VmGetResponseSchema.md)
 
 ### Authorization
 

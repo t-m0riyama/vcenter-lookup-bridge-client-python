@@ -53,6 +53,7 @@ __all__ = [
     "ValidationErrorLocInner",
     "VmFolderListResponseSchema",
     "VmFolderResponseSchema",
+    "VmGetResponseSchema",
     "VmListResponseSchema",
     "VmResponseSchema",
     "VmSnapshotListResponseSchema",
@@ -99,6 +100,7 @@ from vcenter_lookup_bridge_client.models.validation_error import ValidationError
 from vcenter_lookup_bridge_client.models.validation_error_loc_inner import ValidationErrorLocInner as ValidationErrorLocInner
 from vcenter_lookup_bridge_client.models.vm_folder_list_response_schema import VmFolderListResponseSchema as VmFolderListResponseSchema
 from vcenter_lookup_bridge_client.models.vm_folder_response_schema import VmFolderResponseSchema as VmFolderResponseSchema
+from vcenter_lookup_bridge_client.models.vm_get_response_schema import VmGetResponseSchema as VmGetResponseSchema
 from vcenter_lookup_bridge_client.models.vm_list_response_schema import VmListResponseSchema as VmListResponseSchema
 from vcenter_lookup_bridge_client.models.vm_response_schema import VmResponseSchema as VmResponseSchema
 from vcenter_lookup_bridge_client.models.vm_snapshot_list_response_schema import VmSnapshotListResponseSchema as VmSnapshotListResponseSchema
