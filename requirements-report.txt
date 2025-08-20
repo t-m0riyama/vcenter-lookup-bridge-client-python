@@ -1,0 +1,8 @@
+pytest==8.4.1
+pytest-html==4.1.1
+urllib3==2.5.0
+pydantic==2.11.7
+requests==2.32.4
+python-dateutil==2.9.0.post0
+py==1.11.0
+
