@@ -94,10 +94,10 @@ class TestVmSnapshotsApi:
         except Exception as e:
             # 404エラーは例外として投げられる可能性がある
             if "404" in str(e):
-                print("✅ 存在しないVM取得テスト成功: 404エラーが正しく返されました")
+                print("✅ 存在しないVMのVMスナップショット取得テスト成功: 404エラーが正しく返されました")
             else:
                 pytest.fail(
-                    f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}"
+                    f"存在しないVMのVMスナップショット取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
     def test_get_vm_snapshot_not_found_with_invalid_vcenter(
@@ -116,14 +116,14 @@ class TestVmSnapshotsApi:
             )
 
         except Exception as e:
-            # 500エラーは例外として投げられる可能性がある
-            if "500" in str(e):
+            # 404エラーは例外として投げられる可能性がある
+            if "404" in str(e):
                 print(
-                    f"✅ 存在しないVM取得テスト成功: 500エラーが正しく返されました: {str(e)}"
+                    f"✅ 存在しないvCenterを指定してのVMスナップショット取得テスト成功: 404エラーが正しく返されました: {str(e)}"
                 )
             else:
                 pytest.fail(
-                    f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}"
+                    f"存在しないvCenterを指定してのVMスナップショット取得テストで予期しないエラーが発生しました: {str(e)}"
                 )
 
     def test_list_vm_snapshots_success(self, api_instance, test_dataset):

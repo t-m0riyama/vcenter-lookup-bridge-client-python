@@ -174,10 +174,10 @@ class TestDatastoresApi:
             )
 
         except Exception as e:
-            # 500エラーは例外として投げられる可能性がある
-            if "500" in str(e):
+            # 404エラーは例外として投げられる可能性がある
+            if "404" in str(e):
                 print(
-                    f"✅ 存在しないvCenterを指定してのデータストア取得テスト成功: 500エラーが正しく返されました: {str(e)}"
+                    f"✅ 存在しないvCenterを指定してのデータストア取得テスト成功: 404エラーが正しく返されました: {str(e)}"
                 )
             else:
                 pytest.fail(
