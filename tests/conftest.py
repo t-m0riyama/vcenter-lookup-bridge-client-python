@@ -41,7 +41,9 @@ def api_server_settings(dataset_name):
 @pytest.fixture
 def api_config(api_server_settings):
     """API設定のフィクスチャ"""
-    return Configuration(**api_server_settings.VALID_API_SERVER_SETTINGS)
+    config = Configuration(**api_server_settings.VALID_API_SERVER_SETTINGS)
+    config.verify_ssl = False
+    return config
 
 
 @pytest.fixture

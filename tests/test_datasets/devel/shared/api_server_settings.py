@@ -10,5 +10,4 @@ VALID_API_SERVER_SETTINGS = {
     "host": os.environ["API_SERVER"],
     "username": os.environ["USERNAME"],
     "password": os.environ["PASSWORD"],
-    "verify_ssl": False,
 }

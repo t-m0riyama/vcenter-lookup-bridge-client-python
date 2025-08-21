@@ -163,7 +163,6 @@ class Configuration:
     :param retries: Number of retries for API requests.
     :param ca_cert_data: verify the peer using concatenated CA certificate data
       in PEM (str) or DER (bytes) format.
-    :param verify_ssl: Enable or disable SSL verify.
 
     :Example:
 
@@ -202,7 +201,6 @@ conf = vcenter_lookup_bridge_client.Configuration(
         ssl_ca_cert: Optional[str]=None,
         retries: Optional[int] = None,
         ca_cert_data: Optional[Union[str, bytes]] = None,
-        verify_ssl: Optional[bool] = True,
         *,
         debug: Optional[bool] = None,
     ) -> None:
@@ -272,7 +270,7 @@ conf = vcenter_lookup_bridge_client.Configuration(
         """Debug switch
         """
 
-        self.verify_ssl = verify_ssl
+        self.verify_ssl = True
         """SSL/TLS verification
            Set this to false to skip verifying SSL certificate when calling API
            from https server.
