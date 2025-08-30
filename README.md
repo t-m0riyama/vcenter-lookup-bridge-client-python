@@ -68,7 +68,6 @@ configuration = vcenter_lookup_bridge_client.Configuration(
 
 # Configure HTTP basic authorization: basicAuth
 configuration = vcenter_lookup_bridge_client.Configuration(
-    host = "http://localhost/vcenter-lookup-bridge/api/v1",
     username = os.environ["USERNAME"],
     password = os.environ["PASSWORD"]
 )
@@ -77,17 +76,15 @@ configuration = vcenter_lookup_bridge_client.Configuration(
 # Enter a context with an instance of the API client
 with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = vcenter_lookup_bridge_client.VmFoldersApi(api_client)
+    api_instance = vcenter_lookup_bridge_client.AdminsApi(api_client)
 
-    # List VM Folders
     try:
-        api_response = api_instance.list_vm_folders()
-        print(f"Success: {api_response.success}")
-        for vm_folder in api_response.results:
-            print(f"  VM_Folder name: {vm_folder.name}, vcenter: {vm_folder.vcenter}")
-
+        # Flush Caches
+        api_response = api_instance.flush_caches()
+        print("The response of AdminsApi->flush_caches:\n")
+        pprint(api_response)
     except ApiException as e:
-        print(f"Exception when calling VMsApi->list_vm_folders: {e}")
+        print("Exception when calling AdminsApi->flush_caches: %s\n" % e)
 
 ```
 
@@ -99,9 +96,13 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AdminsApi* | [**flush_caches**](docs/AdminsApi.md#flush_caches) | **POST** /admins/cache/flush | Flush Caches
 *AdminsApi* | [**reset_ws_session**](docs/AdminsApi.md#reset_ws_session) | **POST** /admins/ws_session/reset | Reset Ws Session
+*AlarmsApi* | [**list_alarms**](docs/AlarmsApi.md#list_alarms) | **GET** /alarms/ | List Alarms
 *ClustersApi* | [**list_clusters**](docs/ClustersApi.md#list_clusters) | **GET** /clusters/ | List Clusters
 *DatastoresApi* | [**list_datastores**](docs/DatastoresApi.md#list_datastores) | **GET** /datastores/ | List Datastores
+*EventsApi* | [**list_events**](docs/EventsApi.md#list_events) | **GET** /events/ | List Events
 *HealthcheckApi* | [**get_service_status**](docs/HealthcheckApi.md#get_service_status) | **GET** /healthcheck/ | Get Service Status
+*HostsApi* | [**get_host**](docs/HostsApi.md#get_host) | **GET** /hosts/{host_uuid} | Get Host
+*HostsApi* | [**list_hosts**](docs/HostsApi.md#list_hosts) | **GET** /hosts/ | List Hosts
 *PortgroupsApi* | [**list_portgroups**](docs/PortgroupsApi.md#list_portgroups) | **GET** /portgroups/ | List Portgroups
 *VcentersApi* | [**list_vcenters**](docs/VcentersApi.md#list_vcenters) | **GET** /vcenters/ | List Vcenters
 *VmFoldersApi* | [**list_vm_folders**](docs/VmFoldersApi.md#list_vm_folders) | **GET** /vm_folders/ | List Vm Folders
@@ -114,13 +115,20 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [AdminResponseSchema](docs/AdminResponseSchema.md)
+ - [AlarmListResponseSchema](docs/AlarmListResponseSchema.md)
+ - [AlarmResponseSchema](docs/AlarmResponseSchema.md)
  - [ClusterListResponseSchema](docs/ClusterListResponseSchema.md)
  - [ClusterResponseSchema](docs/ClusterResponseSchema.md)
  - [DatastoreListResponseSchema](docs/DatastoreListResponseSchema.md)
  - [DatastoreResponseSchema](docs/DatastoreResponseSchema.md)
+ - [EventListResponseSchema](docs/EventListResponseSchema.md)
+ - [EventResponseSchema](docs/EventResponseSchema.md)
  - [HTTPValidationError](docs/HTTPValidationError.md)
  - [HealthcheckResponseSchema](docs/HealthcheckResponseSchema.md)
  - [HealthcheckSchema](docs/HealthcheckSchema.md)
+ - [HostGetResponseSchema](docs/HostGetResponseSchema.md)
+ - [HostListResponseSchema](docs/HostListResponseSchema.md)
+ - [HostResponseSchema](docs/HostResponseSchema.md)
  - [PaginationInfo](docs/PaginationInfo.md)
  - [PortgroupListResponseSchema](docs/PortgroupListResponseSchema.md)
  - [PortgroupResponseSchema](docs/PortgroupResponseSchema.md)
@@ -130,6 +138,7 @@ Class | Method | HTTP request | Description
  - [ValidationErrorLocInner](docs/ValidationErrorLocInner.md)
  - [VmFolderListResponseSchema](docs/VmFolderListResponseSchema.md)
  - [VmFolderResponseSchema](docs/VmFolderResponseSchema.md)
+ - [VmGetResponseSchema](docs/VmGetResponseSchema.md)
  - [VmListResponseSchema](docs/VmListResponseSchema.md)
  - [VmResponseSchema](docs/VmResponseSchema.md)
  - [VmSnapshotListResponseSchema](docs/VmSnapshotListResponseSchema.md)

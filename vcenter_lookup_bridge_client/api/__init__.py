@@ -2,9 +2,12 @@
 
 # import apis into api package
 from vcenter_lookup_bridge_client.api.admins_api import AdminsApi
+from vcenter_lookup_bridge_client.api.alarms_api import AlarmsApi
 from vcenter_lookup_bridge_client.api.clusters_api import ClustersApi
 from vcenter_lookup_bridge_client.api.datastores_api import DatastoresApi
+from vcenter_lookup_bridge_client.api.events_api import EventsApi
 from vcenter_lookup_bridge_client.api.healthcheck_api import HealthcheckApi
+from vcenter_lookup_bridge_client.api.hosts_api import HostsApi
 from vcenter_lookup_bridge_client.api.portgroups_api import PortgroupsApi
 from vcenter_lookup_bridge_client.api.vcenters_api import VcentersApi
 from vcenter_lookup_bridge_client.api.vm_folders_api import VmFoldersApi
