@@ -21,19 +21,20 @@ from setuptools import setup, find_packages  # noqa: H301
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
 NAME = "vcenter-lookup-bridge-client"
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 PYTHON_REQUIRES = ">= 3.9"
 REQUIRES = [
     "urllib3 >= 2.1.0, < 3.0.0",
     "python-dateutil >= 2.8.2",
     "pydantic >= 2",
+    "requests >= 2.32.4",
     "typing-extensions >= 4.7.1",
 ]
 
 setup(
     name=NAME,
     version=VERSION,
-    description="vCenter Lookup Bridge API",
+    description="vCenter Lookup Bridge API Client",
     author="OpenAPI Generator community",
     author_email="team@openapitools.org",
     url="",

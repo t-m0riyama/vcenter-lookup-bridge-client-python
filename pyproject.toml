@@ -1,7 +1,7 @@
 [project]
 name = "vcenter_lookup_bridge_client"
-version = "1.0.0"
-description = "vCenter Lookup Bridge API"
+version = "1.1.0"
+description = "vCenter Lookup Bridge API Client"
 authors = [
   {name = "OpenAPI Generator Community",email = "team@openapitools.org"},
 ]
@@ -14,15 +14,8 @@ dependencies = [
   "urllib3 (>=2.1.0,<3.0.0)",
   "python-dateutil (>=2.8.2)",
   "pydantic (>=2)",
+  "requests (>=2.32.4)",
   "typing-extensions (>=4.7.1)",
-  "pytest-bdd==8.1.0",
-  "pytest-clarity==1.0.1",
-  "pytest-playwright==0.6.2",
-  "python-slugify==8.0.4",
-  "pytest-xdist==3.6.1",
-  "allure-pytest==2.13.5",
-  "allure-pytest-bdd==2.13.5",
-  "playwright==1.49.1",
 ]
 
 [project.urls]
