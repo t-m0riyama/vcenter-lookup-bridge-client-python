@@ -8,7 +8,7 @@ Method | HTTP request | Description
 
 
 # **list_events**
-> EventListResponseSchema list_events(begin_time=begin_time, end_time=end_time, offset=offset, max_results=max_results, vcenter=vcenter)
+> EventListResponseSchema list_events(begin_time=begin_time, end_time=end_time, days_ago_begin=days_ago_begin, days_ago_end=days_ago_end, hours_ago_begin=hours_ago_begin, hours_ago_end=hours_ago_end, event_types=event_types, event_sources=event_sources, user_names=user_names, ip_addresses=ip_addresses, offset=offset, max_results=max_results, vcenter=vcenter)
 
 List Events
 
@@ -45,15 +45,23 @@ configuration = vcenter_lookup_bridge_client.Configuration(
 with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = vcenter_lookup_bridge_client.EventsApi(api_client)
-    begin_time = '2025-08-15T08:53:00+09:00, 2025-08-15T08:53:00, 2025-08-15' # str | イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) (optional)
-    end_time = '2025-08-15T08:53:00+09:00, 2025-08-15T08:53:00, 2025-08-15' # str | イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) (optional)
+    begin_time = 'begin_time_example' # str | イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) (optional)
+    end_time = 'end_time_example' # str | イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) (optional)
+    days_ago_begin = 56 # int | n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。 (optional)
+    days_ago_end = 56 # int | n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。 (optional)
+    hours_ago_begin = 56 # int | n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。 (optional)
+    hours_ago_end = 56 # int | n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。 (optional)
+    event_types = ['event_types_example'] # List[str] | イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html) (optional)
+    event_sources = ['event_sources_example'] # List[str] | イベントのソースを指定します。 (optional)
+    user_names = ['user_names_example'] # List[str] | イベントを発生させたユーザー名を指定します。 (optional)
+    ip_addresses = ['ip_addresses_example'] # List[str] | イベントを発生させたIPアドレスを指定します。 (optional)
     offset = 0 # int | イベントを取得する際の開始位置を指定します。 (optional) (default to 0)
     max_results = 100 # int | イベントを取得する際の最大件数を指定します。 (optional) (default to 100)
-    vcenter = 'vcenter01' # str | vCenterの名前を指定します。 (optional)
+    vcenter = 'vcenter_example' # str | vCenterの名前を指定します。 (optional)
 
     try:
         # List Events
-        api_response = api_instance.list_events(begin_time=begin_time, end_time=end_time, offset=offset, max_results=max_results, vcenter=vcenter)
+        api_response = api_instance.list_events(begin_time=begin_time, end_time=end_time, days_ago_begin=days_ago_begin, days_ago_end=days_ago_end, hours_ago_begin=hours_ago_begin, hours_ago_end=hours_ago_end, event_types=event_types, event_sources=event_sources, user_names=user_names, ip_addresses=ip_addresses, offset=offset, max_results=max_results, vcenter=vcenter)
         print("The response of EventsApi->list_events:\n")
         pprint(api_response)
     except Exception as e:
@@ -69,6 +77,14 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **begin_time** | **str**| イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) | [optional] 
  **end_time** | **str**| イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) | [optional] 
+ **days_ago_begin** | **int**| n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。 | [optional] 
+ **days_ago_end** | **int**| n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。 | [optional] 
+ **hours_ago_begin** | **int**| n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。 | [optional] 
+ **hours_ago_end** | **int**| n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。 | [optional] 
+ **event_types** | [**List[str]**](str.md)| イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html) | [optional] 
+ **event_sources** | [**List[str]**](str.md)| イベントのソースを指定します。 | [optional] 
+ **user_names** | [**List[str]**](str.md)| イベントを発生させたユーザー名を指定します。 | [optional] 
+ **ip_addresses** | [**List[str]**](str.md)| イベントを発生させたIPアドレスを指定します。 | [optional] 
  **offset** | **int**| イベントを取得する際の開始位置を指定します。 | [optional] [default to 0]
  **max_results** | **int**| イベントを取得する際の最大件数を指定します。 | [optional] [default to 100]
  **vcenter** | **str**| vCenterの名前を指定します。 | [optional] 

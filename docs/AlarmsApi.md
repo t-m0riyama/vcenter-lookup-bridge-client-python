@@ -8,7 +8,7 @@ Method | HTTP request | Description
 
 
 # **list_alarms**
-> AlarmListResponseSchema list_alarms(begin_time=begin_time, end_time=end_time, offset=offset, max_results=max_results, vcenter=vcenter)
+> AlarmListResponseSchema list_alarms(begin_time=begin_time, end_time=end_time, days_ago_begin=days_ago_begin, days_ago_end=days_ago_end, hours_ago_begin=hours_ago_begin, hours_ago_end=hours_ago_end, statuses=statuses, alarm_sources=alarm_sources, acknowledged=acknowledged, offset=offset, max_results=max_results, vcenter=vcenter)
 
 List Alarms
 
@@ -45,15 +45,22 @@ configuration = vcenter_lookup_bridge_client.Configuration(
 with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = vcenter_lookup_bridge_client.AlarmsApi(api_client)
-    begin_time = '2025-08-15T08:53:00+09:00, 2025-08-15T08:53:00, 2025-08-15' # str | アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) (optional)
-    end_time = '2025-08-15T08:53:00+09:00, 2025-08-15T08:53:00, 2025-08-15' # str | アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。) (optional)
+    begin_time = 'begin_time_example' # str | アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) (optional)
+    end_time = 'end_time_example' # str | アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。) (optional)
+    days_ago_begin = 56 # int | n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。 (optional)
+    days_ago_end = 56 # int | n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。 (optional)
+    hours_ago_begin = 56 # int | n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。 (optional)
+    hours_ago_end = 56 # int | n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。 (optional)
+    statuses = ['statuses_example'] # List[Optional[str]] | アラームのステータスを指定します。 (optional)
+    alarm_sources = ['alarm_sources_example'] # List[str] | アラームのソースを指定します。 (optional)
+    acknowledged = True # bool | アラームが確認済みかどうかを指定します。 (optional)
     offset = 0 # int | アラームを取得する際の開始位置を指定します。 (optional) (default to 0)
     max_results = 100 # int | アラームを取得する際の最大件数を指定します。 (optional) (default to 100)
-    vcenter = 'vcenter01' # str | vCenterの名前を指定します。 (optional)
+    vcenter = 'vcenter_example' # str | vCenterの名前を指定します。 (optional)
 
     try:
         # List Alarms
-        api_response = api_instance.list_alarms(begin_time=begin_time, end_time=end_time, offset=offset, max_results=max_results, vcenter=vcenter)
+        api_response = api_instance.list_alarms(begin_time=begin_time, end_time=end_time, days_ago_begin=days_ago_begin, days_ago_end=days_ago_end, hours_ago_begin=hours_ago_begin, hours_ago_end=hours_ago_end, statuses=statuses, alarm_sources=alarm_sources, acknowledged=acknowledged, offset=offset, max_results=max_results, vcenter=vcenter)
         print("The response of AlarmsApi->list_alarms:\n")
         pprint(api_response)
     except Exception as e:
@@ -69,6 +76,13 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **begin_time** | **str**| アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) | [optional] 
  **end_time** | **str**| アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。) | [optional] 
+ **days_ago_begin** | **int**| n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。 | [optional] 
+ **days_ago_end** | **int**| n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。 | [optional] 
+ **hours_ago_begin** | **int**| n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。 | [optional] 
+ **hours_ago_end** | **int**| n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。 | [optional] 
+ **statuses** | [**List[Optional[str]]**](str.md)| アラームのステータスを指定します。 | [optional] 
+ **alarm_sources** | [**List[str]**](str.md)| アラームのソースを指定します。 | [optional] 
+ **acknowledged** | **bool**| アラームが確認済みかどうかを指定します。 | [optional] 
  **offset** | **int**| アラームを取得する際の開始位置を指定します。 | [optional] [default to 0]
  **max_results** | **int**| アラームを取得する際の最大件数を指定します。 | [optional] [default to 100]
  **vcenter** | **str**| vCenterの名前を指定します。 | [optional] 

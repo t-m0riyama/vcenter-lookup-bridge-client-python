@@ -45,7 +45,7 @@ configuration = vcenter_lookup_bridge_client.Configuration(
 with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = vcenter_lookup_bridge_client.ClustersApi(api_client)
-    clusters = ['[\"cluster1\"]'] # List[str] | クラスタの名前を指定します。 (optional)
+    clusters = ['[\"cluster1\"]'] # List[Optional[str]] | クラスタの名前を指定します。 (optional)
     offset = 0 # int | 仮想マシンフォルダを取得する際の開始位置を指定します。 (optional) (default to 0)
     max_results = 100 # int | 仮想マシンフォルダを取得する際の最大件数を指定します。 (optional) (default to 100)
     vcenter = 'vcenter01' # str | vCenterの名前を指定します。 (optional)
@@ -66,7 +66,7 @@ with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **clusters** | [**List[str]**](str.md)| クラスタの名前を指定します。 | [optional] 
+ **clusters** | [**List[Optional[str]]**](str.md)| クラスタの名前を指定します。 | [optional] 
  **offset** | **int**| 仮想マシンフォルダを取得する際の開始位置を指定します。 | [optional] [default to 0]
  **max_results** | **int**| 仮想マシンフォルダを取得する際の最大件数を指定します。 | [optional] [default to 100]
  **vcenter** | **str**| vCenterの名前を指定します。 | [optional] 

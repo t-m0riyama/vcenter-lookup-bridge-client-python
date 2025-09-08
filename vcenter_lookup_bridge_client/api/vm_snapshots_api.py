@@ -363,7 +363,7 @@ class VmSnapshotsApi:
     @validate_call
     def list_vm_snapshots(
         self,
-        vm_folders: Annotated[List[StrictStr], Field(min_length=1, description="仮想マシンフォルダの名前を指定します。")],
+        vm_folders: Annotated[List[Optional[StrictStr]], Field(min_length=1, description="仮想マシンフォルダの名前を指定します。")],
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="仮想マシンのスナップショットを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="仮想マシンのスナップショットを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。vCenter管理下の仮想マシン一覧を取得します。")] = None,
@@ -385,7 +385,7 @@ class VmSnapshotsApi:
         仮想マシンフォルダを指定して、同フォルダ中の仮想マシンが持つスナップショット一覧を取得します。
 
         :param vm_folders: 仮想マシンフォルダの名前を指定します。 (required)
-        :type vm_folders: List[str]
+        :type vm_folders: List[Optional[str]]
         :param offset: 仮想マシンのスナップショットを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: 仮想マシンのスナップショットを取得する際の最大件数を指定します。
@@ -445,7 +445,7 @@ class VmSnapshotsApi:
     @validate_call
     def list_vm_snapshots_with_http_info(
         self,
-        vm_folders: Annotated[List[StrictStr], Field(min_length=1, description="仮想マシンフォルダの名前を指定します。")],
+        vm_folders: Annotated[List[Optional[StrictStr]], Field(min_length=1, description="仮想マシンフォルダの名前を指定します。")],
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="仮想マシンのスナップショットを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="仮想マシンのスナップショットを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。vCenter管理下の仮想マシン一覧を取得します。")] = None,
@@ -467,7 +467,7 @@ class VmSnapshotsApi:
         仮想マシンフォルダを指定して、同フォルダ中の仮想マシンが持つスナップショット一覧を取得します。
 
         :param vm_folders: 仮想マシンフォルダの名前を指定します。 (required)
-        :type vm_folders: List[str]
+        :type vm_folders: List[Optional[str]]
         :param offset: 仮想マシンのスナップショットを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: 仮想マシンのスナップショットを取得する際の最大件数を指定します。
@@ -527,7 +527,7 @@ class VmSnapshotsApi:
     @validate_call
     def list_vm_snapshots_without_preload_content(
         self,
-        vm_folders: Annotated[List[StrictStr], Field(min_length=1, description="仮想マシンフォルダの名前を指定します。")],
+        vm_folders: Annotated[List[Optional[StrictStr]], Field(min_length=1, description="仮想マシンフォルダの名前を指定します。")],
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="仮想マシンのスナップショットを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="仮想マシンのスナップショットを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。vCenter管理下の仮想マシン一覧を取得します。")] = None,
@@ -549,7 +549,7 @@ class VmSnapshotsApi:
         仮想マシンフォルダを指定して、同フォルダ中の仮想マシンが持つスナップショット一覧を取得します。
 
         :param vm_folders: 仮想マシンフォルダの名前を指定します。 (required)
-        :type vm_folders: List[str]
+        :type vm_folders: List[Optional[str]]
         :param offset: 仮想マシンのスナップショットを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: 仮想マシンのスナップショットを取得する際の最大件数を指定します。

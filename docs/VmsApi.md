@@ -130,7 +130,7 @@ configuration = vcenter_lookup_bridge_client.Configuration(
 with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = vcenter_lookup_bridge_client.VmsApi(api_client)
-    vm_folders = ['[folder1]'] # List[str] | 仮想マシンフォルダの名前を指定します。
+    vm_folders = ['[folder1]'] # List[Optional[str]] | 仮想マシンフォルダの名前を指定します。
     offset = 0 # int | 仮想マシンフォルダ中の仮想マシンを取得する際の開始位置を指定します。 (optional) (default to 0)
     max_results = 100 # int | 仮想マシンフォルダ中の仮想マシンを取得する際の最大件数を指定します。 (optional) (default to 100)
     vcenter = 'vcenter01' # str | vCenterの名前を指定します。 (optional)
@@ -151,7 +151,7 @@ with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **vm_folders** | [**List[str]**](str.md)| 仮想マシンフォルダの名前を指定します。 | 
+ **vm_folders** | [**List[Optional[str]]**](str.md)| 仮想マシンフォルダの名前を指定します。 | 
  **offset** | **int**| 仮想マシンフォルダ中の仮想マシンを取得する際の開始位置を指定します。 | [optional] [default to 0]
  **max_results** | **int**| 仮想マシンフォルダ中の仮想マシンを取得する際の最大件数を指定します。 | [optional] [default to 100]
  **vcenter** | **str**| vCenterの名前を指定します。 | [optional] 

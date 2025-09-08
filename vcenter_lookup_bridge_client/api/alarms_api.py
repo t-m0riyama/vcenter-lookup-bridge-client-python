@@ -16,8 +16,8 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import Optional
+from pydantic import Field, StrictBool, StrictInt, StrictStr
+from typing import List, Optional
 from typing_extensions import Annotated
 from vcenter_lookup_bridge_client.models.alarm_list_response_schema import AlarmListResponseSchema
 
@@ -44,6 +44,13 @@ class AlarmsApi:
         self,
         begin_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。)")] = None,
         end_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。)")] = None,
+        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。")] = None,
+        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。")] = None,
+        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。")] = None,
+        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。")] = None,
+        statuses: Annotated[Optional[List[Optional[StrictStr]]], Field(description="アラームのステータスを指定します。")] = None,
+        alarm_sources: Annotated[Optional[List[StrictStr]], Field(description="アラームのソースを指定します。")] = None,
+        acknowledged: Annotated[Optional[StrictBool], Field(description="アラームが確認済みかどうかを指定します。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="アラームを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="アラームを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -68,6 +75,20 @@ class AlarmsApi:
         :type begin_time: str
         :param end_time: アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。)
         :type end_time: str
+        :param days_ago_begin: n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。
+        :type days_ago_begin: int
+        :param days_ago_end: n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。
+        :type days_ago_end: int
+        :param hours_ago_begin: n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。
+        :type hours_ago_begin: int
+        :param hours_ago_end: n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。
+        :type hours_ago_end: int
+        :param statuses: アラームのステータスを指定します。
+        :type statuses: List[Optional[str]]
+        :param alarm_sources: アラームのソースを指定します。
+        :type alarm_sources: List[str]
+        :param acknowledged: アラームが確認済みかどうかを指定します。
+        :type acknowledged: bool
         :param offset: アラームを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: アラームを取得する際の最大件数を指定します。
@@ -99,6 +120,13 @@ class AlarmsApi:
         _param = self._list_alarms_serialize(
             begin_time=begin_time,
             end_time=end_time,
+            days_ago_begin=days_ago_begin,
+            days_ago_end=days_ago_end,
+            hours_ago_begin=hours_ago_begin,
+            hours_ago_end=hours_ago_end,
+            statuses=statuses,
+            alarm_sources=alarm_sources,
+            acknowledged=acknowledged,
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
@@ -130,6 +158,13 @@ class AlarmsApi:
         self,
         begin_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。)")] = None,
         end_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。)")] = None,
+        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。")] = None,
+        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。")] = None,
+        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。")] = None,
+        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。")] = None,
+        statuses: Annotated[Optional[List[Optional[StrictStr]]], Field(description="アラームのステータスを指定します。")] = None,
+        alarm_sources: Annotated[Optional[List[StrictStr]], Field(description="アラームのソースを指定します。")] = None,
+        acknowledged: Annotated[Optional[StrictBool], Field(description="アラームが確認済みかどうかを指定します。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="アラームを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="アラームを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -154,6 +189,20 @@ class AlarmsApi:
         :type begin_time: str
         :param end_time: アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。)
         :type end_time: str
+        :param days_ago_begin: n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。
+        :type days_ago_begin: int
+        :param days_ago_end: n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。
+        :type days_ago_end: int
+        :param hours_ago_begin: n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。
+        :type hours_ago_begin: int
+        :param hours_ago_end: n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。
+        :type hours_ago_end: int
+        :param statuses: アラームのステータスを指定します。
+        :type statuses: List[Optional[str]]
+        :param alarm_sources: アラームのソースを指定します。
+        :type alarm_sources: List[str]
+        :param acknowledged: アラームが確認済みかどうかを指定します。
+        :type acknowledged: bool
         :param offset: アラームを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: アラームを取得する際の最大件数を指定します。
@@ -185,6 +234,13 @@ class AlarmsApi:
         _param = self._list_alarms_serialize(
             begin_time=begin_time,
             end_time=end_time,
+            days_ago_begin=days_ago_begin,
+            days_ago_end=days_ago_end,
+            hours_ago_begin=hours_ago_begin,
+            hours_ago_end=hours_ago_end,
+            statuses=statuses,
+            alarm_sources=alarm_sources,
+            acknowledged=acknowledged,
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
@@ -216,6 +272,13 @@ class AlarmsApi:
         self,
         begin_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。)")] = None,
         end_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。)")] = None,
+        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。")] = None,
+        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。")] = None,
+        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。")] = None,
+        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。")] = None,
+        statuses: Annotated[Optional[List[Optional[StrictStr]]], Field(description="アラームのステータスを指定します。")] = None,
+        alarm_sources: Annotated[Optional[List[StrictStr]], Field(description="アラームのソースを指定します。")] = None,
+        acknowledged: Annotated[Optional[StrictBool], Field(description="アラームが確認済みかどうかを指定します。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="アラームを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="アラームを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -240,6 +303,20 @@ class AlarmsApi:
         :type begin_time: str
         :param end_time: アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。)
         :type end_time: str
+        :param days_ago_begin: n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。
+        :type days_ago_begin: int
+        :param days_ago_end: n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。
+        :type days_ago_end: int
+        :param hours_ago_begin: n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。
+        :type hours_ago_begin: int
+        :param hours_ago_end: n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。
+        :type hours_ago_end: int
+        :param statuses: アラームのステータスを指定します。
+        :type statuses: List[Optional[str]]
+        :param alarm_sources: アラームのソースを指定します。
+        :type alarm_sources: List[str]
+        :param acknowledged: アラームが確認済みかどうかを指定します。
+        :type acknowledged: bool
         :param offset: アラームを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: アラームを取得する際の最大件数を指定します。
@@ -271,6 +348,13 @@ class AlarmsApi:
         _param = self._list_alarms_serialize(
             begin_time=begin_time,
             end_time=end_time,
+            days_ago_begin=days_ago_begin,
+            days_ago_end=days_ago_end,
+            hours_ago_begin=hours_ago_begin,
+            hours_ago_end=hours_ago_end,
+            statuses=statuses,
+            alarm_sources=alarm_sources,
+            acknowledged=acknowledged,
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
@@ -297,6 +381,13 @@ class AlarmsApi:
         self,
         begin_time,
         end_time,
+        days_ago_begin,
+        days_ago_end,
+        hours_ago_begin,
+        hours_ago_end,
+        statuses,
+        alarm_sources,
+        acknowledged,
         offset,
         max_results,
         vcenter,
@@ -309,6 +400,8 @@ class AlarmsApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
+            'statuses': 'multi',
+            'alarm_sources': 'multi',
         }
 
         _path_params: Dict[str, str] = {}
@@ -329,6 +422,34 @@ class AlarmsApi:
         if end_time is not None:
             
             _query_params.append(('end_time', end_time))
+            
+        if days_ago_begin is not None:
+            
+            _query_params.append(('days_ago_begin', days_ago_begin))
+            
+        if days_ago_end is not None:
+            
+            _query_params.append(('days_ago_end', days_ago_end))
+            
+        if hours_ago_begin is not None:
+            
+            _query_params.append(('hours_ago_begin', hours_ago_begin))
+            
+        if hours_ago_end is not None:
+            
+            _query_params.append(('hours_ago_end', hours_ago_end))
+            
+        if statuses is not None:
+            
+            _query_params.append(('statuses', statuses))
+            
+        if alarm_sources is not None:
+            
+            _query_params.append(('alarm_sources', alarm_sources))
+            
+        if acknowledged is not None:
+            
+            _query_params.append(('acknowledged', acknowledged))
             
         if offset is not None:
             

@@ -42,7 +42,7 @@ class ClustersApi:
     @validate_call
     def list_clusters(
         self,
-        clusters: Annotated[Optional[List[StrictStr]], Field(description="クラスタの名前を指定します。")] = None,
+        clusters: Annotated[Optional[List[Optional[StrictStr]]], Field(description="クラスタの名前を指定します。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="仮想マシンフォルダを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="仮想マシンフォルダを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -64,7 +64,7 @@ class ClustersApi:
         クラスタ一覧を取得します。
 
         :param clusters: クラスタの名前を指定します。
-        :type clusters: List[str]
+        :type clusters: List[Optional[str]]
         :param offset: 仮想マシンフォルダを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: 仮想マシンフォルダを取得する際の最大件数を指定します。
@@ -124,7 +124,7 @@ class ClustersApi:
     @validate_call
     def list_clusters_with_http_info(
         self,
-        clusters: Annotated[Optional[List[StrictStr]], Field(description="クラスタの名前を指定します。")] = None,
+        clusters: Annotated[Optional[List[Optional[StrictStr]]], Field(description="クラスタの名前を指定します。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="仮想マシンフォルダを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="仮想マシンフォルダを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -146,7 +146,7 @@ class ClustersApi:
         クラスタ一覧を取得します。
 
         :param clusters: クラスタの名前を指定します。
-        :type clusters: List[str]
+        :type clusters: List[Optional[str]]
         :param offset: 仮想マシンフォルダを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: 仮想マシンフォルダを取得する際の最大件数を指定します。
@@ -206,7 +206,7 @@ class ClustersApi:
     @validate_call
     def list_clusters_without_preload_content(
         self,
-        clusters: Annotated[Optional[List[StrictStr]], Field(description="クラスタの名前を指定します。")] = None,
+        clusters: Annotated[Optional[List[Optional[StrictStr]]], Field(description="クラスタの名前を指定します。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="仮想マシンフォルダを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="仮想マシンフォルダを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -228,7 +228,7 @@ class ClustersApi:
         クラスタ一覧を取得します。
 
         :param clusters: クラスタの名前を指定します。
-        :type clusters: List[str]
+        :type clusters: List[Optional[str]]
         :param offset: 仮想マシンフォルダを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: 仮想マシンフォルダを取得する際の最大件数を指定します。

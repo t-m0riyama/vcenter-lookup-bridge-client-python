@@ -43,7 +43,7 @@ class DatastoresApi:
     def list_datastores(
         self,
         tag_category: Annotated[str, Field(min_length=1, strict=True, description="タグのカテゴリを指定します。")],
-        tags: Annotated[List[StrictStr], Field(min_length=1, description="タグの名前を指定します。")],
+        tags: Annotated[List[Optional[StrictStr]], Field(min_length=1, description="タグの名前を指定します。")],
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="データストア一覧を取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="データストア一覧を取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -67,7 +67,7 @@ class DatastoresApi:
         :param tag_category: タグのカテゴリを指定します。 (required)
         :type tag_category: str
         :param tags: タグの名前を指定します。 (required)
-        :type tags: List[str]
+        :type tags: List[Optional[str]]
         :param offset: データストア一覧を取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: データストア一覧を取得する際の最大件数を指定します。
@@ -129,7 +129,7 @@ class DatastoresApi:
     def list_datastores_with_http_info(
         self,
         tag_category: Annotated[str, Field(min_length=1, strict=True, description="タグのカテゴリを指定します。")],
-        tags: Annotated[List[StrictStr], Field(min_length=1, description="タグの名前を指定します。")],
+        tags: Annotated[List[Optional[StrictStr]], Field(min_length=1, description="タグの名前を指定します。")],
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="データストア一覧を取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="データストア一覧を取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -153,7 +153,7 @@ class DatastoresApi:
         :param tag_category: タグのカテゴリを指定します。 (required)
         :type tag_category: str
         :param tags: タグの名前を指定します。 (required)
-        :type tags: List[str]
+        :type tags: List[Optional[str]]
         :param offset: データストア一覧を取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: データストア一覧を取得する際の最大件数を指定します。
@@ -215,7 +215,7 @@ class DatastoresApi:
     def list_datastores_without_preload_content(
         self,
         tag_category: Annotated[str, Field(min_length=1, strict=True, description="タグのカテゴリを指定します。")],
-        tags: Annotated[List[StrictStr], Field(min_length=1, description="タグの名前を指定します。")],
+        tags: Annotated[List[Optional[StrictStr]], Field(min_length=1, description="タグの名前を指定します。")],
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="データストア一覧を取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="データストア一覧を取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -239,7 +239,7 @@ class DatastoresApi:
         :param tag_category: タグのカテゴリを指定します。 (required)
         :type tag_category: str
         :param tags: タグの名前を指定します。 (required)
-        :type tags: List[str]
+        :type tags: List[Optional[str]]
         :param offset: データストア一覧を取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: データストア一覧を取得する際の最大件数を指定します。

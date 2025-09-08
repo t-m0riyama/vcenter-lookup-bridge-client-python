@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **created_time** | **str** | イベントの作成時間を示します。（ISO 8601形式） | 
 **datacenter** | **str** |  | 
 **event_source** | **str** |  | 
+**event_type** | **str** | イベントの種類を示します。 | 
 **ip_address** | **str** |  | 
 **message** | **str** | イベントのメッセージを示します。 | 
 **user_name** | **str** |  | 

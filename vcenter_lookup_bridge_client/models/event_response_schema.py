@@ -29,11 +29,12 @@ class EventResponseSchema(BaseModel):
     created_time: StrictStr = Field(description="イベントの作成時間を示します。（ISO 8601形式）", alias="createdTime")
     datacenter: Optional[StrictStr]
     event_source: Optional[StrictStr] = Field(alias="eventSource")
+    event_type: StrictStr = Field(description="イベントの種類を示します。", alias="eventType")
     ip_address: Optional[StrictStr] = Field(alias="ipAddress")
     message: StrictStr = Field(description="イベントのメッセージを示します。")
     user_name: Optional[StrictStr] = Field(alias="userName")
     vcenter: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["createdTime", "datacenter", "eventSource", "ipAddress", "message", "userName", "vcenter"]
+    __properties: ClassVar[List[str]] = ["createdTime", "datacenter", "eventSource", "eventType", "ipAddress", "message", "userName", "vcenter"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -114,6 +115,7 @@ class EventResponseSchema(BaseModel):
             "createdTime": obj.get("createdTime"),
             "datacenter": obj.get("datacenter"),
             "eventSource": obj.get("eventSource"),
+            "eventType": obj.get("eventType"),
             "ipAddress": obj.get("ipAddress"),
             "message": obj.get("message"),
             "userName": obj.get("userName"),

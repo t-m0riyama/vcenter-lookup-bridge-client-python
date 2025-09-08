@@ -42,7 +42,7 @@ class VmFoldersApi:
     @validate_call
     def list_vm_folders(
         self,
-        vm_folders: Annotated[Optional[List[StrictStr]], Field(description="仮想マシンフォルダの名前を指定します。")] = None,
+        vm_folders: Annotated[Optional[List[Optional[StrictStr]]], Field(description="仮想マシンフォルダの名前を指定します。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="仮想マシンフォルダを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="仮想マシンフォルダを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -64,7 +64,7 @@ class VmFoldersApi:
         仮想マシンフォルダ一覧を取得します。
 
         :param vm_folders: 仮想マシンフォルダの名前を指定します。
-        :type vm_folders: List[str]
+        :type vm_folders: List[Optional[str]]
         :param offset: 仮想マシンフォルダを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: 仮想マシンフォルダを取得する際の最大件数を指定します。
@@ -124,7 +124,7 @@ class VmFoldersApi:
     @validate_call
     def list_vm_folders_with_http_info(
         self,
-        vm_folders: Annotated[Optional[List[StrictStr]], Field(description="仮想マシンフォルダの名前を指定します。")] = None,
+        vm_folders: Annotated[Optional[List[Optional[StrictStr]]], Field(description="仮想マシンフォルダの名前を指定します。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="仮想マシンフォルダを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="仮想マシンフォルダを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -146,7 +146,7 @@ class VmFoldersApi:
         仮想マシンフォルダ一覧を取得します。
 
         :param vm_folders: 仮想マシンフォルダの名前を指定します。
-        :type vm_folders: List[str]
+        :type vm_folders: List[Optional[str]]
         :param offset: 仮想マシンフォルダを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: 仮想マシンフォルダを取得する際の最大件数を指定します。
@@ -206,7 +206,7 @@ class VmFoldersApi:
     @validate_call
     def list_vm_folders_without_preload_content(
         self,
-        vm_folders: Annotated[Optional[List[StrictStr]], Field(description="仮想マシンフォルダの名前を指定します。")] = None,
+        vm_folders: Annotated[Optional[List[Optional[StrictStr]]], Field(description="仮想マシンフォルダの名前を指定します。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="仮想マシンフォルダを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="仮想マシンフォルダを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -228,7 +228,7 @@ class VmFoldersApi:
         仮想マシンフォルダ一覧を取得します。
 
         :param vm_folders: 仮想マシンフォルダの名前を指定します。
-        :type vm_folders: List[str]
+        :type vm_folders: List[Optional[str]]
         :param offset: 仮想マシンフォルダを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: 仮想マシンフォルダを取得する際の最大件数を指定します。

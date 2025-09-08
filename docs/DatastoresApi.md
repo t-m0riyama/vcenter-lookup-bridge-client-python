@@ -46,7 +46,7 @@ with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = vcenter_lookup_bridge_client.DatastoresApi(api_client)
     tag_category = 'cat1' # str | タグのカテゴリを指定します。
-    tags = ['[\"tag1\"]'] # List[str] | タグの名前を指定します。
+    tags = ['[\"tag1\"]'] # List[Optional[str]] | タグの名前を指定します。
     offset = 56 # int | データストア一覧を取得する際の開始位置を指定します。 (optional)
     max_results = 56 # int | データストア一覧を取得する際の最大件数を指定します。 (optional)
     vcenter = 'vcenter01' # str | vCenterの名前を指定します。 (optional)
@@ -68,7 +68,7 @@ with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **tag_category** | **str**| タグのカテゴリを指定します。 | 
- **tags** | [**List[str]**](str.md)| タグの名前を指定します。 | 
+ **tags** | [**List[Optional[str]]**](str.md)| タグの名前を指定します。 | 
  **offset** | **int**| データストア一覧を取得する際の開始位置を指定します。 | [optional] 
  **max_results** | **int**| データストア一覧を取得する際の最大件数を指定します。 | [optional] 
  **vcenter** | **str**| vCenterの名前を指定します。 | [optional] 

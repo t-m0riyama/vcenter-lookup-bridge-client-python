@@ -16,8 +16,8 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import Optional
+from pydantic import Field, StrictInt, StrictStr
+from typing import List, Optional
 from typing_extensions import Annotated
 from vcenter_lookup_bridge_client.models.event_list_response_schema import EventListResponseSchema
 
@@ -44,6 +44,14 @@ class EventsApi:
         self,
         begin_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。)")] = None,
         end_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。)")] = None,
+        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。")] = None,
+        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。")] = None,
+        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。")] = None,
+        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。")] = None,
+        event_types: Annotated[Optional[List[StrictStr]], Field(description="イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)")] = None,
+        event_sources: Annotated[Optional[List[StrictStr]], Field(description="イベントのソースを指定します。")] = None,
+        user_names: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたユーザー名を指定します。")] = None,
+        ip_addresses: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたIPアドレスを指定します。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="イベントを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="イベントを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -68,6 +76,22 @@ class EventsApi:
         :type begin_time: str
         :param end_time: イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。)
         :type end_time: str
+        :param days_ago_begin: n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。
+        :type days_ago_begin: int
+        :param days_ago_end: n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。
+        :type days_ago_end: int
+        :param hours_ago_begin: n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。
+        :type hours_ago_begin: int
+        :param hours_ago_end: n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。
+        :type hours_ago_end: int
+        :param event_types: イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)
+        :type event_types: List[str]
+        :param event_sources: イベントのソースを指定します。
+        :type event_sources: List[str]
+        :param user_names: イベントを発生させたユーザー名を指定します。
+        :type user_names: List[str]
+        :param ip_addresses: イベントを発生させたIPアドレスを指定します。
+        :type ip_addresses: List[str]
         :param offset: イベントを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: イベントを取得する際の最大件数を指定します。
@@ -99,6 +123,14 @@ class EventsApi:
         _param = self._list_events_serialize(
             begin_time=begin_time,
             end_time=end_time,
+            days_ago_begin=days_ago_begin,
+            days_ago_end=days_ago_end,
+            hours_ago_begin=hours_ago_begin,
+            hours_ago_end=hours_ago_end,
+            event_types=event_types,
+            event_sources=event_sources,
+            user_names=user_names,
+            ip_addresses=ip_addresses,
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
@@ -130,6 +162,14 @@ class EventsApi:
         self,
         begin_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。)")] = None,
         end_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。)")] = None,
+        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。")] = None,
+        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。")] = None,
+        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。")] = None,
+        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。")] = None,
+        event_types: Annotated[Optional[List[StrictStr]], Field(description="イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)")] = None,
+        event_sources: Annotated[Optional[List[StrictStr]], Field(description="イベントのソースを指定します。")] = None,
+        user_names: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたユーザー名を指定します。")] = None,
+        ip_addresses: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたIPアドレスを指定します。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="イベントを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="イベントを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -154,6 +194,22 @@ class EventsApi:
         :type begin_time: str
         :param end_time: イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。)
         :type end_time: str
+        :param days_ago_begin: n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。
+        :type days_ago_begin: int
+        :param days_ago_end: n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。
+        :type days_ago_end: int
+        :param hours_ago_begin: n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。
+        :type hours_ago_begin: int
+        :param hours_ago_end: n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。
+        :type hours_ago_end: int
+        :param event_types: イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)
+        :type event_types: List[str]
+        :param event_sources: イベントのソースを指定します。
+        :type event_sources: List[str]
+        :param user_names: イベントを発生させたユーザー名を指定します。
+        :type user_names: List[str]
+        :param ip_addresses: イベントを発生させたIPアドレスを指定します。
+        :type ip_addresses: List[str]
         :param offset: イベントを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: イベントを取得する際の最大件数を指定します。
@@ -185,6 +241,14 @@ class EventsApi:
         _param = self._list_events_serialize(
             begin_time=begin_time,
             end_time=end_time,
+            days_ago_begin=days_ago_begin,
+            days_ago_end=days_ago_end,
+            hours_ago_begin=hours_ago_begin,
+            hours_ago_end=hours_ago_end,
+            event_types=event_types,
+            event_sources=event_sources,
+            user_names=user_names,
+            ip_addresses=ip_addresses,
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
@@ -216,6 +280,14 @@ class EventsApi:
         self,
         begin_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。)")] = None,
         end_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。)")] = None,
+        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。")] = None,
+        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。")] = None,
+        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。")] = None,
+        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。")] = None,
+        event_types: Annotated[Optional[List[StrictStr]], Field(description="イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)")] = None,
+        event_sources: Annotated[Optional[List[StrictStr]], Field(description="イベントのソースを指定します。")] = None,
+        user_names: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたユーザー名を指定します。")] = None,
+        ip_addresses: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたIPアドレスを指定します。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="イベントを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="イベントを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -240,6 +312,22 @@ class EventsApi:
         :type begin_time: str
         :param end_time: イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。)
         :type end_time: str
+        :param days_ago_begin: n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。
+        :type days_ago_begin: int
+        :param days_ago_end: n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。
+        :type days_ago_end: int
+        :param hours_ago_begin: n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。
+        :type hours_ago_begin: int
+        :param hours_ago_end: n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。
+        :type hours_ago_end: int
+        :param event_types: イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)
+        :type event_types: List[str]
+        :param event_sources: イベントのソースを指定します。
+        :type event_sources: List[str]
+        :param user_names: イベントを発生させたユーザー名を指定します。
+        :type user_names: List[str]
+        :param ip_addresses: イベントを発生させたIPアドレスを指定します。
+        :type ip_addresses: List[str]
         :param offset: イベントを取得する際の開始位置を指定します。
         :type offset: int
         :param max_results: イベントを取得する際の最大件数を指定します。
@@ -271,6 +359,14 @@ class EventsApi:
         _param = self._list_events_serialize(
             begin_time=begin_time,
             end_time=end_time,
+            days_ago_begin=days_ago_begin,
+            days_ago_end=days_ago_end,
+            hours_ago_begin=hours_ago_begin,
+            hours_ago_end=hours_ago_end,
+            event_types=event_types,
+            event_sources=event_sources,
+            user_names=user_names,
+            ip_addresses=ip_addresses,
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
@@ -297,6 +393,14 @@ class EventsApi:
         self,
         begin_time,
         end_time,
+        days_ago_begin,
+        days_ago_end,
+        hours_ago_begin,
+        hours_ago_end,
+        event_types,
+        event_sources,
+        user_names,
+        ip_addresses,
         offset,
         max_results,
         vcenter,
@@ -309,6 +413,10 @@ class EventsApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
+            'event_types': 'multi',
+            'event_sources': 'multi',
+            'user_names': 'multi',
+            'ip_addresses': 'multi',
         }
 
         _path_params: Dict[str, str] = {}
@@ -329,6 +437,38 @@ class EventsApi:
         if end_time is not None:
             
             _query_params.append(('end_time', end_time))
+            
+        if days_ago_begin is not None:
+            
+            _query_params.append(('days_ago_begin', days_ago_begin))
+            
+        if days_ago_end is not None:
+            
+            _query_params.append(('days_ago_end', days_ago_end))
+            
+        if hours_ago_begin is not None:
+            
+            _query_params.append(('hours_ago_begin', hours_ago_begin))
+            
+        if hours_ago_end is not None:
+            
+            _query_params.append(('hours_ago_end', hours_ago_end))
+            
+        if event_types is not None:
+            
+            _query_params.append(('event_types', event_types))
+            
+        if event_sources is not None:
+            
+            _query_params.append(('event_sources', event_sources))
+            
+        if user_names is not None:
+            
+            _query_params.append(('user_names', user_names))
+            
+        if ip_addresses is not None:
+            
+            _query_params.append(('ip_addresses', ip_addresses))
             
         if offset is not None:
             
