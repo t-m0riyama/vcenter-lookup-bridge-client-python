@@ -42,12 +42,12 @@ class EventsApi:
     @validate_call
     def list_events(
         self,
-        begin_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。)")] = None,
-        end_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。)")] = None,
-        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。")] = None,
-        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。")] = None,
-        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。")] = None,
-        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。")] = None,
+        begin_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        end_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         event_types: Annotated[Optional[List[StrictStr]], Field(description="イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)")] = None,
         event_sources: Annotated[Optional[List[StrictStr]], Field(description="イベントのソースを指定します。")] = None,
         user_names: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたユーザー名を指定します。")] = None,
@@ -72,17 +72,17 @@ class EventsApi:
 
         イベント一覧を取得します。
 
-        :param begin_time: イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。)
+        :param begin_time: イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type begin_time: str
-        :param end_time: イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。)
+        :param end_time: イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type end_time: str
-        :param days_ago_begin: n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。
+        :param days_ago_begin: n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type days_ago_begin: int
-        :param days_ago_end: n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。
+        :param days_ago_end: n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type days_ago_end: int
-        :param hours_ago_begin: n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。
+        :param hours_ago_begin: n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type hours_ago_begin: int
-        :param hours_ago_end: n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。
+        :param hours_ago_end: n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type hours_ago_end: int
         :param event_types: イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)
         :type event_types: List[str]
@@ -160,12 +160,12 @@ class EventsApi:
     @validate_call
     def list_events_with_http_info(
         self,
-        begin_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。)")] = None,
-        end_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。)")] = None,
-        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。")] = None,
-        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。")] = None,
-        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。")] = None,
-        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。")] = None,
+        begin_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        end_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         event_types: Annotated[Optional[List[StrictStr]], Field(description="イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)")] = None,
         event_sources: Annotated[Optional[List[StrictStr]], Field(description="イベントのソースを指定します。")] = None,
         user_names: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたユーザー名を指定します。")] = None,
@@ -190,17 +190,17 @@ class EventsApi:
 
         イベント一覧を取得します。
 
-        :param begin_time: イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。)
+        :param begin_time: イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type begin_time: str
-        :param end_time: イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。)
+        :param end_time: イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type end_time: str
-        :param days_ago_begin: n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。
+        :param days_ago_begin: n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type days_ago_begin: int
-        :param days_ago_end: n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。
+        :param days_ago_end: n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type days_ago_end: int
-        :param hours_ago_begin: n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。
+        :param hours_ago_begin: n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type hours_ago_begin: int
-        :param hours_ago_end: n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。
+        :param hours_ago_end: n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type hours_ago_end: int
         :param event_types: イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)
         :type event_types: List[str]
@@ -278,12 +278,12 @@ class EventsApi:
     @validate_call
     def list_events_without_preload_content(
         self,
-        begin_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。)")] = None,
-        end_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。)")] = None,
-        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。")] = None,
-        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。")] = None,
-        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。")] = None,
-        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。")] = None,
+        begin_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        end_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         event_types: Annotated[Optional[List[StrictStr]], Field(description="イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)")] = None,
         event_sources: Annotated[Optional[List[StrictStr]], Field(description="イベントのソースを指定します。")] = None,
         user_names: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたユーザー名を指定します。")] = None,
@@ -308,17 +308,17 @@ class EventsApi:
 
         イベント一覧を取得します。
 
-        :param begin_time: イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。)
+        :param begin_time: イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type begin_time: str
-        :param end_time: イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。)
+        :param end_time: イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type end_time: str
-        :param days_ago_begin: n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。
+        :param days_ago_begin: n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type days_ago_begin: int
-        :param days_ago_end: n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。
+        :param days_ago_end: n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type days_ago_end: int
-        :param hours_ago_begin: n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。
+        :param hours_ago_begin: n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type hours_ago_begin: int
-        :param hours_ago_end: n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。
+        :param hours_ago_end: n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type hours_ago_end: int
         :param event_types: イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)
         :type event_types: List[str]

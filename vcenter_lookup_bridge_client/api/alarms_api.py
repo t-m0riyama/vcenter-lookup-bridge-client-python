@@ -42,12 +42,12 @@ class AlarmsApi:
     @validate_call
     def list_alarms(
         self,
-        begin_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。)")] = None,
-        end_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。)")] = None,
-        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。")] = None,
-        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。")] = None,
-        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。")] = None,
-        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。")] = None,
+        begin_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        end_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         statuses: Annotated[Optional[List[Optional[StrictStr]]], Field(description="アラームのステータスを指定します。")] = None,
         alarm_sources: Annotated[Optional[List[StrictStr]], Field(description="アラームのソースを指定します。")] = None,
         acknowledged: Annotated[Optional[StrictBool], Field(description="アラームが確認済みかどうかを指定します。")] = None,
@@ -71,17 +71,17 @@ class AlarmsApi:
 
         トリガー済みのアラーム一覧を取得します。
 
-        :param begin_time: アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。)
+        :param begin_time: アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type begin_time: str
-        :param end_time: アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。)
+        :param end_time: アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type end_time: str
-        :param days_ago_begin: n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。
+        :param days_ago_begin: n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type days_ago_begin: int
-        :param days_ago_end: n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。
+        :param days_ago_end: n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type days_ago_end: int
-        :param hours_ago_begin: n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。
+        :param hours_ago_begin: n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type hours_ago_begin: int
-        :param hours_ago_end: n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。
+        :param hours_ago_end: n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type hours_ago_end: int
         :param statuses: アラームのステータスを指定します。
         :type statuses: List[Optional[str]]
@@ -156,12 +156,12 @@ class AlarmsApi:
     @validate_call
     def list_alarms_with_http_info(
         self,
-        begin_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。)")] = None,
-        end_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。)")] = None,
-        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。")] = None,
-        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。")] = None,
-        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。")] = None,
-        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。")] = None,
+        begin_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        end_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         statuses: Annotated[Optional[List[Optional[StrictStr]]], Field(description="アラームのステータスを指定します。")] = None,
         alarm_sources: Annotated[Optional[List[StrictStr]], Field(description="アラームのソースを指定します。")] = None,
         acknowledged: Annotated[Optional[StrictBool], Field(description="アラームが確認済みかどうかを指定します。")] = None,
@@ -185,17 +185,17 @@ class AlarmsApi:
 
         トリガー済みのアラーム一覧を取得します。
 
-        :param begin_time: アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。)
+        :param begin_time: アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type begin_time: str
-        :param end_time: アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。)
+        :param end_time: アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type end_time: str
-        :param days_ago_begin: n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。
+        :param days_ago_begin: n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type days_ago_begin: int
-        :param days_ago_end: n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。
+        :param days_ago_end: n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type days_ago_end: int
-        :param hours_ago_begin: n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。
+        :param hours_ago_begin: n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type hours_ago_begin: int
-        :param hours_ago_end: n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。
+        :param hours_ago_end: n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type hours_ago_end: int
         :param statuses: アラームのステータスを指定します。
         :type statuses: List[Optional[str]]
@@ -270,12 +270,12 @@ class AlarmsApi:
     @validate_call
     def list_alarms_without_preload_content(
         self,
-        begin_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。)")] = None,
-        end_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。)")] = None,
-        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。")] = None,
-        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。")] = None,
-        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。")] = None,
-        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。")] = None,
+        begin_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        end_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         statuses: Annotated[Optional[List[Optional[StrictStr]]], Field(description="アラームのステータスを指定します。")] = None,
         alarm_sources: Annotated[Optional[List[StrictStr]], Field(description="アラームのソースを指定します。")] = None,
         acknowledged: Annotated[Optional[StrictBool], Field(description="アラームが確認済みかどうかを指定します。")] = None,
@@ -299,17 +299,17 @@ class AlarmsApi:
 
         トリガー済みのアラーム一覧を取得します。
 
-        :param begin_time: アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。)
+        :param begin_time: アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type begin_time: str
-        :param end_time: アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。)
+        :param end_time: アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type end_time: str
-        :param days_ago_begin: n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。
+        :param days_ago_begin: n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type days_ago_begin: int
-        :param days_ago_end: n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。
+        :param days_ago_end: n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type days_ago_end: int
-        :param hours_ago_begin: n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。
+        :param hours_ago_begin: n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type hours_ago_begin: int
-        :param hours_ago_end: n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。
+        :param hours_ago_end: n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type hours_ago_end: int
         :param statuses: アラームのステータスを指定します。
         :type statuses: List[Optional[str]]

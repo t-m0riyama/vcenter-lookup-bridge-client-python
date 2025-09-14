@@ -45,12 +45,12 @@ configuration = vcenter_lookup_bridge_client.Configuration(
 with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = vcenter_lookup_bridge_client.EventsApi(api_client)
-    begin_time = 'begin_time_example' # str | イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) (optional)
-    end_time = 'end_time_example' # str | イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) (optional)
-    days_ago_begin = 56 # int | n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。 (optional)
-    days_ago_end = 56 # int | n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。 (optional)
-    hours_ago_begin = 56 # int | n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。 (optional)
-    hours_ago_end = 56 # int | n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。 (optional)
+    begin_time = 'begin_time_example' # str | イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。 (optional)
+    end_time = 'end_time_example' # str | イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。 (optional)
+    days_ago_begin = 56 # int | n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。 (optional)
+    days_ago_end = 56 # int | n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。 (optional)
+    hours_ago_begin = 56 # int | n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。 (optional)
+    hours_ago_end = 56 # int | n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。 (optional)
     event_types = ['event_types_example'] # List[str] | イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html) (optional)
     event_sources = ['event_sources_example'] # List[str] | イベントのソースを指定します。 (optional)
     user_names = ['user_names_example'] # List[str] | イベントを発生させたユーザー名を指定します。 (optional)
@@ -75,12 +75,12 @@ with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **begin_time** | **str**| イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) | [optional] 
- **end_time** | **str**| イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) | [optional] 
- **days_ago_begin** | **int**| n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。 | [optional] 
- **days_ago_end** | **int**| n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。 | [optional] 
- **hours_ago_begin** | **int**| n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。 | [optional] 
- **hours_ago_end** | **int**| n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。 | [optional] 
+ **begin_time** | **str**| イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。 | [optional] 
+ **end_time** | **str**| イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。 | [optional] 
+ **days_ago_begin** | **int**| n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。 | [optional] 
+ **days_ago_end** | **int**| n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。 | [optional] 
+ **hours_ago_begin** | **int**| n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。 | [optional] 
+ **hours_ago_end** | **int**| n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。 | [optional] 
  **event_types** | [**List[str]**](str.md)| イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html) | [optional] 
  **event_sources** | [**List[str]**](str.md)| イベントのソースを指定します。 | [optional] 
  **user_names** | [**List[str]**](str.md)| イベントを発生させたユーザー名を指定します。 | [optional] 
