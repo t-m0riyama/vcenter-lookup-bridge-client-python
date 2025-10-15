@@ -11,6 +11,7 @@ from typing import Dict, Any
 import vcenter_lookup_bridge_client
 from vcenter_lookup_bridge_client.models.pagination_info import PaginationInfo
 from vcenter_lookup_bridge_client.models.vm_response_schema import VmResponseSchema
+from vcenter_lookup_bridge_client.models.vm_detail_response_schema import VmDetailResponseSchema
 
 
 @pytest.fixture
@@ -42,7 +43,7 @@ class TestVmsApi:
         assert results is not None
 
         # レスポンスデータがスキーマに適合していることを存在チェック
-        assert isinstance(results, VmResponseSchema)
+        assert isinstance(results, VmDetailResponseSchema)
 
         # 期待した値を返していることをチェック
         assert results.name == test_dataset.EXPECTED_VM["name"]
@@ -68,53 +69,37 @@ class TestVmsApi:
 
         print(f"✅ VM取得テスト成功: {results.name}")
 
-    def test_get_vm_not_found_with_invalid_vm_instance_uuid(
-        self, api_instance, test_dataset
-    ):
+    def test_get_vm_not_found_with_invalid_vm_instance_uuid(self, api_instance, test_dataset):
         """存在しないVM取得のテスト"""
         try:
             # 存在しないVMのインスタンスUUIDでAPIを呼び出し
-            response = api_instance.get_vm(
-                **test_dataset.INVALID_GET_PARAMETERS_VM_INSTANCE_UUID
-            )
+            response = api_instance.get_vm(**test_dataset.INVALID_GET_PARAMETERS_VM_INSTANCE_UUID)
 
             # 例外が発生し、以降の行は実行されないことを期待する
-            pytest.fail(
-                f"存在しないVM取得テストでエラーが発生しました。想定される例外が発生しませんでした。"
-            )
+            pytest.fail(f"存在しないVM取得テストでエラーが発生しました。想定される例外が発生しませんでした。")
 
         except Exception as e:
             # 404エラーは例外として投げられる可能性がある
             if "404" in str(e):
                 print("✅ 存在しないVM取得テスト成功: 404エラーが正しく返されました")
             else:
-                pytest.fail(
-                    f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}"
-                )
+                pytest.fail(f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}")
 
     def test_get_vm_not_found_with_invalid_vcenter(self, api_instance, test_dataset):
         """存在しないVM取得のテスト"""
         try:
             # 存在しないVMのインスタンスUUIDでAPIを呼び出し
-            response = api_instance.get_vm(
-                **test_dataset.INVALID_GET_PARAMETERS_VCENTER
-            )
+            response = api_instance.get_vm(**test_dataset.INVALID_GET_PARAMETERS_VCENTER)
 
             # 例外が発生し、以降の行は実行されないことを期待する
-            pytest.fail(
-                f"存在しないVM取得テストでエラーが発生しました。想定される例外が発生しませんでした。"
-            )
+            pytest.fail(f"存在しないVM取得テストでエラーが発生しました。想定される例外が発生しませんでした。")
 
         except Exception as e:
             # 404エラーは例外として投げられる可能性がある
             if "404" in str(e):
-                print(
-                    f"✅ 存在しないVM取得テスト成功: 404エラーが正しく返されました: {str(e)}"
-                )
+                print(f"✅ 存在しないVM取得テスト成功: 404エラーが正しく返されました: {str(e)}")
             else:
-                pytest.fail(
-                    f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}"
-                )
+                pytest.fail(f"存在しないVM取得テストで予期しないエラーが発生しました: {str(e)}")
 
     def test_list_vms_success(self, api_instance, test_dataset):
         """VMリスト取得の成功テスト"""
@@ -141,40 +126,23 @@ class TestVmsApi:
         assert isinstance(pagination, PaginationInfo)
 
         # 期待結果との比較
-        for result, expected_result in zip(
-            results, test_dataset.EXPECTED_VM_LIST["results"]
-        ):
+        for result, expected_result in zip(results, test_dataset.EXPECTED_VM_LIST["results"]):
             assert result.name == expected_result["name"]
-            assert result.uuid == expected_result["uuid"]
             assert result.instance_uuid == expected_result["instanceUuid"]
             assert result.vcenter == expected_result["vcenter"]
             assert result.datacenter == expected_result["datacenter"]
-            assert result.cluster == expected_result["cluster"]
-            assert result.esxi_hostname == expected_result["esxiHostname"]
-            assert result.power_state == expected_result["powerState"]
             assert result.num_cpu == expected_result["numCpu"]
             assert result.memory_size_mb == expected_result["memorySizeMB"]
-            assert result.vm_path_name == expected_result["vmPathName"]
-            assert result.guest_full_name == expected_result["guestFullName"]
             assert result.hostname == expected_result["hostname"]
-            assert result.ip_address == expected_result["ipAddress"]
-            assert result.template == expected_result["template"]
-            assert result.hw_version == expected_result["hwVersion"]
-            assert result.disk_devices == expected_result["diskDevices"]
-            assert result.network_devices == expected_result["networkDevices"]
 
-        print(
-            f"✅ VMリスト取得テスト成功: {len(response.results)}件のVMが見つかりました"
-        )
+        print(f"✅ VMリスト取得テスト成功: {len(response.results)}件のVMが見つかりました")
 
     def test_list_vms_with_invalid_max_results(self, api_instance, test_dataset):
         """VMリスト取得のテスト（max_resultsパラメータの制限が有効であることを確認）"""
 
         # max_resultsに制限（<=1000)を超える値を指定してAPIを呼び出し
         try:
-            response = api_instance.list_vms(
-                **test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS
-            )
+            response = api_instance.list_vms(**test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS)
 
             # 例外が発生し、以降の行は実行されないことを期待する
             pytest.fail(
@@ -182,15 +150,11 @@ class TestVmsApi:
             )
 
         except pydantic.ValidationError as e:
-            print(
-                f"✅ max_resultsに制限を超える値(>1000)を指定した場合、正しくエラーが返却されました: {e}"
-            )
+            print(f"✅ max_resultsに制限を超える値(>1000)を指定した場合、正しくエラーが返却されました: {e}")
 
         # max_resultsに制限（>=1)を超える値を指定してAPIを呼び出し
         try:
-            response = api_instance.list_vms(
-                **test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2
-            )
+            response = api_instance.list_vms(**test_dataset.INVALID_LIST_PARAMETERS_MAX_RESULTS2)
 
             # 例外が発生し、以降の行は実行されないことを期待する
             pytest.fail(
@@ -198,25 +162,19 @@ class TestVmsApi:
             )
 
         except pydantic.ValidationError as e:
-            print(
-                f"✅ max_resultsに制限を超える値(<0)を指定した場合、正しくエラーが返却されました: {e}"
-            )
+            print(f"✅ max_resultsに制限を超える値(<0)を指定した場合、正しくエラーが返却されました: {e}")
 
     def test_list_vms_with_invalid_offset(self, api_instance, test_dataset):
         """VMリスト取得のテスト（パラメータ制限が有効であることを確認）"""
         # offsetに制限を超える値をを指定してAPIを呼び出し
         try:
-            response = api_instance.list_vms(
-                **test_dataset.INVALID_LIST_PARAMETERS_OFFSET
-            )
+            response = api_instance.list_vms(**test_dataset.INVALID_LIST_PARAMETERS_OFFSET)
 
             # 例外が発生し、以降の行は実行されないことを期待する
             pytest.fail(f"offsetに制限を超える値を指定したテストでエラーが発生しました")
 
         except pydantic.ValidationError as e:
-            print(
-                f"✅ offsetに制限を超える値(<0)を指定した場合、正しくエラーが返却されました: {e}"
-            )
+            print(f"✅ offsetに制限を超える値(<0)を指定した場合、正しくエラーが返却されました: {e}")
 
     def test_list_vms_with_pagination(self, api_instance, test_dataset):
         """ページネーション付きVMリスト取得のテスト"""
@@ -245,25 +203,17 @@ class TestVmsApi:
         # データ件数のチェック（per_page以下であることを確認）
         assert len(response.results) <= 100
 
-        print(
-            f"✅ ページネーション付きVMリスト取得テスト成功: ページ1, 1ページあたり100件"
-        )
+        print(f"✅ ページネーション付きVMリスト取得テスト成功: ページ1, 1ページあたり100件")
 
     def test_list_vms_empty_result(self, api_instance, test_dataset):
         """空の結果を返すフィルターのテスト"""
         try:
             # 存在しない条件でフィルタリング。例外が発生することを期待する。
-            response = api_instance.list_vms(
-                **test_dataset.INVALID_LIST_PARAMETERS_VM_FOLDERS
-            )
+            response = api_instance.list_vms(**test_dataset.INVALID_LIST_PARAMETERS_VM_FOLDERS)
 
         except Exception as e:
             # HTTPステータス404が例外として投げられる
             if "404" in str(e):
-                print(
-                    f"✅ 空の結果フィルターテスト成功: 404エラーが正しく返されました: {str(e)}"
-                )
+                print(f"✅ 空の結果フィルターテスト成功: 404エラーが正しく返されました: {str(e)}")
             else:
-                pytest.fail(
-                    f"空の結果フィルターテストで予期しないエラーが発生しました: {str(e)}"
-                )
+                pytest.fail(f"空の結果フィルターテストで予期しないエラーが発生しました: {str(e)}")
