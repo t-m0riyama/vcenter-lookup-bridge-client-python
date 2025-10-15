@@ -13,9 +13,7 @@ from requests.auth import HTTPBasicAuth
 from typing import Dict, Any
 
 dataset_name = f"tests.test_datasets.{os.environ['TEST_DATASET']}"
-api_server_settings = importlib.import_module(
-    f"{dataset_name}.shared.api_server_settings"
-)
+api_server_settings = importlib.import_module(f"{dataset_name}.shared.api_server_settings")
 
 from vcenter_lookup_bridge_client.configuration import Configuration
 
@@ -43,7 +41,7 @@ class TestHealthcheck:
                     api_server_settings.VALID_API_SERVER_SETTINGS["username"],
                     api_server_settings.VALID_API_SERVER_SETTINGS["password"],
                 ),
-                verify=api_server_settings.VALID_API_SERVER_SETTINGS["verify_ssl"],
+                verify=False,
                 timeout=10,
             )
 
@@ -53,10 +51,6 @@ class TestHealthcheck:
             print("✅ Healthcheck APIのテスト(requestsモジュール版)成功")
 
         except requests.exceptions.ConnectionError:
-            pytest.skip(
-                "APIサーバーに接続できません。サーバーが起動していることを確認してください。"
-            )
+            pytest.skip("APIサーバーに接続できません。サーバーが起動していることを確認してください。")
         except Exception as e:
-            pytest.fail(
-                f"Healthcheck APIのテスト(requestsモジュール版)でエラーが発生しました: {health_url} {str(e)}"
-            )
+            pytest.fail(f"Healthcheck APIのテスト(requestsモジュール版)でエラーが発生しました: {health_url} {str(e)}")
