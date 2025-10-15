@@ -60,7 +60,7 @@ class HostsApi:
     ) -> HostGetResponseSchema:
         """Get Host
 
-        ESXiホストのUUIDを指定して、単一のESXiホストの情報を取得します。
+        ESXiホストのUUIDを指定して、単一のESXiホストの詳細情報を取得します。
 
         :param host_uuid: ホストUUIDを指定します。 (required)
         :type host_uuid: str
@@ -134,7 +134,7 @@ class HostsApi:
     ) -> ApiResponse[HostGetResponseSchema]:
         """Get Host
 
-        ESXiホストのUUIDを指定して、単一のESXiホストの情報を取得します。
+        ESXiホストのUUIDを指定して、単一のESXiホストの詳細情報を取得します。
 
         :param host_uuid: ホストUUIDを指定します。 (required)
         :type host_uuid: str
@@ -208,7 +208,7 @@ class HostsApi:
     ) -> RESTResponseType:
         """Get Host
 
-        ESXiホストのUUIDを指定して、単一のESXiホストの情報を取得します。
+        ESXiホストのUUIDを指定して、単一のESXiホストの詳細情報を取得します。
 
         :param host_uuid: ホストUUIDを指定します。 (required)
         :type host_uuid: str

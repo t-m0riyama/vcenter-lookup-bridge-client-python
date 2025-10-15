@@ -20,7 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vcenter_lookup_bridge_client.models.pagination_info import PaginationInfo
-from vcenter_lookup_bridge_client.models.vm_response_schema import VmResponseSchema
+from vcenter_lookup_bridge_client.models.vm_detail_response_schema import VmDetailResponseSchema
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -31,7 +31,7 @@ class VmGetResponseSchema(BaseModel):
     message: Optional[StrictStr] = None
     pagination: Optional[PaginationInfo] = None
     request_id: Optional[StrictStr] = Field(default=None, alias="requestId")
-    results: VmResponseSchema = Field(description="実際のデータ")
+    results: VmDetailResponseSchema = Field(description="実際のデータ")
     success: StrictBool = Field(description="処理成功フラグ (true|false)")
     timestamp: StrictStr = Field(description="レスポンス生成時刻")
     vcenter_ws_sessions: Optional[Dict[str, Any]] = Field(default=None, alias="vcenterWsSessions")
@@ -117,7 +117,7 @@ class VmGetResponseSchema(BaseModel):
             "message": obj.get("message"),
             "pagination": PaginationInfo.from_dict(obj["pagination"]) if obj.get("pagination") is not None else None,
             "requestId": obj.get("requestId"),
-            "results": VmResponseSchema.from_dict(obj["results"]) if obj.get("results") is not None else None,
+            "results": VmDetailResponseSchema.from_dict(obj["results"]) if obj.get("results") is not None else None,
             "success": obj.get("success"),
             "timestamp": obj.get("timestamp"),
             "vcenterWsSessions": obj.get("vcenterWsSessions")

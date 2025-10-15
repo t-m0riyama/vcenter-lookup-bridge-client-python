@@ -60,7 +60,7 @@ class VmsApi:
     ) -> VmGetResponseSchema:
         """Get Vm
 
-        インスタンスUUIDを指定して、単一の仮想マシンの情報を取得します。
+        インスタンスUUIDを指定して、単一の仮想マシンの詳細情報を取得します。
 
         :param vm_instance_uuid: インスタンスUUIDを指定します。※格納されている仮想マシンフォルダに関係なく、vmFolder属性はnullを返します。 (required)
         :type vm_instance_uuid: str
@@ -134,7 +134,7 @@ class VmsApi:
     ) -> ApiResponse[VmGetResponseSchema]:
         """Get Vm
 
-        インスタンスUUIDを指定して、単一の仮想マシンの情報を取得します。
+        インスタンスUUIDを指定して、単一の仮想マシンの詳細情報を取得します。
 
         :param vm_instance_uuid: インスタンスUUIDを指定します。※格納されている仮想マシンフォルダに関係なく、vmFolder属性はnullを返します。 (required)
         :type vm_instance_uuid: str
@@ -208,7 +208,7 @@ class VmsApi:
     ) -> RESTResponseType:
         """Get Vm
 
-        インスタンスUUIDを指定して、単一の仮想マシンの情報を取得します。
+        インスタンスUUIDを指定して、単一の仮想マシンの詳細情報を取得します。
 
         :param vm_instance_uuid: インスタンスUUIDを指定します。※格納されている仮想マシンフォルダに関係なく、vmFolder属性はnullを返します。 (required)
         :type vm_instance_uuid: str

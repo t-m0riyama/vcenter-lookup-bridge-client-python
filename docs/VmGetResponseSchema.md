@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **message** | **str** |  | [optional] 
 **pagination** | [**PaginationInfo**](PaginationInfo.md) |  | [optional] 
 **request_id** | **str** |  | [optional] 
-**results** | [**VmResponseSchema**](VmResponseSchema.md) | 実際のデータ | 
+**results** | [**VmDetailResponseSchema**](VmDetailResponseSchema.md) | 実際のデータ | 
 **success** | **bool** | 処理成功フラグ (true|false) | 
 **timestamp** | **str** | レスポンス生成時刻 | 
 **vcenter_ws_sessions** | **object** |  | [optional] 

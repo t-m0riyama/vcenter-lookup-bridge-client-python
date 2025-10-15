@@ -17,24 +17,35 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class VmResponseSchema(BaseModel):
+class VmDetailResponseSchema(BaseModel):
     """
-    仮想マシンのレスポンススキーマ
+    仮想マシンの詳細情報のレスポンススキーマ
     """ # noqa: E501
+    cluster: Optional[StrictStr]
     datacenter: StrictStr = Field(description="仮想マシンのデータセンターを示します。")
+    disk_devices: Optional[List[Any]] = Field(alias="diskDevices")
+    esxi_hostname: Optional[StrictStr] = Field(alias="esxiHostname")
+    guest_full_name: StrictStr = Field(description="仮想マシンのゲストOSの種別をフルネームを示します。", alias="guestFullName")
     hostname: Optional[StrictStr]
+    hw_version: StrictStr = Field(description="仮想マシンのハードウェアバージョンを示します。", alias="hwVersion")
     instance_uuid: StrictStr = Field(description="仮想マシンのインスタンスUUIDを示します。", alias="instanceUuid")
+    ip_address: Optional[StrictStr] = Field(alias="ipAddress")
     memory_size_mb: StrictInt = Field(description="仮想マシンのメモリサイズ(MB)を示します。", alias="memorySizeMB")
     name: StrictStr = Field(description="仮想マシンの名前を示します。")
+    network_devices: Optional[List[Any]] = Field(alias="networkDevices")
     num_cpu: StrictInt = Field(description="仮想マシンのCPU数を示します。", alias="numCpu")
+    power_state: StrictStr = Field(description="仮想マシンの電源の状態を示します。", alias="powerState")
+    template: StrictBool = Field(description="仮想マシンがテンプレートかどうかを示します。")
+    uuid: StrictStr = Field(description="仮想マシンのUUIDを示します。")
     vcenter: Optional[StrictStr]
     vm_folder: Optional[StrictStr] = Field(alias="vmFolder")
-    __properties: ClassVar[List[str]] = ["datacenter", "hostname", "instanceUuid", "memorySizeMB", "name", "numCpu", "vcenter", "vmFolder"]
+    vm_path_name: StrictStr = Field(description="仮想マシンのVMXファイルのパスを示します。", alias="vmPathName")
+    __properties: ClassVar[List[str]] = ["cluster", "datacenter", "diskDevices", "esxiHostname", "guestFullName", "hostname", "hwVersion", "instanceUuid", "ipAddress", "memorySizeMB", "name", "networkDevices", "numCpu", "powerState", "template", "uuid", "vcenter", "vmFolder", "vmPathName"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -54,7 +65,7 @@ class VmResponseSchema(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of VmResponseSchema from a JSON string"""
+        """Create an instance of VmDetailResponseSchema from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -75,10 +86,35 @@ class VmResponseSchema(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if cluster (nullable) is None
+        # and model_fields_set contains the field
+        if self.cluster is None and "cluster" in self.model_fields_set:
+            _dict['cluster'] = None
+
+        # set to None if disk_devices (nullable) is None
+        # and model_fields_set contains the field
+        if self.disk_devices is None and "disk_devices" in self.model_fields_set:
+            _dict['diskDevices'] = None
+
+        # set to None if esxi_hostname (nullable) is None
+        # and model_fields_set contains the field
+        if self.esxi_hostname is None and "esxi_hostname" in self.model_fields_set:
+            _dict['esxiHostname'] = None
+
         # set to None if hostname (nullable) is None
         # and model_fields_set contains the field
         if self.hostname is None and "hostname" in self.model_fields_set:
             _dict['hostname'] = None
+
+        # set to None if ip_address (nullable) is None
+        # and model_fields_set contains the field
+        if self.ip_address is None and "ip_address" in self.model_fields_set:
+            _dict['ipAddress'] = None
+
+        # set to None if network_devices (nullable) is None
+        # and model_fields_set contains the field
+        if self.network_devices is None and "network_devices" in self.model_fields_set:
+            _dict['networkDevices'] = None
 
         # set to None if vcenter (nullable) is None
         # and model_fields_set contains the field
@@ -94,7 +130,7 @@ class VmResponseSchema(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of VmResponseSchema from a dict"""
+        """Create an instance of VmDetailResponseSchema from a dict"""
         if obj is None:
             return None
 
@@ -102,14 +138,25 @@ class VmResponseSchema(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "cluster": obj.get("cluster"),
             "datacenter": obj.get("datacenter"),
+            "diskDevices": obj.get("diskDevices"),
+            "esxiHostname": obj.get("esxiHostname"),
+            "guestFullName": obj.get("guestFullName"),
             "hostname": obj.get("hostname"),
+            "hwVersion": obj.get("hwVersion"),
             "instanceUuid": obj.get("instanceUuid"),
+            "ipAddress": obj.get("ipAddress"),
             "memorySizeMB": obj.get("memorySizeMB"),
             "name": obj.get("name"),
+            "networkDevices": obj.get("networkDevices"),
             "numCpu": obj.get("numCpu"),
+            "powerState": obj.get("powerState"),
+            "template": obj.get("template"),
+            "uuid": obj.get("uuid"),
             "vcenter": obj.get("vcenter"),
-            "vmFolder": obj.get("vmFolder")
+            "vmFolder": obj.get("vmFolder"),
+            "vmPathName": obj.get("vmPathName")
         })
         return _obj
 

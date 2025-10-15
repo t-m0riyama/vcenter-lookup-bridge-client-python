@@ -6,26 +6,16 @@ ESXiホストのレスポンススキーマ
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**cluster** | **str** |  | 
-**cpu_model** | **str** | ESXiホストのCPUモデルを示します。 | 
 **datacenter** | **str** | ESXiホストのデータセンターを示します。 | 
-**datastores** | **List[object]** |  | 
 **esxi_version** | **str** | ESXiホストのバージョンを示します。 | 
-**esxi_version_full** | **str** | ESXiホストのビルド番号を含む、バージョンを示します。 | 
-**hardware_model** | **str** | ESXiホストのハードウェアモデルを示します。 | 
-**hardware_vendor** | **str** | ESXiホストのハードウェアベンダーを示します。 | 
-**ip_address** | **str** |  | 
 **memory_size_mb** | **int** | ESXiホストのメモリサイズ(MB)を示します。 | 
 **name** | **str** | ESXiホストの名前(ホスト名)を示します。 | 
 **num_cpu_cores** | **int** | ESXiホストのCPUコア数を示します。 | 
 **num_cpu_sockets** | **int** | ESXiホストのCPUソケット数を示します。 | 
 **num_cpu_threads** | **int** | ESXiホストのCPUスレッド数を示します。 | 
-**portgroups** | **List[object]** |  | 
-**power_state** | **str** | ESXiホストの電源の状態を示します。 | 
 **status** | **str** | ESXiホストのステータスを示します。 | 
 **uuid** | **str** | ESXiホストのUUIDを示します。 | 
 **vcenter** | **str** |  | 
-**vswitches** | **List[object]** |  | 
 
 ## Example
 

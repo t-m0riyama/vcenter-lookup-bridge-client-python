@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 Get Vm
 
-インスタンスUUIDを指定して、単一の仮想マシンの情報を取得します。
+インスタンスUUIDを指定して、単一の仮想マシンの詳細情報を取得します。
 
 ### Example
 

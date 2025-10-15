@@ -22,21 +22,31 @@ from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class HostResponseSchema(BaseModel):
+class HostDetailResponseSchema(BaseModel):
     """
-    ESXiホストのレスポンススキーマ
+    ESXiホストの詳細情報のレスポンススキーマ
     """ # noqa: E501
+    cluster: Optional[StrictStr]
+    cpu_model: StrictStr = Field(description="ESXiホストのCPUモデルを示します。", alias="cpuModel")
     datacenter: StrictStr = Field(description="ESXiホストのデータセンターを示します。")
+    datastores: Optional[List[Any]]
     esxi_version: StrictStr = Field(description="ESXiホストのバージョンを示します。", alias="esxiVersion")
+    esxi_version_full: StrictStr = Field(description="ESXiホストのビルド番号を含む、バージョンを示します。", alias="esxiVersionFull")
+    hardware_model: StrictStr = Field(description="ESXiホストのハードウェアモデルを示します。", alias="hardwareModel")
+    hardware_vendor: StrictStr = Field(description="ESXiホストのハードウェアベンダーを示します。", alias="hardwareVendor")
+    ip_address: Optional[StrictStr] = Field(alias="ipAddress")
     memory_size_mb: StrictInt = Field(description="ESXiホストのメモリサイズ(MB)を示します。", alias="memorySizeMB")
     name: StrictStr = Field(description="ESXiホストの名前(ホスト名)を示します。")
     num_cpu_cores: StrictInt = Field(description="ESXiホストのCPUコア数を示します。", alias="numCpuCores")
     num_cpu_sockets: StrictInt = Field(description="ESXiホストのCPUソケット数を示します。", alias="numCpuSockets")
     num_cpu_threads: StrictInt = Field(description="ESXiホストのCPUスレッド数を示します。", alias="numCpuThreads")
+    portgroups: Optional[List[Any]]
+    power_state: StrictStr = Field(description="ESXiホストの電源の状態を示します。", alias="powerState")
     status: StrictStr = Field(description="ESXiホストのステータスを示します。")
     uuid: StrictStr = Field(description="ESXiホストのUUIDを示します。")
     vcenter: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["datacenter", "esxiVersion", "memorySizeMB", "name", "numCpuCores", "numCpuSockets", "numCpuThreads", "status", "uuid", "vcenter"]
+    vswitches: Optional[List[Any]]
+    __properties: ClassVar[List[str]] = ["cluster", "cpuModel", "datacenter", "datastores", "esxiVersion", "esxiVersionFull", "hardwareModel", "hardwareVendor", "ipAddress", "memorySizeMB", "name", "numCpuCores", "numCpuSockets", "numCpuThreads", "portgroups", "powerState", "status", "uuid", "vcenter", "vswitches"]
 
     @field_validator('status')
     def status_validate_enum(cls, value):
@@ -63,7 +73,7 @@ class HostResponseSchema(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of HostResponseSchema from a JSON string"""
+        """Create an instance of HostDetailResponseSchema from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -84,16 +94,41 @@ class HostResponseSchema(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if cluster (nullable) is None
+        # and model_fields_set contains the field
+        if self.cluster is None and "cluster" in self.model_fields_set:
+            _dict['cluster'] = None
+
+        # set to None if datastores (nullable) is None
+        # and model_fields_set contains the field
+        if self.datastores is None and "datastores" in self.model_fields_set:
+            _dict['datastores'] = None
+
+        # set to None if ip_address (nullable) is None
+        # and model_fields_set contains the field
+        if self.ip_address is None and "ip_address" in self.model_fields_set:
+            _dict['ipAddress'] = None
+
+        # set to None if portgroups (nullable) is None
+        # and model_fields_set contains the field
+        if self.portgroups is None and "portgroups" in self.model_fields_set:
+            _dict['portgroups'] = None
+
         # set to None if vcenter (nullable) is None
         # and model_fields_set contains the field
         if self.vcenter is None and "vcenter" in self.model_fields_set:
             _dict['vcenter'] = None
 
+        # set to None if vswitches (nullable) is None
+        # and model_fields_set contains the field
+        if self.vswitches is None and "vswitches" in self.model_fields_set:
+            _dict['vswitches'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of HostResponseSchema from a dict"""
+        """Create an instance of HostDetailResponseSchema from a dict"""
         if obj is None:
             return None
 
@@ -101,16 +136,26 @@ class HostResponseSchema(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "cluster": obj.get("cluster"),
+            "cpuModel": obj.get("cpuModel"),
             "datacenter": obj.get("datacenter"),
+            "datastores": obj.get("datastores"),
             "esxiVersion": obj.get("esxiVersion"),
+            "esxiVersionFull": obj.get("esxiVersionFull"),
+            "hardwareModel": obj.get("hardwareModel"),
+            "hardwareVendor": obj.get("hardwareVendor"),
+            "ipAddress": obj.get("ipAddress"),
             "memorySizeMB": obj.get("memorySizeMB"),
             "name": obj.get("name"),
             "numCpuCores": obj.get("numCpuCores"),
             "numCpuSockets": obj.get("numCpuSockets"),
             "numCpuThreads": obj.get("numCpuThreads"),
+            "portgroups": obj.get("portgroups"),
+            "powerState": obj.get("powerState"),
             "status": obj.get("status"),
             "uuid": obj.get("uuid"),
-            "vcenter": obj.get("vcenter")
+            "vcenter": obj.get("vcenter"),
+            "vswitches": obj.get("vswitches")
         })
         return _obj
 

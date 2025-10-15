@@ -6,25 +6,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**cluster** | **str** |  | 
 **datacenter** | **str** | 仮想マシンのデータセンターを示します。 | 
-**disk_devices** | **List[object]** |  | 
-**esxi_hostname** | **str** |  | 
-**guest_full_name** | **str** | 仮想マシンのゲストOSの種別をフルネームを示します。 | 
 **hostname** | **str** |  | 
-**hw_version** | **str** | 仮想マシンのハードウェアバージョンを示します。 | 
 **instance_uuid** | **str** | 仮想マシンのインスタンスUUIDを示します。 | 
-**ip_address** | **str** |  | 
 **memory_size_mb** | **int** | 仮想マシンのメモリサイズ(MB)を示します。 | 
 **name** | **str** | 仮想マシンの名前を示します。 | 
-**network_devices** | **List[object]** |  | 
 **num_cpu** | **int** | 仮想マシンのCPU数を示します。 | 
-**power_state** | **str** | 仮想マシンの電源の状態を示します。 | 
-**template** | **bool** | 仮想マシンがテンプレートかどうかを示します。 | 
-**uuid** | **str** | 仮想マシンのUUIDを示します。 | 
 **vcenter** | **str** |  | 
 **vm_folder** | **str** |  | 
-**vm_path_name** | **str** | 仮想マシンのVMXファイルのパスを示します。 | 
 
 ## Example
 

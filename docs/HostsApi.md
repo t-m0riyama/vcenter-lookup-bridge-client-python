@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 Get Host
 
-ESXiホストのUUIDを指定して、単一のESXiホストの情報を取得します。
+ESXiホストのUUIDを指定して、単一のESXiホストの詳細情報を取得します。
 
 ### Example
 
