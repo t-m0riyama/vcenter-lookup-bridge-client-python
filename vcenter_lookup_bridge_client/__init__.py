@@ -51,6 +51,7 @@ __all__ = [
     "HTTPValidationError",
     "HealthcheckResponseSchema",
     "HealthcheckSchema",
+    "HostDetailResponseSchema",
     "HostGetResponseSchema",
     "HostListResponseSchema",
     "HostResponseSchema",
@@ -61,6 +62,7 @@ __all__ = [
     "VCenterResponseSchema",
     "ValidationError",
     "ValidationErrorLocInner",
+    "VmDetailResponseSchema",
     "VmFolderListResponseSchema",
     "VmFolderResponseSchema",
     "VmGetResponseSchema",
@@ -108,6 +110,7 @@ from vcenter_lookup_bridge_client.models.event_response_schema import EventRespo
 from vcenter_lookup_bridge_client.models.http_validation_error import HTTPValidationError as HTTPValidationError
 from vcenter_lookup_bridge_client.models.healthcheck_response_schema import HealthcheckResponseSchema as HealthcheckResponseSchema
 from vcenter_lookup_bridge_client.models.healthcheck_schema import HealthcheckSchema as HealthcheckSchema
+from vcenter_lookup_bridge_client.models.host_detail_response_schema import HostDetailResponseSchema as HostDetailResponseSchema
 from vcenter_lookup_bridge_client.models.host_get_response_schema import HostGetResponseSchema as HostGetResponseSchema
 from vcenter_lookup_bridge_client.models.host_list_response_schema import HostListResponseSchema as HostListResponseSchema
 from vcenter_lookup_bridge_client.models.host_response_schema import HostResponseSchema as HostResponseSchema
@@ -118,6 +121,7 @@ from vcenter_lookup_bridge_client.models.v_center_list_response_schema import VC
 from vcenter_lookup_bridge_client.models.v_center_response_schema import VCenterResponseSchema as VCenterResponseSchema
 from vcenter_lookup_bridge_client.models.validation_error import ValidationError as ValidationError
 from vcenter_lookup_bridge_client.models.validation_error_loc_inner import ValidationErrorLocInner as ValidationErrorLocInner
+from vcenter_lookup_bridge_client.models.vm_detail_response_schema import VmDetailResponseSchema as VmDetailResponseSchema
 from vcenter_lookup_bridge_client.models.vm_folder_list_response_schema import VmFolderListResponseSchema as VmFolderListResponseSchema
 from vcenter_lookup_bridge_client.models.vm_folder_response_schema import VmFolderResponseSchema as VmFolderResponseSchema
 from vcenter_lookup_bridge_client.models.vm_get_response_schema import VmGetResponseSchema as VmGetResponseSchema
