@@ -16,7 +16,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictInt, StrictStr
+from pydantic import Field, StrictStr
 from typing import List, Optional
 from typing_extensions import Annotated
 from vcenter_lookup_bridge_client.models.event_list_response_schema import EventListResponseSchema
@@ -44,10 +44,10 @@ class EventsApi:
         self,
         begin_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         end_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_begin: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_end: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_begin: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_end: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         event_types: Annotated[Optional[List[StrictStr]], Field(description="イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)")] = None,
         event_sources: Annotated[Optional[List[StrictStr]], Field(description="イベントのソースを指定します。")] = None,
         user_names: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたユーザー名を指定します。")] = None,
@@ -162,10 +162,10 @@ class EventsApi:
         self,
         begin_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         end_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_begin: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_end: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_begin: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_end: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         event_types: Annotated[Optional[List[StrictStr]], Field(description="イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)")] = None,
         event_sources: Annotated[Optional[List[StrictStr]], Field(description="イベントのソースを指定します。")] = None,
         user_names: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたユーザー名を指定します。")] = None,
@@ -280,10 +280,10 @@ class EventsApi:
         self,
         begin_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         end_time: Annotated[Optional[StrictStr], Field(description="イベントが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_begin: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="n日前以降に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_end: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="n日前以前に発生したイベントを取得します。指定した日数の過去日付で、イベントが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_begin: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="n時間前以降に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_end: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="n時間前以前に発生したイベントを取得します。指定した時間数の過去で、イベントが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         event_types: Annotated[Optional[List[StrictStr]], Field(description="イベントの種類を指定します。(参考. https://files.hypervisor.fr/vcEvents.html)")] = None,
         event_sources: Annotated[Optional[List[StrictStr]], Field(description="イベントのソースを指定します。")] = None,
         user_names: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたユーザー名を指定します。")] = None,

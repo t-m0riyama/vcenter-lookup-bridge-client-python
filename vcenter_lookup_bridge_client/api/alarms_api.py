@@ -16,7 +16,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictInt, StrictStr
+from pydantic import Field, StrictBool, StrictStr
 from typing import List, Optional
 from typing_extensions import Annotated
 from vcenter_lookup_bridge_client.models.alarm_list_response_schema import AlarmListResponseSchema
@@ -44,10 +44,10 @@ class AlarmsApi:
         self,
         begin_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         end_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_begin: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_end: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_begin: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_end: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         statuses: Annotated[Optional[List[Optional[StrictStr]]], Field(description="アラームのステータスを指定します。")] = None,
         alarm_sources: Annotated[Optional[List[StrictStr]], Field(description="アラームのソースを指定します。")] = None,
         acknowledged: Annotated[Optional[StrictBool], Field(description="アラームが確認済みかどうかを指定します。")] = None,
@@ -158,10 +158,10 @@ class AlarmsApi:
         self,
         begin_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         end_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_begin: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_end: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_begin: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_end: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         statuses: Annotated[Optional[List[Optional[StrictStr]]], Field(description="アラームのステータスを指定します。")] = None,
         alarm_sources: Annotated[Optional[List[StrictStr]], Field(description="アラームのソースを指定します。")] = None,
         acknowledged: Annotated[Optional[StrictBool], Field(description="アラームが確認済みかどうかを指定します。")] = None,
@@ -272,10 +272,10 @@ class AlarmsApi:
         self,
         begin_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         end_time: Annotated[Optional[StrictStr], Field(description="アラームが発生したと思われる時間帯の終了時間を指定します。(指定しない場合は現在までのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        days_ago_begin: Annotated[Optional[StrictInt], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        days_ago_end: Annotated[Optional[StrictInt], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        hours_ago_begin: Annotated[Optional[StrictInt], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
-        hours_ago_end: Annotated[Optional[StrictInt], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_begin: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="n日前以降に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の開始日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        days_ago_end: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="n日前以前に発生したアラームを取得します。指定した日数の過去日付で、アラームが発生したと思われる時間帯の終了日を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_begin: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="n時間前以降に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の開始時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
+        hours_ago_end: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="n時間前以前に発生したアラームを取得します。指定した時間数の過去で、アラームが発生したと思われる時間帯の終了時間を指定します。\\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。")] = None,
         statuses: Annotated[Optional[List[Optional[StrictStr]]], Field(description="アラームのステータスを指定します。")] = None,
         alarm_sources: Annotated[Optional[List[StrictStr]], Field(description="アラームのソースを指定します。")] = None,
         acknowledged: Annotated[Optional[StrictBool], Field(description="アラームが確認済みかどうかを指定します。")] = None,
