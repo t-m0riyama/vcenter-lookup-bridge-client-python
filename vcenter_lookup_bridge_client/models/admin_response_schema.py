@@ -29,12 +29,13 @@ class AdminResponseSchema(BaseModel):
     """ # noqa: E501
     message: Optional[StrictStr] = None
     pagination: Optional[PaginationInfo] = None
+    partial_failure: StrictBool = Field(description="部分失敗フラグ (true|false)", alias="partialFailure")
     request_id: Optional[StrictStr] = Field(default=None, alias="requestId")
     results: Optional[Any]
     success: StrictBool = Field(description="処理成功フラグ (true|false)")
     timestamp: StrictStr = Field(description="レスポンス生成時刻")
     vcenter_ws_sessions: Optional[Dict[str, Any]] = Field(default=None, alias="vcenterWsSessions")
-    __properties: ClassVar[List[str]] = ["message", "pagination", "requestId", "results", "success", "timestamp", "vcenterWsSessions"]
+    __properties: ClassVar[List[str]] = ["message", "pagination", "partialFailure", "requestId", "results", "success", "timestamp", "vcenterWsSessions"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -117,6 +118,7 @@ class AdminResponseSchema(BaseModel):
         _obj = cls.model_validate({
             "message": obj.get("message"),
             "pagination": PaginationInfo.from_dict(obj["pagination"]) if obj.get("pagination") is not None else None,
+            "partialFailure": obj.get("partialFailure"),
             "requestId": obj.get("requestId"),
             "results": obj.get("results"),
             "success": obj.get("success"),

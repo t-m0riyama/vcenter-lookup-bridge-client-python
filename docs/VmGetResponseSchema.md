@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **message** | **str** |  | [optional] 
 **pagination** | [**PaginationInfo**](PaginationInfo.md) |  | [optional] 
+**partial_failure** | **bool** | 部分失敗フラグ (true|false) | 
 **request_id** | **str** |  | [optional] 
 **results** | [**VmDetailResponseSchema**](VmDetailResponseSchema.md) | 実際のデータ | 
 **success** | **bool** | 処理成功フラグ (true|false) | 
