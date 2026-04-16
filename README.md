@@ -88,6 +88,14 @@ with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
 
 ```
 
+## CLI
+
+A `vlb` command-line interface is included. See [docs/CLI.md](docs/CLI.md) for details.
+
+```sh
+vlb --help
+```
+
 ## Documentation for API Endpoints
 
 All URIs are relative to *http://localhost/vcenter-lookup-bridge/api/v1*

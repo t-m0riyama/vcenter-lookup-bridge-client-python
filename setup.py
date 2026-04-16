@@ -29,6 +29,8 @@ REQUIRES = [
     "pydantic >= 2",
     "requests >= 2.32.4",
     "typing-extensions >= 4.7.1",
+    "click >= 8.0",
+    "tabulate >= 0.9",
 ]
 
 setup(
@@ -47,4 +49,9 @@ setup(
     vCenter Lookup Bridge API
     """,  # noqa: E501
     package_data={"vcenter_lookup_bridge_client": ["py.typed"]},
+    entry_points={
+        "console_scripts": [
+            "vlb=vcenter_lookup_bridge_client.cli.main:cli",
+        ],
+    },
 )
