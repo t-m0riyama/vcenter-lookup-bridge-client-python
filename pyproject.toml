@@ -42,6 +42,12 @@ mypy = ">= 1.5"
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools.package-data]
+vcenter_lookup_bridge_client = [
+  "locale/**/*.po",
+  "locale/**/*.mo",
+]
+
 [tool.pylint.'MESSAGES CONTROL']
 extension-pkg-whitelist = "pydantic"
 

@@ -5,6 +5,7 @@ import click
 from vcenter_lookup_bridge_client import AlarmsApi
 from vcenter_lookup_bridge_client.exceptions import ApiException
 from .formatters import output_json, output_table
+from .i18n import _
 
 _ALARM_COLUMNS = ["name", "vcenter", "datacenter", "status", "alarm_source", "acknowledged", "created_time", "description"]
 
@@ -60,7 +61,7 @@ def list_alarms(ctx, begin_time, end_time, days_ago_begin, days_ago_end,
     try:
         response = api.list_alarms(**kwargs)
     except ApiException as e:
-        click.echo(f"Error {e.status}: {e.reason}")
+        click.echo(_("Error {status}: {reason}").format(status=e.status, reason=e.reason))
         sys.exit(1)
     if ctx.obj["format"] == "json":
         output_json(response)

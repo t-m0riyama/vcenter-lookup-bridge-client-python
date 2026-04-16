@@ -1,5 +1,6 @@
 """CLI テスト共通フィクスチャ"""
 
+import os
 import pytest
 from click.testing import CliRunner
 from unittest.mock import MagicMock
@@ -8,6 +9,12 @@ from vcenter_lookup_bridge_client.cli.main import cli
 
 # テスト用の共通グローバルオプション
 BASE_ARGS = ["--host", "http://localhost", "--username", "test", "--password", "test"]
+
+
+@pytest.fixture(autouse=True)
+def force_en_locale(monkeypatch):
+    """テスト中は VLB_LANG=en に固定してアサーションが言語非依存になるようにする"""
+    monkeypatch.setenv("VLB_LANG", "en")
 
 
 @pytest.fixture

@@ -1,0 +1,190 @@
+# English translations for vlb.
+# Copyright (C) 2024 vCenter Lookup Bridge
+# This file is distributed under the same license as the vlb package.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+
+# main.py
+msgid "Connect to vCenter Lookup Bridge API and retrieve VM/host/cluster information."
+msgstr "Connect to vCenter Lookup Bridge API and retrieve VM/host/cluster information."
+
+msgid "Connection info can be set via environment variables VLB_HOST / VLB_USERNAME / VLB_PASSWORD."
+msgstr "Connection info can be set via environment variables VLB_HOST / VLB_USERNAME / VLB_PASSWORD."
+
+msgid "API server URL (env: VLB_HOST)"
+msgstr "API server URL (env: VLB_HOST)"
+
+msgid "Username for Basic auth (env: VLB_USERNAME)"
+msgstr "Username for Basic auth (env: VLB_USERNAME)"
+
+msgid "Password for Basic auth (env: VLB_PASSWORD)"
+msgstr "Password for Basic auth (env: VLB_PASSWORD)"
+
+msgid "Output format"
+msgstr "Output format"
+
+msgid "Disable SSL certificate verification"
+msgstr "Disable SSL certificate verification"
+
+# vms.py
+msgid "Virtual Machine (VM) operations"
+msgstr "Virtual Machine (VM) operations"
+
+msgid "List VMs in the specified folder"
+msgstr "List VMs in the specified folder"
+
+msgid "VM folder name(s) (comma-separated)"
+msgstr "VM folder name(s) (comma-separated)"
+
+msgid "Offset for pagination"
+msgstr "Offset for pagination"
+
+msgid "Maximum number of results"
+msgstr "Maximum number of results"
+
+msgid "vCenter name"
+msgstr "vCenter name"
+
+msgid "Get VM details by instance UUID"
+msgstr "Get VM details by instance UUID"
+
+# hosts.py
+msgid "ESXi host operations"
+msgstr "ESXi host operations"
+
+msgid "List ESXi hosts"
+msgstr "List ESXi hosts"
+
+msgid "Get ESXi host details by host UUID"
+msgstr "Get ESXi host details by host UUID"
+
+# clusters.py
+msgid "Cluster operations"
+msgstr "Cluster operations"
+
+msgid "List clusters"
+msgstr "List clusters"
+
+msgid "Cluster name(s) (comma-separated)"
+msgstr "Cluster name(s) (comma-separated)"
+
+# datastores.py
+msgid "Datastore operations"
+msgstr "Datastore operations"
+
+msgid "List datastores filtered by tag"
+msgstr "List datastores filtered by tag"
+
+msgid "Tag category name"
+msgstr "Tag category name"
+
+msgid "Tag name(s) (comma-separated)"
+msgstr "Tag name(s) (comma-separated)"
+
+# portgroups.py
+msgid "Port group operations"
+msgstr "Port group operations"
+
+msgid "List port groups filtered by tag"
+msgstr "List port groups filtered by tag"
+
+# vm_folders.py
+msgid "VM folder operations"
+msgstr "VM folder operations"
+
+msgid "List VM folders"
+msgstr "List VM folders"
+
+msgid "VM folder name(s) (comma-separated)"
+msgstr "VM folder name(s) (comma-separated)"
+
+# vm_snapshots.py
+msgid "VM snapshot operations"
+msgstr "VM snapshot operations"
+
+msgid "List snapshots in the specified VM folder"
+msgstr "List snapshots in the specified VM folder"
+
+msgid "List snapshots by VM instance UUID"
+msgstr "List snapshots by VM instance UUID"
+
+# events.py
+msgid "Event operations"
+msgstr "Event operations"
+
+msgid "List events"
+msgstr "List events"
+
+msgid "Start time (ISO 8601)"
+msgstr "Start time (ISO 8601)"
+
+msgid "End time (ISO 8601)"
+msgstr "End time (ISO 8601)"
+
+msgid "Start: number of days ago"
+msgstr "Start: number of days ago"
+
+msgid "End: number of days ago"
+msgstr "End: number of days ago"
+
+msgid "Start: number of hours ago"
+msgstr "Start: number of hours ago"
+
+msgid "End: number of hours ago"
+msgstr "End: number of hours ago"
+
+msgid "Event type(s) (comma-separated)"
+msgstr "Event type(s) (comma-separated)"
+
+msgid "Event source(s) (comma-separated)"
+msgstr "Event source(s) (comma-separated)"
+
+msgid "Username(s) (comma-separated)"
+msgstr "Username(s) (comma-separated)"
+
+msgid "IP address(es) (comma-separated)"
+msgstr "IP address(es) (comma-separated)"
+
+# alarms.py
+msgid "Alarm operations"
+msgstr "Alarm operations"
+
+msgid "List alarms"
+msgstr "List alarms"
+
+msgid "Alarm status(es) (comma-separated: red,yellow,green,gray)"
+msgstr "Alarm status(es) (comma-separated: red,yellow,green,gray)"
+
+msgid "Alarm source(s) (comma-separated)"
+msgstr "Alarm source(s) (comma-separated)"
+
+msgid "Acknowledged flag"
+msgstr "Acknowledged flag"
+
+# vcenters.py
+msgid "vCenter operations"
+msgstr "vCenter operations"
+
+msgid "List connected vCenters"
+msgstr "List connected vCenters"
+
+# admins.py
+msgid "Admin operations"
+msgstr "Admin operations"
+
+msgid "Clear all cached responses"
+msgstr "Clear all cached responses"
+
+msgid "Clear down-mark for all vCenters"
+msgstr "Clear down-mark for all vCenters"
+
+# healthcheck.py
+msgid "Run a service health check"
+msgstr "Run a service health check"
+
+# error messages
+msgid "Error {status}: {reason}"
+msgstr "Error {status}: {reason}"

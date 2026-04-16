@@ -1,0 +1,190 @@
+# Japanese translations for vlb.
+# Copyright (C) 2024 vCenter Lookup Bridge
+# This file is distributed under the same license as the vlb package.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+
+# main.py
+msgid "Connect to vCenter Lookup Bridge API and retrieve VM/host/cluster information."
+msgstr "vCenter Lookup Bridge API に接続して仮想マシン・ホスト・クラスタ等の情報を取得します。"
+
+msgid "Connection info can be set via environment variables VLB_HOST / VLB_USERNAME / VLB_PASSWORD."
+msgstr "接続情報は環境変数 VLB_HOST / VLB_USERNAME / VLB_PASSWORD で設定できます。"
+
+msgid "API server URL (env: VLB_HOST)"
+msgstr "API サーバの URL (環境変数: VLB_HOST)"
+
+msgid "Username for Basic auth (env: VLB_USERNAME)"
+msgstr "Basic 認証のユーザー名 (環境変数: VLB_USERNAME)"
+
+msgid "Password for Basic auth (env: VLB_PASSWORD)"
+msgstr "Basic 認証のパスワード (環境変数: VLB_PASSWORD)"
+
+msgid "Output format"
+msgstr "出力フォーマット"
+
+msgid "Disable SSL certificate verification"
+msgstr "SSL 証明書の検証を無効にする"
+
+# vms.py
+msgid "Virtual Machine (VM) operations"
+msgstr "仮想マシン (VM) 操作"
+
+msgid "List VMs in the specified folder"
+msgstr "指定したフォルダ内の仮想マシン一覧を取得します"
+
+msgid "VM folder name(s) (comma-separated)"
+msgstr "VMフォルダ名 (カンマ区切りで複数指定可)"
+
+msgid "Offset for pagination"
+msgstr "取得開始位置"
+
+msgid "Maximum number of results"
+msgstr "最大取得件数"
+
+msgid "vCenter name"
+msgstr "vCenter 名"
+
+msgid "Get VM details by instance UUID"
+msgstr "インスタンス UUID を指定して仮想マシンの詳細情報を取得します"
+
+# hosts.py
+msgid "ESXi host operations"
+msgstr "ESXi ホスト操作"
+
+msgid "List ESXi hosts"
+msgstr "ESXi ホスト一覧を取得します"
+
+msgid "Get ESXi host details by host UUID"
+msgstr "ホスト UUID を指定して ESXi ホストの詳細情報を取得します"
+
+# clusters.py
+msgid "Cluster operations"
+msgstr "クラスタ操作"
+
+msgid "List clusters"
+msgstr "クラスタ一覧を取得します"
+
+msgid "Cluster name(s) (comma-separated)"
+msgstr "クラスタ名 (カンマ区切りで複数指定可)"
+
+# datastores.py
+msgid "Datastore operations"
+msgstr "データストア操作"
+
+msgid "List datastores filtered by tag"
+msgstr "タグを指定してデータストア一覧を取得します"
+
+msgid "Tag category name"
+msgstr "タグのカテゴリ名"
+
+msgid "Tag name(s) (comma-separated)"
+msgstr "タグ名 (カンマ区切りで複数指定可)"
+
+# portgroups.py
+msgid "Port group operations"
+msgstr "ポートグループ操作"
+
+msgid "List port groups filtered by tag"
+msgstr "タグを指定してポートグループ一覧を取得します"
+
+# vm_folders.py
+msgid "VM folder operations"
+msgstr "仮想マシンフォルダ操作"
+
+msgid "List VM folders"
+msgstr "仮想マシンフォルダ一覧を取得します"
+
+msgid "VM folder name(s) (comma-separated)"
+msgstr "VMフォルダ名 (カンマ区切りで複数指定可)"
+
+# vm_snapshots.py
+msgid "VM snapshot operations"
+msgstr "仮想マシンスナップショット操作"
+
+msgid "List snapshots in the specified VM folder"
+msgstr "指定したフォルダ内の仮想マシンのスナップショット一覧を取得します"
+
+msgid "List snapshots by VM instance UUID"
+msgstr "インスタンス UUID を指定して仮想マシンのスナップショット一覧を取得します"
+
+# events.py
+msgid "Event operations"
+msgstr "イベント操作"
+
+msgid "List events"
+msgstr "イベント一覧を取得します"
+
+msgid "Start time (ISO 8601)"
+msgstr "開始時間 (ISO 8601形式)"
+
+msgid "End time (ISO 8601)"
+msgstr "終了時間 (ISO 8601形式)"
+
+msgid "Start: number of days ago"
+msgstr "開始: 現在から遡る日数"
+
+msgid "End: number of days ago"
+msgstr "終了: 現在から遡る日数"
+
+msgid "Start: number of hours ago"
+msgstr "開始: 現在から遡る時間数"
+
+msgid "End: number of hours ago"
+msgstr "終了: 現在から遡る時間数"
+
+msgid "Event type(s) (comma-separated)"
+msgstr "イベント種別 (カンマ区切りで複数指定可)"
+
+msgid "Event source(s) (comma-separated)"
+msgstr "イベントソース (カンマ区切りで複数指定可)"
+
+msgid "Username(s) (comma-separated)"
+msgstr "ユーザー名 (カンマ区切りで複数指定可)"
+
+msgid "IP address(es) (comma-separated)"
+msgstr "IPアドレス (カンマ区切りで複数指定可)"
+
+# alarms.py
+msgid "Alarm operations"
+msgstr "アラーム操作"
+
+msgid "List alarms"
+msgstr "アラーム一覧を取得します"
+
+msgid "Alarm status(es) (comma-separated: red,yellow,green,gray)"
+msgstr "アラームステータス (カンマ区切りで複数指定可: red,yellow,green,gray)"
+
+msgid "Alarm source(s) (comma-separated)"
+msgstr "アラームソース (カンマ区切りで複数指定可)"
+
+msgid "Acknowledged flag"
+msgstr "確認済みフラグ"
+
+# vcenters.py
+msgid "vCenter operations"
+msgstr "vCenter 操作"
+
+msgid "List connected vCenters"
+msgstr "接続先の vCenter 一覧を取得します"
+
+# admins.py
+msgid "Admin operations"
+msgstr "管理操作"
+
+msgid "Clear all cached responses"
+msgstr "キャッシュ済みの全レスポンスをクリアします"
+
+msgid "Clear down-mark for all vCenters"
+msgstr "全 vCenter のダウンマークをクリアします"
+
+# healthcheck.py
+msgid "Run a service health check"
+msgstr "サービスのヘルスチェックを実行します"
+
+# error messages
+msgid "Error {status}: {reason}"
+msgstr "エラー {status}: {reason}"

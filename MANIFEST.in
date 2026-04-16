@@ -1,0 +1,1 @@
+recursive-include vcenter_lookup_bridge_client/locale *.po *.mo

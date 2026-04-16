@@ -6,6 +6,7 @@ import urllib3
 import vcenter_lookup_bridge_client
 from vcenter_lookup_bridge_client.api_client import ApiClient
 from vcenter_lookup_bridge_client.configuration import Configuration
+from .i18n import _
 
 from .vms import vms
 from .hosts import hosts
@@ -27,21 +28,21 @@ from .healthcheck import healthcheck
     "--host",
     envvar="VLB_HOST",
     required=True,
-    help="API サーバの URL (環境変数: VLB_HOST)",
+    help=_("API server URL (env: VLB_HOST)"),
 )
 @click.option(
     "--username",
     envvar="VLB_USERNAME",
     default="",
     show_default=False,
-    help="Basic 認証のユーザー名 (環境変数: VLB_USERNAME)",
+    help=_("Username for Basic auth (env: VLB_USERNAME)"),
 )
 @click.option(
     "--password",
     envvar="VLB_PASSWORD",
     default="",
     show_default=False,
-    help="Basic 認証のパスワード (環境変数: VLB_PASSWORD)",
+    help=_("Password for Basic auth (env: VLB_PASSWORD)"),
 )
 @click.option(
     "--format",
@@ -49,21 +50,21 @@ from .healthcheck import healthcheck
     type=click.Choice(["table", "json"]),
     default="table",
     show_default=True,
-    help="出力フォーマット",
+    help=_("Output format"),
 )
 @click.option(
     "--no-verify-ssl",
     is_flag=True,
     default=False,
-    help="SSL 証明書の検証を無効にする",
+    help=_("Disable SSL certificate verification"),
 )
 @click.pass_context
 def cli(ctx, host, username, password, output_format, no_verify_ssl):
     """vCenter Lookup Bridge CLI (vlb)
 
-    vCenter Lookup Bridge API に接続して仮想マシン・ホスト・クラスタ等の情報を取得します。
+    Connect to vCenter Lookup Bridge API and retrieve VM/host/cluster information.
 
-    接続情報は環境変数 VLB_HOST / VLB_USERNAME / VLB_PASSWORD で設定できます。
+    Connection info can be set via environment variables VLB_HOST / VLB_USERNAME / VLB_PASSWORD.
     """
     ctx.ensure_object(dict)
     config = Configuration(host=host, username=username, password=password)

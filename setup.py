@@ -11,8 +11,92 @@
     Do not edit the class manually.
 """  # noqa: E501
 
-
+import struct
+from pathlib import Path
 from setuptools import setup, find_packages  # noqa: H301
+from setuptools.command.build_py import build_py
+
+
+def _compile_po(po_path: Path, mo_path: Path) -> None:
+    """Compile a single .po file to .mo binary format."""
+    messages: dict = {}
+    msgid = None
+    msgstr_lines: list = []
+    in_msgstr = False
+
+    def _unquote(s):
+        s = s.strip()
+        if s.startswith('"') and s.endswith('"'):
+            raw = s[1:-1]
+            raw = raw.replace("\\n", "\n")
+            raw = raw.replace("\\t", "\t")
+            raw = raw.replace('\\"', '"')
+            raw = raw.replace("\\\\", "\\")
+            return raw
+        return ""
+
+    with open(po_path, encoding="utf-8") as f:
+        for raw_line in f:
+            line = raw_line.rstrip("\n")
+            if line.startswith("msgid "):
+                if msgid is not None:
+                    messages[msgid] = "".join(msgstr_lines)
+                msgid = _unquote(line[6:])
+                msgstr_lines = []
+                in_msgstr = False
+            elif line.startswith("msgstr "):
+                in_msgstr = True
+                msgstr_lines = [_unquote(line[7:])]
+            elif in_msgstr and line.startswith('"'):
+                msgstr_lines.append(_unquote(line))
+        if msgid is not None:
+            messages[msgid] = "".join(msgstr_lines)
+
+    keys = sorted(messages.keys())
+    N = len(keys)
+    string_start = 28 + N * 8 + N * 8
+
+    orig_offsets = []
+    trans_offsets = []
+    pos = string_start
+    for k in keys:
+        b = k.encode("utf-8")
+        orig_offsets.append((len(b), pos))
+        pos += len(b) + 1
+    for k in keys:
+        b = messages[k].encode("utf-8")
+        trans_offsets.append((len(b), pos))
+        pos += len(b) + 1
+
+    mo_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(mo_path, "wb") as f:
+        f.write(struct.pack("<IIIIIII", 0x950412DE, 0, N, 28, 28 + N * 8, 0, 0))
+        for length, offset in orig_offsets:
+            f.write(struct.pack("<II", length, offset))
+        for length, offset in trans_offsets:
+            f.write(struct.pack("<II", length, offset))
+        for k in keys:
+            f.write(k.encode("utf-8") + b"\x00")
+        for k in keys:
+            f.write(messages[k].encode("utf-8") + b"\x00")
+
+    print(f"Compiled {po_path} -> {mo_path} ({N} messages)")
+
+
+def _compile_all_po() -> None:
+    """locale/ 以下の全 .po ファイルを .mo にコンパイルする。"""
+    locale_dir = Path("vcenter_lookup_bridge_client/locale")
+    for po_path in locale_dir.rglob("*.po"):
+        mo_path = po_path.with_suffix(".mo")
+        _compile_po(po_path, mo_path)
+
+
+class BuildPyWithMo(build_py):
+    """build_py をオーバーライドして .po → .mo コンパイルを追加する。"""
+
+    def run(self):
+        _compile_all_po()
+        super().run()
 
 # To install the library, run the following
 #
@@ -48,10 +132,17 @@ setup(
     long_description="""\
     vCenter Lookup Bridge API
     """,  # noqa: E501
-    package_data={"vcenter_lookup_bridge_client": ["py.typed"]},
+    package_data={
+        "vcenter_lookup_bridge_client": [
+            "py.typed",
+            "locale/**/*.po",
+            "locale/**/*.mo",
+        ]
+    },
     entry_points={
         "console_scripts": [
             "vlb=vcenter_lookup_bridge_client.cli.main:cli",
         ],
     },
+    cmdclass={"build_py": BuildPyWithMo},
 )
