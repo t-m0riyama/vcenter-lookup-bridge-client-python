@@ -16,7 +16,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
+from pydantic import Field, StrictBool, StrictStr
 from typing import List, Optional
 from typing_extensions import Annotated
 from vcenter_lookup_bridge_client.models.datastore_list_response_schema import DatastoreListResponseSchema
@@ -42,8 +42,8 @@ class DatastoresApi:
     @validate_call
     def list_datastores(
         self,
-        tag_category: Annotated[str, Field(min_length=1, strict=True, description="タグのカテゴリを指定します。")],
-        tags: Annotated[List[Optional[StrictStr]], Field(min_length=1, description="タグの名前を指定します。")],
+        tag_category: Annotated[Optional[Annotated[str, Field(min_length=1, strict=True)]], Field(description="タグのカテゴリを指定します。all_datastoresがFalseの場合は必須です。")] = None,
+        tags: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(min_length=1)]], Field(description="タグの名前を指定します。all_datastoresがFalseの場合は必須です。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="データストア一覧を取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="データストア一覧を取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -59,14 +59,15 @@ class DatastoresApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+        all_datastores: Annotated[Optional[StrictBool], Field(description="Trueを指定すると、タグに関係なく全データストアを取得します。この場合、tag_categoryとtagsは省略でき、指定しても無視されます。")] = None,
     ) -> DatastoreListResponseSchema:
         """List Datastores
 
-        タグを指定して、同タグが付与されたデータストア一覧を取得します。
+        タグを指定して、同タグが付与されたデータストア一覧を取得します。all_datastores=Trueを指定した場合は、タグに関係なく全データストア一覧を取得します。
 
-        :param tag_category: タグのカテゴリを指定します。 (required)
+        :param tag_category: タグのカテゴリを指定します。all_datastoresがFalseの場合は必須です。
         :type tag_category: str
-        :param tags: タグの名前を指定します。 (required)
+        :param tags: タグの名前を指定します。all_datastoresがFalseの場合は必須です。
         :type tags: List[Optional[str]]
         :param offset: データストア一覧を取得する際の開始位置を指定します。
         :type offset: int
@@ -74,6 +75,8 @@ class DatastoresApi:
         :type max_results: int
         :param vcenter: vCenterの名前を指定します。
         :type vcenter: str
+        :param all_datastores: Trueを指定すると、タグに関係なく全データストアを取得します。この場合、tag_categoryとtagsは省略でき、指定しても無視されます。
+        :type all_datastores: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -102,6 +105,7 @@ class DatastoresApi:
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
+            all_datastores=all_datastores,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -128,8 +132,8 @@ class DatastoresApi:
     @validate_call
     def list_datastores_with_http_info(
         self,
-        tag_category: Annotated[str, Field(min_length=1, strict=True, description="タグのカテゴリを指定します。")],
-        tags: Annotated[List[Optional[StrictStr]], Field(min_length=1, description="タグの名前を指定します。")],
+        tag_category: Annotated[Optional[Annotated[str, Field(min_length=1, strict=True)]], Field(description="タグのカテゴリを指定します。all_datastoresがFalseの場合は必須です。")] = None,
+        tags: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(min_length=1)]], Field(description="タグの名前を指定します。all_datastoresがFalseの場合は必須です。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="データストア一覧を取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="データストア一覧を取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -145,14 +149,15 @@ class DatastoresApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+        all_datastores: Annotated[Optional[StrictBool], Field(description="Trueを指定すると、タグに関係なく全データストアを取得します。この場合、tag_categoryとtagsは省略でき、指定しても無視されます。")] = None,
     ) -> ApiResponse[DatastoreListResponseSchema]:
         """List Datastores
 
-        タグを指定して、同タグが付与されたデータストア一覧を取得します。
+        タグを指定して、同タグが付与されたデータストア一覧を取得します。all_datastores=Trueを指定した場合は、タグに関係なく全データストア一覧を取得します。
 
-        :param tag_category: タグのカテゴリを指定します。 (required)
+        :param tag_category: タグのカテゴリを指定します。all_datastoresがFalseの場合は必須です。
         :type tag_category: str
-        :param tags: タグの名前を指定します。 (required)
+        :param tags: タグの名前を指定します。all_datastoresがFalseの場合は必須です。
         :type tags: List[Optional[str]]
         :param offset: データストア一覧を取得する際の開始位置を指定します。
         :type offset: int
@@ -160,6 +165,8 @@ class DatastoresApi:
         :type max_results: int
         :param vcenter: vCenterの名前を指定します。
         :type vcenter: str
+        :param all_datastores: Trueを指定すると、タグに関係なく全データストアを取得します。この場合、tag_categoryとtagsは省略でき、指定しても無視されます。
+        :type all_datastores: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -188,6 +195,7 @@ class DatastoresApi:
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
+            all_datastores=all_datastores,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -214,8 +222,8 @@ class DatastoresApi:
     @validate_call
     def list_datastores_without_preload_content(
         self,
-        tag_category: Annotated[str, Field(min_length=1, strict=True, description="タグのカテゴリを指定します。")],
-        tags: Annotated[List[Optional[StrictStr]], Field(min_length=1, description="タグの名前を指定します。")],
+        tag_category: Annotated[Optional[Annotated[str, Field(min_length=1, strict=True)]], Field(description="タグのカテゴリを指定します。all_datastoresがFalseの場合は必須です。")] = None,
+        tags: Annotated[Optional[Annotated[List[Optional[StrictStr]], Field(min_length=1)]], Field(description="タグの名前を指定します。all_datastoresがFalseの場合は必須です。")] = None,
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="データストア一覧を取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="データストア一覧を取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
@@ -231,14 +239,15 @@ class DatastoresApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+        all_datastores: Annotated[Optional[StrictBool], Field(description="Trueを指定すると、タグに関係なく全データストアを取得します。この場合、tag_categoryとtagsは省略でき、指定しても無視されます。")] = None,
     ) -> RESTResponseType:
         """List Datastores
 
-        タグを指定して、同タグが付与されたデータストア一覧を取得します。
+        タグを指定して、同タグが付与されたデータストア一覧を取得します。all_datastores=Trueを指定した場合は、タグに関係なく全データストア一覧を取得します。
 
-        :param tag_category: タグのカテゴリを指定します。 (required)
+        :param tag_category: タグのカテゴリを指定します。all_datastoresがFalseの場合は必須です。
         :type tag_category: str
-        :param tags: タグの名前を指定します。 (required)
+        :param tags: タグの名前を指定します。all_datastoresがFalseの場合は必須です。
         :type tags: List[Optional[str]]
         :param offset: データストア一覧を取得する際の開始位置を指定します。
         :type offset: int
@@ -246,6 +255,8 @@ class DatastoresApi:
         :type max_results: int
         :param vcenter: vCenterの名前を指定します。
         :type vcenter: str
+        :param all_datastores: Trueを指定すると、タグに関係なく全データストアを取得します。この場合、tag_categoryとtagsは省略でき、指定しても無視されます。
+        :type all_datastores: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -274,6 +285,7 @@ class DatastoresApi:
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
+            all_datastores=all_datastores,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -300,6 +312,7 @@ class DatastoresApi:
         offset,
         max_results,
         vcenter,
+        all_datastores,
         _request_auth,
         _content_type,
         _headers,
@@ -342,6 +355,10 @@ class DatastoresApi:
         if vcenter is not None:
             
             _query_params.append(('vcenter', vcenter))
+            
+        if all_datastores is not None:
+            
+            _query_params.append(('all_datastores', all_datastores))
             
         # process the header parameters
         # process the form parameters

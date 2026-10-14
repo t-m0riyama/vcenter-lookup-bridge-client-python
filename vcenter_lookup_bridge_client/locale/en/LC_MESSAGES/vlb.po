@@ -75,14 +75,20 @@ msgstr "Cluster name(s) (comma-separated)"
 msgid "Datastore operations"
 msgstr "Datastore operations"
 
-msgid "List datastores filtered by tag"
-msgstr "List datastores filtered by tag"
+msgid "List datastores filtered by tag, or all datastores with --all"
+msgstr "List datastores filtered by tag, or all datastores with --all"
 
 msgid "Tag category name"
 msgstr "Tag category name"
 
 msgid "Tag name(s) (comma-separated)"
 msgstr "Tag name(s) (comma-separated)"
+
+msgid "List all datastores regardless of tags"
+msgstr "List all datastores regardless of tags"
+
+msgid "Specify both --tag-category and --tags, or use --all"
+msgstr "Specify both --tag-category and --tags, or use --all"
 
 # portgroups.py
 msgid "Port group operations"

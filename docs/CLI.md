@@ -174,22 +174,25 @@ vlb clusters list --clusters ClusterA,ClusterB
 
 #### `vlb datastores list`
 
-List datastores filtered by tag.
+List datastores filtered by tag, or all datastores with `--all`.
 
 ```sh
 vlb datastores list --tag-category <category> --tags <tags> [options]
+vlb datastores list --all [options]
 ```
 
 | Option | Required | Default | Description |
 |---|---|---|---|
-| `--tag-category` |  |  | Tag category name |
-| `--tags` |  |  | Tag name(s), comma-separated |
+| `--tag-category` | ✓ (without `--all`) |  | Tag category name |
+| `--tags` | ✓ (without `--all`) |  | Tag name(s), comma-separated |
+| `--all` |  | `false` | List all datastores regardless of tags (tag columns are empty) |
 | `--vcenter` |  |  | Filter by vCenter name |
 | `--offset` |  | `0` | Offset for pagination |
 | `--max-results` |  | `100` | Maximum number of results |
 
 ```sh
 vlb datastores list --tag-category Environment --tags Production,Staging
+vlb datastores list --all --vcenter vcenter01
 ```
 
 ---
