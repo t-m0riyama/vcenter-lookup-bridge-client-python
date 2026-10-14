@@ -7,6 +7,7 @@ vCenter Lookup Bridge API - DATASTORES APIテスト
 import pydantic
 import pytest
 from typing import Dict, Any
+from unittest.mock import MagicMock
 
 import vcenter_lookup_bridge_client
 from vcenter_lookup_bridge_client.models.pagination_info import PaginationInfo
@@ -353,3 +354,33 @@ class TestDatastoresApi:
         print(
             f"✅ ページネーション付きVM FOLDERリスト取得テスト成功: ページ1, 1ページあたり100件"
         )
+
+
+@pytest.mark.unit
+class TestDatastoresApiSignature:
+    """DATASTORES APIの引数の互換性テスト(APIサーバ不要)"""
+
+    @pytest.fixture
+    def mock_api_instance(self):
+        """call_apiをモックしたDATASTORES APIのフィクスチャ"""
+        api_client = vcenter_lookup_bridge_client.ApiClient()
+        api_client.call_api = MagicMock()
+        api_client.response_deserialize = MagicMock()
+        return vcenter_lookup_bridge_client.DatastoresApi(api_client)
+
+    def test_list_datastores_positional_request_timeout(self, mock_api_instance):
+        """6番目の位置引数が従来どおり_request_timeoutとして扱われることを確認"""
+        mock_api_instance.list_datastores("cat1", ["tag1"], 0, 100, "vcenter01", 30.0)
+
+        args, kwargs = mock_api_instance.api_client.call_api.call_args
+        assert kwargs["_request_timeout"] == 30.0
+        assert "all_datastores" not in args[1]
+
+    def test_list_datastores_all_datastores_keyword(self, mock_api_instance):
+        """all_datastoresをキーワード引数で指定するとクエリに付与されることを確認"""
+        mock_api_instance.list_datastores(all_datastores=True, vcenter="vcenter01")
+
+        args, _ = mock_api_instance.api_client.call_api.call_args
+        assert "all_datastores=true" in args[1]
+        assert "tag_category" not in args[1]
+        assert "tags" not in args[1]

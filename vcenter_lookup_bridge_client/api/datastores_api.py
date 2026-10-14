@@ -47,7 +47,6 @@ class DatastoresApi:
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="データストア一覧を取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="データストア一覧を取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
-        all_datastores: Annotated[Optional[StrictBool], Field(description="Trueを指定すると、タグに関係なく全データストアを取得します。この場合、tag_categoryとtagsは省略でき、指定しても無視されます。")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -60,6 +59,7 @@ class DatastoresApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+        all_datastores: Annotated[Optional[StrictBool], Field(description="Trueを指定すると、タグに関係なく全データストアを取得します。この場合、tag_categoryとtagsは省略でき、指定しても無視されます。")] = None,
     ) -> DatastoreListResponseSchema:
         """List Datastores
 
@@ -137,7 +137,6 @@ class DatastoresApi:
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="データストア一覧を取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="データストア一覧を取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
-        all_datastores: Annotated[Optional[StrictBool], Field(description="Trueを指定すると、タグに関係なく全データストアを取得します。この場合、tag_categoryとtagsは省略でき、指定しても無視されます。")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -150,6 +149,7 @@ class DatastoresApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+        all_datastores: Annotated[Optional[StrictBool], Field(description="Trueを指定すると、タグに関係なく全データストアを取得します。この場合、tag_categoryとtagsは省略でき、指定しても無視されます。")] = None,
     ) -> ApiResponse[DatastoreListResponseSchema]:
         """List Datastores
 
@@ -227,7 +227,6 @@ class DatastoresApi:
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="データストア一覧を取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="データストア一覧を取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
-        all_datastores: Annotated[Optional[StrictBool], Field(description="Trueを指定すると、タグに関係なく全データストアを取得します。この場合、tag_categoryとtagsは省略でき、指定しても無視されます。")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -240,6 +239,7 @@ class DatastoresApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+        all_datastores: Annotated[Optional[StrictBool], Field(description="Trueを指定すると、タグに関係なく全データストアを取得します。この場合、tag_categoryとtagsは省略でき、指定しても無視されます。")] = None,
     ) -> RESTResponseType:
         """List Datastores
 
