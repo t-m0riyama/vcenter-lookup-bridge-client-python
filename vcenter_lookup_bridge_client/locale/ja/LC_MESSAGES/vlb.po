@@ -75,14 +75,20 @@ msgstr "クラスタ名 (カンマ区切りで複数指定可)"
 msgid "Datastore operations"
 msgstr "データストア操作"
 
-msgid "List datastores filtered by tag"
-msgstr "タグを指定してデータストア一覧を取得します"
+msgid "List datastores filtered by tag, or all datastores with --all"
+msgstr "タグを指定してデータストア一覧を取得します (--all で全データストア)"
 
 msgid "Tag category name"
 msgstr "タグのカテゴリ名"
 
 msgid "Tag name(s) (comma-separated)"
 msgstr "タグ名 (カンマ区切りで複数指定可)"
+
+msgid "List all datastores regardless of tags"
+msgstr "タグに関係なく全データストアを取得します"
+
+msgid "Specify both --tag-category and --tags, or use --all"
+msgstr "--tag-category と --tags の両方を指定するか、--all を指定してください"
 
 # portgroups.py
 msgid "Port group operations"

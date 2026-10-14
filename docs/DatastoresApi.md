@@ -8,11 +8,11 @@ Method | HTTP request | Description
 
 
 # **list_datastores**
-> DatastoreListResponseSchema list_datastores(tag_category, tags, offset=offset, max_results=max_results, vcenter=vcenter)
+> DatastoreListResponseSchema list_datastores(tag_category=tag_category, tags=tags, offset=offset, max_results=max_results, vcenter=vcenter, all_datastores=all_datastores)
 
 List Datastores
 
-タグを指定して、同タグが付与されたデータストア一覧を取得します。
+タグを指定して、同タグが付与されたデータストア一覧を取得します。all_datastores=Trueを指定した場合は、タグに関係なく全データストア一覧を取得します。
 
 ### Example
 
@@ -45,15 +45,16 @@ configuration = vcenter_lookup_bridge_client.Configuration(
 with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = vcenter_lookup_bridge_client.DatastoresApi(api_client)
-    tag_category = 'cat1' # str | タグのカテゴリを指定します。
-    tags = ['[\"tag1\"]'] # List[Optional[str]] | タグの名前を指定します。
+    tag_category = 'cat1' # str | タグのカテゴリを指定します。all_datastoresがFalseの場合は必須です。 (optional)
+    tags = ['[\"tag1\"]'] # List[Optional[str]] | タグの名前を指定します。all_datastoresがFalseの場合は必須です。 (optional)
     offset = 56 # int | データストア一覧を取得する際の開始位置を指定します。 (optional)
     max_results = 56 # int | データストア一覧を取得する際の最大件数を指定します。 (optional)
     vcenter = 'vcenter01' # str | vCenterの名前を指定します。 (optional)
+    all_datastores = False # bool | Trueを指定すると、タグに関係なく全データストアを取得します。この場合、tag_categoryとtagsは省略でき、指定しても無視されます。 (optional)
 
     try:
         # List Datastores
-        api_response = api_instance.list_datastores(tag_category, tags, offset=offset, max_results=max_results, vcenter=vcenter)
+        api_response = api_instance.list_datastores(tag_category=tag_category, tags=tags, offset=offset, max_results=max_results, vcenter=vcenter, all_datastores=all_datastores)
         print("The response of DatastoresApi->list_datastores:\n")
         pprint(api_response)
     except Exception as e:
@@ -67,11 +68,12 @@ with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **tag_category** | **str**| タグのカテゴリを指定します。 | 
- **tags** | [**List[Optional[str]]**](str.md)| タグの名前を指定します。 | 
+ **tag_category** | **str**| タグのカテゴリを指定します。all_datastoresがFalseの場合は必須です。 | [optional] 
+ **tags** | [**List[Optional[str]]**](str.md)| タグの名前を指定します。all_datastoresがFalseの場合は必須です。 | [optional] 
  **offset** | **int**| データストア一覧を取得する際の開始位置を指定します。 | [optional] 
  **max_results** | **int**| データストア一覧を取得する際の最大件数を指定します。 | [optional] 
  **vcenter** | **str**| vCenterの名前を指定します。 | [optional] 
+ **all_datastores** | **bool**| Trueを指定すると、タグに関係なく全データストアを取得します。この場合、tag_categoryとtagsは省略でき、指定しても無視されます。 | [optional] [default to False]
 
 ### Return type
 

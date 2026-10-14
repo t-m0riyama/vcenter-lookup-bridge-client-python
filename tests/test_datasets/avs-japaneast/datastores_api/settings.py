@@ -40,6 +40,28 @@ VALID_LIST_PARAMETERS_VCENTER = {
     "max_results": 100,
 }
 
+# DATASTOREリストのパラメータ(正常, 全vCenter, 全データストア)
+VALID_LIST_PARAMETERS_ALL = {
+    "all_datastores": True,
+    "offset": 0,
+    "max_results": 100,
+}
+
+# DATASTOREリストのパラメータ(正常, 指定vCenter, 全データストア)
+VALID_LIST_PARAMETERS_ALL_VCENTER = {
+    "all_datastores": True,
+    "vcenter": VALID_VCENTER,
+    "offset": 0,
+    "max_results": 100,
+}
+
+# DATASTOREリストのパラメータ(全データストア指定なしでタグを省略)
+INVALID_LIST_PARAMETERS_NO_TAGS = {
+    "vcenter": VALID_VCENTER,
+    "offset": 0,
+    "max_results": 100,
+}
+
 # DATASTOREリストのパラメータ(tag_categoryが存在しない)
 INVALID_LIST_PARAMETERS_TAG_CATEGORY = {
     "tag_category": INVALID_TAG_CATEGORY,

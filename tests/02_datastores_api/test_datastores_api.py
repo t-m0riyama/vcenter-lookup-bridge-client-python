@@ -106,6 +106,92 @@ class TestDatastoresApi:
             f"✅ データストアリスト取得テスト(複数タグ指定)成功: {len(response.results)}件のデータストアが見つかりました"
         )
 
+    def test_list_datastores_success_all(self, api_instance, test_dataset):
+        """全データストア取得の成功テスト"""
+        # APIを呼び出し
+        response = api_instance.list_datastores(**test_dataset.VALID_LIST_PARAMETERS_ALL)
+
+        # レスポンスの基本チェック
+        assert response is not None
+        assert response.success is True
+
+        # レスポンスデータ本体のチェック
+        results = response.results
+        assert isinstance(results, list)
+        assert len(results) > 0
+
+        for result in results:
+            # レスポンスデータがスキーマに適合していることをチェック
+            assert isinstance(result, DatastoreResponseSchema)
+            # 全データストア取得ではタグ情報は返されない
+            assert result.tag_category is None
+            assert result.tags is None
+
+        # タグ指定で取得できるデータストアが全データストアに含まれることをチェック
+        names = {(result.vcenter, result.name) for result in results}
+        for expected_result in test_dataset.EXPECTED_DATASTORE_LIST["results"]:
+            assert (expected_result["vcenter"], expected_result["name"]) in names
+
+        # ページネーション情報がスキーマに適合していることをチェック
+        pagination = response.pagination
+        assert isinstance(pagination, PaginationInfo)
+        assert pagination.total_count >= len(results)
+
+        print(
+            f"✅ データストアリスト取得テスト(全データストア)成功: {len(response.results)}件のデータストアが見つかりました"
+        )
+
+    def test_list_datastores_success_all_vcenter(self, api_instance, test_dataset):
+        """vCenterを指定しての全データストア取得の成功テスト"""
+        # APIを呼び出し
+        response = api_instance.list_datastores(
+            **test_dataset.VALID_LIST_PARAMETERS_ALL_VCENTER
+        )
+
+        # レスポンスの基本チェック
+        assert response is not None
+        assert response.success is True
+
+        # レスポンスデータ本体のチェック
+        results = response.results
+        assert isinstance(results, list)
+        assert len(results) > 0
+
+        for result in results:
+            assert isinstance(result, DatastoreResponseSchema)
+            # 指定したvCenterのデータストアのみが返されることをチェック
+            assert result.vcenter == test_dataset.VALID_VCENTER
+            assert result.tag_category is None
+            assert result.tags is None
+
+        # ページネーション情報のチェック
+        pagination = response.pagination
+        assert isinstance(pagination, PaginationInfo)
+        assert pagination.total_count >= len(results)
+        assert pagination.has_next == (len(results) == pagination.limit)
+
+        print(
+            f"✅ データストアリスト取得テスト(全データストア, vCenter指定)成功: {len(response.results)}件のデータストアが見つかりました"
+        )
+
+    def test_list_datastores_without_tags(self, api_instance, test_dataset):
+        """全データストア取得を指定せずにタグを省略した場合のテスト"""
+        try:
+            response = api_instance.list_datastores(
+                **test_dataset.INVALID_LIST_PARAMETERS_NO_TAGS
+            )
+
+            # 例外が発生し、以降の行は実行されないことを期待する
+            pytest.fail(
+                "タグを省略してのデータストア取得テストで、想定される例外が発生しませんでした。"
+            )
+
+        except vcenter_lookup_bridge_client.ApiException as e:
+            assert e.status == 422
+            print(
+                "✅ タグを省略してのデータストア取得テスト成功: 422エラーが正しく返されました"
+            )
+
     def test_list_datastore_not_found_with_invalid_tag_category(
         self, api_instance, test_dataset
     ):
