@@ -86,7 +86,9 @@ EXPECTED_VM = json.loads(
         {
           "label": "Hard disk 1",
           "datastore": "vsanDatastore",
-          "sizeGB": 260
+          "sizeGB": 260,
+          "scsiControllerBusNumber": 0,
+          "unitNumber": 0
         }
       ],
       "networkDevices": [
