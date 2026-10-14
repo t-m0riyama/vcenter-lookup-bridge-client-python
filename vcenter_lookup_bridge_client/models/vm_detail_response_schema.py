@@ -28,7 +28,7 @@ class VmDetailResponseSchema(BaseModel):
     """ # noqa: E501
     cluster: Optional[StrictStr]
     datacenter: StrictStr = Field(description="仮想マシンのデータセンターを示します。")
-    disk_devices: Optional[List[Any]] = Field(alias="diskDevices")
+    disk_devices: Optional[List[Any]] = Field(description="仮想マシンのディスク情報(ラベル、データストア、サイズ、SCSIコントローラのバス番号、ユニット番号)を示します。SCSI以外のコントローラに接続されたディスクのscsiControllerBusNumberはnullです。", alias="diskDevices")
     esxi_hostname: Optional[StrictStr] = Field(alias="esxiHostname")
     guest_full_name: StrictStr = Field(description="仮想マシンのゲストOSの種別をフルネームを示します。", alias="guestFullName")
     hostname: Optional[StrictStr]

@@ -86,7 +86,9 @@ EXPECTED_VM = json.loads(
       {
         "label": "Dummy Label",
         "datastore": "Dummy Datastore",
-        "sizeGB": 100
+        "sizeGB": 100,
+        "scsiControllerBusNumber": 0,
+        "unitNumber": 0
       }
     ],
     "networkDevices": [

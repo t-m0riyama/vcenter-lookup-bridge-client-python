@@ -5,19 +5,23 @@ import urllib3
 
 import vcenter_lookup_bridge_client
 from vcenter_lookup_bridge_client.configuration import Configuration
-from py.xml import html
+from html import escape
 
 
+# pytest-html未インストール時もエラーにならないよう、optionalhookとして登録
+@pytest.hookimpl(optionalhook=True)
 def pytest_html_report_title(report):
    report.title = 'vcenter-lookup-bridge-client Test results'
 
 
+@pytest.hookimpl(optionalhook=True)
 def pytest_html_results_table_header(cells):
-    cells.insert(2, html.th('Description'))
+    cells.insert(2, '<th>Description</th>')
 
 
+@pytest.hookimpl(optionalhook=True)
 def pytest_html_results_table_row(report, cells):
-    cells.insert(2, html.td(report.description))
+    cells.insert(2, f'<td>{escape(report.description)}</td>')
 
 
 @pytest.hookimpl(hookwrapper=True)

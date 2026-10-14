@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **cluster** | **str** |  | 
 **datacenter** | **str** | 仮想マシンのデータセンターを示します。 | 
-**disk_devices** | **List[object]** |  | 
+**disk_devices** | **List[object]** | 仮想マシンのディスク情報(ラベル、データストア、サイズ、SCSIコントローラのバス番号、ユニット番号)を示します。SCSI以外のコントローラに接続されたディスクのscsiControllerBusNumberはnullです。 | 
 **esxi_hostname** | **str** |  | 
 **guest_full_name** | **str** | 仮想マシンのゲストOSの種別をフルネームを示します。 | 
 **hostname** | **str** |  | 

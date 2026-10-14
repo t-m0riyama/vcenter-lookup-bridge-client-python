@@ -103,13 +103,14 @@ Configuration(
 
 ## 🔧 必要な依存関係
 
-```bash
-# 基本的な依存関係
-pip install requests pytest
+依存関係は `pyproject.toml` で管理しています (開発用は `[dependency-groups] dev`)。
+uvで実行環境を同期します。
 
-# 開発用依存関係
-pip install pytest-cov flake8 mypy
+```bash
+uv sync
 ```
+
+`uv run pytest` で実行した場合も、不足している依存関係は自動で同期されます。
 
 ## 📝 テスト実行時の注意事項
 

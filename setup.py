@@ -105,7 +105,7 @@ class BuildPyWithMo(build_py):
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
 NAME = "vcenter-lookup-bridge-client"
-VERSION = "1.2.0"
+VERSION = "1.4.0"
 PYTHON_REQUIRES = ">= 3.9"
 REQUIRES = [
     "urllib3 >= 2.1.0, < 3.0.0",
