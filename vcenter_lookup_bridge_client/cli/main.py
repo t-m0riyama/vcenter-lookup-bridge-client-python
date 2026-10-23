@@ -20,6 +20,9 @@ from .alarms import alarms
 from .vcenters import vcenters
 from .admins import admins
 from .healthcheck import healthcheck
+from .tags import tags
+from .tag_categories import tag_categories
+from .custom_attributes import custom_attributes
 
 
 @click.group()
@@ -87,3 +90,6 @@ cli.add_command(alarms)
 cli.add_command(vcenters)
 cli.add_command(admins)
 cli.add_command(healthcheck)
+cli.add_command(tags)
+cli.add_command(tag_categories, name="tag-categories")
+cli.add_command(custom_attributes, name="custom-attributes")

@@ -191,6 +191,49 @@ msgstr "全 vCenter のダウンマークをクリアします"
 msgid "Run a service health check"
 msgstr "サービスのヘルスチェックを実行します"
 
+# events.py / alarms.py (cursor paging)
+msgid "Cursor for the next page (pagination.nextCursor of the previous page)"
+msgstr "次のページを取得するカーソル (前のページの pagination.nextCursor)"
+
+msgid "--cursor cannot be used with --offset"
+msgstr "--cursor と --offset は同時に指定できません"
+
+msgid "Next cursor: {cursor}"
+msgstr "次のページのカーソル: {cursor}"
+
+# tags.py
+msgid "Tag operations"
+msgstr "タグ操作"
+
+msgid "List tags, or tags assigned to the specified object"
+msgstr "タグ一覧、または指定したオブジェクトに割り当てられたタグを取得します"
+
+msgid "Type of the object to look up assignments for"
+msgstr "割り当てを問い合わせるオブジェクトの種別"
+
+msgid "Name of the object to look up assignments for"
+msgstr "割り当てを問い合わせるオブジェクトの名前"
+
+msgid "Instance UUID of the VM to look up assignments for (VirtualMachine only)"
+msgstr "割り当てを問い合わせる仮想マシンのインスタンス UUID (VirtualMachine の場合のみ)"
+
+# tag_categories.py
+msgid "Tag category operations"
+msgstr "タグカテゴリ操作"
+
+msgid "List tag categories"
+msgstr "タグカテゴリ一覧を取得します"
+
+# custom_attributes.py
+msgid "Custom attribute operations"
+msgstr "カスタム属性操作"
+
+msgid "List custom attribute definitions, or values set on the specified object"
+msgstr "カスタム属性の定義一覧、または指定したオブジェクトに設定された値を取得します"
+
+msgid "Object type (alone: filter definitions by type, e.g. Global; with --object-name/--object-id: type of the object to look up)"
+msgstr "オブジェクトの種別 (単独指定: その種別の定義のみ取得。グローバル属性は Global / --object-name・--object-id と併用: 割り当てを問い合わせるオブジェクトの種別)"
+
 # error messages
 msgid "Error {status}: {reason}"
 msgstr "エラー {status}: {reason}"

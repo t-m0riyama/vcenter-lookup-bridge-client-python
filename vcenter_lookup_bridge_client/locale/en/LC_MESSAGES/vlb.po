@@ -191,6 +191,49 @@ msgstr "Clear down-mark for all vCenters"
 msgid "Run a service health check"
 msgstr "Run a service health check"
 
+# events.py / alarms.py (cursor paging)
+msgid "Cursor for the next page (pagination.nextCursor of the previous page)"
+msgstr "Cursor for the next page (pagination.nextCursor of the previous page)"
+
+msgid "--cursor cannot be used with --offset"
+msgstr "--cursor cannot be used with --offset"
+
+msgid "Next cursor: {cursor}"
+msgstr "Next cursor: {cursor}"
+
+# tags.py
+msgid "Tag operations"
+msgstr "Tag operations"
+
+msgid "List tags, or tags assigned to the specified object"
+msgstr "List tags, or tags assigned to the specified object"
+
+msgid "Type of the object to look up assignments for"
+msgstr "Type of the object to look up assignments for"
+
+msgid "Name of the object to look up assignments for"
+msgstr "Name of the object to look up assignments for"
+
+msgid "Instance UUID of the VM to look up assignments for (VirtualMachine only)"
+msgstr "Instance UUID of the VM to look up assignments for (VirtualMachine only)"
+
+# tag_categories.py
+msgid "Tag category operations"
+msgstr "Tag category operations"
+
+msgid "List tag categories"
+msgstr "List tag categories"
+
+# custom_attributes.py
+msgid "Custom attribute operations"
+msgstr "Custom attribute operations"
+
+msgid "List custom attribute definitions, or values set on the specified object"
+msgstr "List custom attribute definitions, or values set on the specified object"
+
+msgid "Object type (alone: filter definitions by type, e.g. Global; with --object-name/--object-id: type of the object to look up)"
+msgstr "Object type (alone: filter definitions by type, e.g. Global; with --object-name/--object-id: type of the object to look up)"
+
 # error messages
 msgid "Error {status}: {reason}"
 msgstr "Error {status}: {reason}"
