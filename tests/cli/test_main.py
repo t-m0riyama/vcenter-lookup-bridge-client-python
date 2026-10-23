@@ -17,6 +17,9 @@ class TestCliMain:
         assert "hosts" in result.output
         assert "clusters" in result.output
         assert "healthcheck" in result.output
+        assert "tags" in result.output
+        assert "tag-categories" in result.output
+        assert "custom-attributes" in result.output
 
     def test_cli_version(self, cli_runner):
         """vlb --version が正しいバージョンを返す"""

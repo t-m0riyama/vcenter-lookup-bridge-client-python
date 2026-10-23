@@ -5,7 +5,7 @@ import pytest
 from io import StringIO
 from unittest.mock import MagicMock
 
-from vcenter_lookup_bridge_client.cli.formatters import output_json, output_table
+from vcenter_lookup_bridge_client.cli.formatters import output_json, output_next_cursor, output_table
 
 
 @pytest.mark.unit
@@ -92,3 +92,42 @@ class TestOutputTable:
         buf = StringIO()
         output_table([item], ["name", "vcenter"], file=buf)
         assert "vm1" in buf.getvalue()
+
+
+@pytest.mark.unit
+class TestOutputTableStrColumns:
+    def test_str_columns_keep_numeric_like_string(self):
+        """str_columns に指定した列は、数値に見える値でも文字列のまま出力される"""
+        item = MagicMock()
+        item.key = "107.10"
+        buf = StringIO()
+        output_table([item], ["key"], file=buf, str_columns=["key"])
+        assert "107.10" in buf.getvalue()
+
+    def test_without_str_columns_parses_numbers(self):
+        """str_columns を指定しない場合は従来どおり数値として整形される"""
+        item = MagicMock()
+        item.key = "107.10"
+        buf = StringIO()
+        output_table([item], ["key"], file=buf)
+        assert "107.10" not in buf.getvalue()
+
+
+@pytest.mark.unit
+class TestOutputNextCursor:
+    def test_output_next_cursor(self):
+        """next_cursor がある場合に出力される"""
+        pagination = MagicMock()
+        pagination.next_cursor = "abc"
+        buf = StringIO()
+        output_next_cursor(pagination, file=buf)
+        assert "abc" in buf.getvalue()
+
+    def test_output_next_cursor_none(self):
+        """next_cursor が None、または pagination が None の場合は何も出力しない"""
+        pagination = MagicMock()
+        pagination.next_cursor = None
+        buf = StringIO()
+        output_next_cursor(pagination, file=buf)
+        output_next_cursor(None, file=buf)
+        assert buf.getvalue() == ""

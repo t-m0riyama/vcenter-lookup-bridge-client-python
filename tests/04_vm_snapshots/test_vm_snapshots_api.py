@@ -7,6 +7,7 @@ vCenter Lookup Bridge API - VM SNAPSHOTS APIテスト
 import pydantic
 import pytest
 from typing import Dict, Any
+from unittest.mock import MagicMock
 
 import vcenter_lookup_bridge_client
 from vcenter_lookup_bridge_client.models.pagination_info import PaginationInfo
@@ -275,3 +276,19 @@ class TestVmSnapshotsApi:
                 pytest.fail(
                     f"空の結果フィルターテストで予期しないエラーが発生しました: {str(e)}"
                 )
+
+
+@pytest.mark.unit
+class TestVmSnapshotsApiEmptyVcenter:
+    """VM SNAPSHOTS APIのUUID指定の取得で、空のvcenterを送らないことのテスト(APIサーバ不要)"""
+
+    def test_get_vm_snapshots_with_empty_vcenter(self):
+        """空のvcenterはクライアント側で検証エラーになり、APIを呼び出さないことを確認"""
+        api_client = vcenter_lookup_bridge_client.ApiClient()
+        api_client.call_api = MagicMock()
+        api_instance = vcenter_lookup_bridge_client.VmSnapshotsApi(api_client)
+
+        with pytest.raises(pydantic.ValidationError):
+            api_instance.get_vm_snapshots("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", vcenter="")
+        api_client.call_api.assert_not_called()
+

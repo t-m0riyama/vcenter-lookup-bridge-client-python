@@ -226,6 +226,7 @@ def make_snapshot_list_response(results=None):
 
 def make_event_response(**kwargs):
     m = MagicMock()
+    m.key = kwargs.get("key", 12345)
     m.created_time = kwargs.get("created_time", "2026-04-16T00:00:00Z")
     m.event_type = kwargs.get("event_type", "VmPoweredOnEvent")
     m.vcenter = kwargs.get("vcenter", "vcenter01")
@@ -236,16 +237,18 @@ def make_event_response(**kwargs):
     return m
 
 
-def make_event_list_response(results=None):
+def make_event_list_response(results=None, pagination=None):
     m = MagicMock()
     m.success = True
     m.results = results if results is not None else [make_event_response()]
+    m.pagination = pagination
     m.model_dump = MagicMock(return_value={"success": True, "results": [{"event_type": r.event_type} for r in m.results]})
     return m
 
 
 def make_alarm_response(**kwargs):
     m = MagicMock()
+    m.key = kwargs.get("key", "alarm-7.host-21")
     m.name = kwargs.get("name", "alarm01")
     m.vcenter = kwargs.get("vcenter", "vcenter01")
     m.datacenter = kwargs.get("datacenter", "DC1")
@@ -257,10 +260,78 @@ def make_alarm_response(**kwargs):
     return m
 
 
-def make_alarm_list_response(results=None):
+def make_alarm_list_response(results=None, pagination=None):
     m = MagicMock()
     m.success = True
     m.results = results if results is not None else [make_alarm_response()]
+    m.pagination = pagination
+    m.model_dump = MagicMock(return_value={"success": True, "results": [{"name": r.name} for r in m.results]})
+    return m
+
+
+def make_pagination(**kwargs):
+    m = MagicMock()
+    m.total_count = kwargs.get("total_count", 1)
+    m.offset = kwargs.get("offset", 0)
+    m.limit = kwargs.get("limit", 100)
+    m.has_next = kwargs.get("has_next", False)
+    m.has_previous = kwargs.get("has_previous", False)
+    m.next_cursor = kwargs.get("next_cursor", None)
+    return m
+
+
+def make_tag_response(**kwargs):
+    m = MagicMock()
+    m.name = kwargs.get("name", "tag1")
+    m.tag_category = kwargs.get("tag_category", "cat1")
+    m.vcenter = kwargs.get("vcenter", "vcenter01")
+    m.description = kwargs.get("description", "Test tag")
+    m.object_name = kwargs.get("object_name", None)
+    m.object_id = kwargs.get("object_id", None)
+    return m
+
+
+def make_tag_list_response(results=None):
+    m = MagicMock()
+    m.success = True
+    m.results = results if results is not None else [make_tag_response()]
+    m.model_dump = MagicMock(return_value={"success": True, "results": [{"name": r.name} for r in m.results]})
+    return m
+
+
+def make_tag_category_response(**kwargs):
+    m = MagicMock()
+    m.name = kwargs.get("name", "cat1")
+    m.cardinality = kwargs.get("cardinality", "SINGLE")
+    m.associable_types = kwargs.get("associable_types", ["VirtualMachine"])
+    m.vcenter = kwargs.get("vcenter", "vcenter01")
+    m.description = kwargs.get("description", "Test category")
+    return m
+
+
+def make_tag_category_list_response(results=None):
+    m = MagicMock()
+    m.success = True
+    m.results = results if results is not None else [make_tag_category_response()]
+    m.model_dump = MagicMock(return_value={"success": True, "results": [{"name": r.name} for r in m.results]})
+    return m
+
+
+def make_custom_attribute_response(**kwargs):
+    m = MagicMock()
+    m.name = kwargs.get("name", "owner")
+    m.object_type = kwargs.get("object_type", "VirtualMachine")
+    m.type = kwargs.get("type", "string")
+    m.vcenter = kwargs.get("vcenter", "vcenter01")
+    m.value = kwargs.get("value", None)
+    m.object_name = kwargs.get("object_name", None)
+    return m
+
+
+def make_custom_attribute_list_response(results=None):
+    m = MagicMock()
+    m.success = True
+    m.results = results if results is not None else [make_custom_attribute_response()]
     m.model_dump = MagicMock(return_value={"success": True, "results": [{"name": r.name} for r in m.results]})
     return m
 
