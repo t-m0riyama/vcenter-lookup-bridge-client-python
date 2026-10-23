@@ -130,9 +130,14 @@ class TestClustersApi:
             # レスポンスデータがスキーマに適合していることをチェック
             assert isinstance(result, ClusterResponseSchema)
 
-        # ページネーション情報がスキーマに適合していることをチェック
+        # ページネーション情報がスキーマに適合し、リクエストの範囲と一致することをチェック (VLB v1.6.0から返却)
         pagination = response.pagination
-        assert pagination is None
+        assert isinstance(pagination, PaginationInfo)
+        assert pagination.offset == test_dataset.VALID_LIST_PARAMETERS["offset"]
+        assert pagination.limit == test_dataset.VALID_LIST_PARAMETERS["max_results"]
+        assert pagination.total_count == len(response.results)
+        assert pagination.has_previous is False
+        assert pagination.has_next is False
 
         # 期待結果との比較
         for result, expected_result in zip(
@@ -211,13 +216,18 @@ class TestClustersApi:
         # レスポンスデータ本体のチェック
         assert isinstance(response.results, list)
 
-        # ページネーション情報のチェック
+        # ページネーション情報のチェック (VLB v1.6.0から返却)
         pagination = response.pagination
-        assert pagination is None
+        assert isinstance(pagination, PaginationInfo)
+        assert pagination.offset == test_dataset.VALID_LIST_PARAMETERS["offset"]
+        assert pagination.limit == test_dataset.VALID_LIST_PARAMETERS["max_results"]
+        assert pagination.total_count == len(response.results)
+        assert pagination.has_previous is False
+        assert pagination.has_next is False
 
         # データ件数のチェック（per_page以下であることを確認）
         assert len(response.results) <= 100
 
         print(
-            f"✅ ページネーション付きVMスナップショットリスト取得テスト成功: ページ1, 1ページあたり100件"
+            f"✅ ページネーション付きクラスタリスト取得テスト成功: ページ1, 1ページあたり100件"
         )

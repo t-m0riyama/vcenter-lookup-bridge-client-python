@@ -8,6 +8,7 @@ import pytest
 from typing import Dict, Any
 
 import vcenter_lookup_bridge_client
+from vcenter_lookup_bridge_client.models.pagination_info import PaginationInfo
 from vcenter_lookup_bridge_client.models.v_center_response_schema import (
     VCenterResponseSchema,
 )
@@ -103,9 +104,14 @@ class TestVcentersApi:
             # レスポンスデータがスキーマに適合していることをチェック
             assert isinstance(result, VCenterResponseSchema)
 
-        # ページネーション情報は非サポートであることをチェック
+        # ページネーション情報がスキーマに適合し、リクエストの範囲と一致することをチェック (VLB v1.6.0から返却)
         pagination = response.pagination
-        assert pagination is None
+        assert isinstance(pagination, PaginationInfo)
+        assert pagination.offset == test_dataset.VALID_LIST_PARAMETERS["offset"]
+        assert pagination.limit == test_dataset.VALID_LIST_PARAMETERS["max_results"]
+        assert pagination.total_count == len(response.results)
+        assert pagination.has_previous is False
+        assert pagination.has_next is False
 
         # 期待結果との比較
         for result, expected_result in zip(
@@ -122,7 +128,7 @@ class TestVcentersApi:
         )
 
     def test_list_vcenters_with_pagination(self, api_instance, test_dataset):
-        """ページネーション付きVMリスト取得のテスト（ページネーション機能は非サポート）"""
+        """ページネーション付きvCenterリスト取得のテスト"""
         # ページネーションパラメータを指定してAPIを呼び出し
         response = api_instance.list_vcenters(
             **test_dataset.VALID_LIST_PARAMETERS_VCENTER
@@ -135,11 +141,16 @@ class TestVcentersApi:
         # レスポンスデータ本体のチェック
         assert isinstance(response.results, list)
 
-        # ページネーション情報は非サポートであることをチェック
+        # ページネーション情報がスキーマに適合し、リクエストの範囲と一致することをチェック (VLB v1.6.0から返却)
         pagination = response.pagination
-        assert pagination is None
+        assert isinstance(pagination, PaginationInfo)
+        assert pagination.offset == test_dataset.VALID_LIST_PARAMETERS_VCENTER["offset"]
+        assert pagination.limit == test_dataset.VALID_LIST_PARAMETERS_VCENTER["max_results"]
+        assert pagination.total_count == len(response.results)
+        assert pagination.has_previous is False
+        assert pagination.has_next is False
 
         # データ件数のチェック（per_page以下であることを確認）
         assert len(response.results) <= 100
 
-        print(f"✅ VCENTERリスト取得テスト成功(ページネーション機能は非サポート)")
+        print(f"✅ ページネーション付きVCENTERリスト取得テスト成功")
