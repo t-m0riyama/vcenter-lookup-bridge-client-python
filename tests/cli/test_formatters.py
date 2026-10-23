@@ -5,7 +5,14 @@ import pytest
 from io import StringIO
 from unittest.mock import MagicMock
 
-from vcenter_lookup_bridge_client.cli.formatters import output_json, output_next_cursor, output_table
+from vcenter_lookup_bridge_client.cli.formatters import (
+    output_api_error,
+    output_json,
+    output_next_cursor,
+    output_table,
+    output_truncated_warning,
+)
+from vcenter_lookup_bridge_client.exceptions import ApiException
 
 
 @pytest.mark.unit
@@ -131,3 +138,64 @@ class TestOutputNextCursor:
         output_next_cursor(pagination, file=buf)
         output_next_cursor(None, file=buf)
         assert buf.getvalue() == ""
+
+
+@pytest.mark.unit
+class TestOutputApiError:
+    def _output(self, capsys, e):
+        output_api_error(e)
+        return capsys.readouterr().out
+
+    def test_detail_string(self, capsys):
+        """detail が文字列の場合 (404 など) はそのまま表示される"""
+        e = ApiException(status=404, reason="Not Found", body='{"detail":"指定した条件のタグは見つかりませんでした。"}')
+        out = self._output(capsys, e)
+        assert "Error 404: Not Found" in out
+        assert "  指定した条件のタグは見つかりませんでした。" in out
+
+    def test_detail_validation_errors(self, capsys):
+        """detail が検証エラーの一覧の場合 (422) は、パラメータ名とメッセージが行ごとに表示される"""
+        body = (
+            '{"detail":[{"type":"literal_error","loc":["query","object_type"],"msg":"Input should be \'VirtualMachine\'"},'
+            '{"type":"value_error","loc":["query"],"msg":"Value error, cursorの書式が不正です。"}]}'
+        )
+        out = self._output(capsys, ApiException(status=422, reason="Unprocessable Entity", body=body))
+        assert "  object_type: Input should be 'VirtualMachine'" in out
+        assert "  cursorの書式が不正です。" in out
+
+    def test_without_body(self, capsys):
+        """本文がない、または JSON でない場合はステータスのみ表示される"""
+        out = self._output(capsys, ApiException(status=500, reason="Server Error"))
+        out += self._output(capsys, ApiException(status=502, reason="Bad Gateway", body="<html>Bad Gateway</html>"))
+        assert out.splitlines() == ["Error 500: Server Error", "Error 502: Bad Gateway"]
+
+
+@pytest.mark.unit
+class TestOutputTruncatedWarning:
+    def test_truncated_with_message(self):
+        """truncated が真なら、レスポンスのメッセージを出力する"""
+        response = MagicMock()
+        response.truncated = True
+        response.message = "取得上限に達したvCenterがあります。"
+        buf = StringIO()
+        output_truncated_warning(response, file=buf)
+        assert buf.getvalue().strip() == "取得上限に達したvCenterがあります。"
+
+    def test_truncated_without_message(self):
+        """メッセージがない場合は、既定の文言を出力する"""
+        response = MagicMock()
+        response.truncated = True
+        response.message = None
+        buf = StringIO()
+        output_truncated_warning(response, file=buf)
+        assert "truncated" in buf.getvalue()
+
+    def test_not_truncated(self):
+        """truncated が偽、または MagicMock のような真偽値でない値の場合は何も出力しない"""
+        buf = StringIO()
+        response = MagicMock()
+        response.truncated = False
+        output_truncated_warning(response, file=buf)
+        output_truncated_warning(MagicMock(), file=buf)
+        assert buf.getvalue() == ""
+

@@ -139,3 +139,36 @@ class TestEventsListCursor:
         assert result.exit_code == 0
         assert "key" in result.stdout
         assert "98765" in result.stdout
+
+    def test_events_list_message_column(self, cli_runner):
+        """テーブル出力にイベントのメッセージ(message列)が表示される"""
+        mock_resp = make_event_list_response([make_event_response(message="User admin logged in")])
+        with patch("vcenter_lookup_bridge_client.cli.events.EventsApi") as mock_cls:
+            mock_cls.return_value.list_events.return_value = mock_resp
+            result = cli_runner.invoke(cli, BASE_ARGS + ["events", "list"])
+        assert result.exit_code == 0
+        assert "message" in result.stdout
+        assert "User admin logged in" in result.stdout
+
+
+@pytest.mark.unit
+class TestEventsListTruncated:
+    def test_events_list_truncated_warning_to_stderr(self, cli_runner):
+        """取得上限で打ち切られた場合、サーバのメッセージが標準エラーに出力される"""
+        mock_resp = make_event_list_response(truncated=True, message="取得上限に達したvCenter(vcenter01)があります。")
+        with patch("vcenter_lookup_bridge_client.cli.events.EventsApi") as mock_cls:
+            mock_cls.return_value.list_events.return_value = mock_resp
+            result = cli_runner.invoke(cli, BASE_ARGS + ["events", "list"])
+        assert result.exit_code == 0
+        assert "取得上限に達したvCenter(vcenter01)があります。" in result.stderr
+        assert "取得上限" not in result.stdout
+
+    def test_events_list_not_truncated(self, cli_runner):
+        """打ち切られていない場合は、メッセージを出力しない"""
+        mock_resp = make_event_list_response(truncated=False, message="2件のイベントを取得しました。")
+        with patch("vcenter_lookup_bridge_client.cli.events.EventsApi") as mock_cls:
+            mock_cls.return_value.list_events.return_value = mock_resp
+            result = cli_runner.invoke(cli, BASE_ARGS + ["events", "list"])
+        assert result.exit_code == 0
+        assert result.stderr == ""
+

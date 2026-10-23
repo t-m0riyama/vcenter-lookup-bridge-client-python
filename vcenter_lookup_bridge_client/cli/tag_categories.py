@@ -4,7 +4,7 @@ import click
 
 from vcenter_lookup_bridge_client import TagCategoriesApi
 from vcenter_lookup_bridge_client.exceptions import ApiException
-from .formatters import output_json, output_table
+from .formatters import output_api_error, output_json, output_table
 from .i18n import _
 
 _TAG_CATEGORY_COLUMNS = ["name", "cardinality", "associable_types", "vcenter", "description"]
@@ -25,7 +25,7 @@ def list_tag_categories(ctx, offset, max_results, vcenter):
     try:
         response = api.list_tag_categories(offset=offset, max_results=max_results, vcenter=vcenter)
     except ApiException as e:
-        click.echo(_("Error {status}: {reason}").format(status=e.status, reason=e.reason))
+        output_api_error(e)
         sys.exit(1)
     if ctx.obj["format"] == "json":
         output_json(response)

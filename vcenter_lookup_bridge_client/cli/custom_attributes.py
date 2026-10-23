@@ -4,7 +4,7 @@ import click
 
 from vcenter_lookup_bridge_client import CustomAttributesApi
 from vcenter_lookup_bridge_client.exceptions import ApiException
-from .formatters import output_json, output_table
+from .formatters import output_api_error, output_json, output_table
 from .i18n import _
 
 _CUSTOM_ATTRIBUTE_COLUMNS = ["name", "object_type", "type", "vcenter", "value", "object_name"]
@@ -35,7 +35,7 @@ def list_custom_attributes(ctx, object_type, object_name, object_id, offset, max
             vcenter=vcenter,
         )
     except ApiException as e:
-        click.echo(_("Error {status}: {reason}").format(status=e.status, reason=e.reason))
+        output_api_error(e)
         sys.exit(1)
     if ctx.obj["format"] == "json":
         output_json(response)

@@ -4,7 +4,7 @@ import click
 
 from vcenter_lookup_bridge_client import TagsApi
 from vcenter_lookup_bridge_client.exceptions import ApiException
-from .formatters import output_json, output_table
+from .formatters import output_api_error, output_json, output_table
 from .i18n import _
 
 _TAG_COLUMNS = ["name", "tag_category", "vcenter", "description", "object_name", "object_id"]
@@ -38,7 +38,7 @@ def list_tags(ctx, tag_category, object_type, object_name, object_id, offset, ma
             vcenter=vcenter,
         )
     except ApiException as e:
-        click.echo(_("Error {status}: {reason}").format(status=e.status, reason=e.reason))
+        output_api_error(e)
         sys.exit(1)
     if ctx.obj["format"] == "json":
         output_json(response)

@@ -233,13 +233,15 @@ def make_event_response(**kwargs):
     m.event_source = kwargs.get("event_source", "vm01")
     m.user_name = kwargs.get("user_name", "admin")
     m.ip_address = kwargs.get("ip_address", "10.0.0.1")
-    m.description = kwargs.get("description", "VM powered on")
+    m.message = kwargs.get("message", "VM powered on")
     return m
 
 
-def make_event_list_response(results=None, pagination=None):
+def make_event_list_response(results=None, pagination=None, truncated=False, message=None):
     m = MagicMock()
     m.success = True
+    m.truncated = truncated
+    m.message = message
     m.results = results if results is not None else [make_event_response()]
     m.pagination = pagination
     m.model_dump = MagicMock(return_value={"success": True, "results": [{"event_type": r.event_type} for r in m.results]})

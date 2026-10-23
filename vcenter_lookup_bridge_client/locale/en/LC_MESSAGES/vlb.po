@@ -201,6 +201,9 @@ msgstr "--cursor cannot be used with --offset"
 msgid "Next cursor: {cursor}"
 msgstr "Next cursor: {cursor}"
 
+msgid "Some vCenters reached the retrieval limit, so the results are truncated"
+msgstr "Some vCenters reached the retrieval limit, so the results are truncated"
+
 # tags.py
 msgid "Tag operations"
 msgstr "Tag operations"

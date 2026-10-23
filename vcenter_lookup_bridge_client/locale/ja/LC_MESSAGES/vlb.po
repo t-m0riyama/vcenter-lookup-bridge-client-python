@@ -201,6 +201,9 @@ msgstr "--cursor と --offset は同時に指定できません"
 msgid "Next cursor: {cursor}"
 msgstr "次のページのカーソル: {cursor}"
 
+msgid "Some vCenters reached the retrieval limit, so the results are truncated"
+msgstr "取得上限に達した vCenter があるため、結果が打ち切られています"
+
 # tags.py
 msgid "Tag operations"
 msgstr "タグ操作"

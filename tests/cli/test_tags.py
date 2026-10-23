@@ -70,3 +70,15 @@ class TestTagsList:
             result = cli_runner.invoke(cli, BASE_ARGS + ["tags", "list"])
         assert result.exit_code == 1
         assert "404" in result.output
+
+    def test_tags_list_api_error_shows_detail(self, cli_runner):
+        """422 のとき、サーバが返した detail の理由が表示される"""
+        body = '{"detail":[{"type":"value_error","loc":["query"],"msg":"Value error, object_typeを指定する場合、object_nameまたはobject_idを指定してください。"}]}'
+        with patch("vcenter_lookup_bridge_client.cli.tags.TagsApi") as mock_cls:
+            mock_cls.return_value.list_tags.side_effect = ApiException(status=422, reason="Unprocessable Entity", body=body)
+            result = cli_runner.invoke(cli, BASE_ARGS + ["tags", "list", "--object-type", "Datastore"])
+        assert result.exit_code == 1
+        assert "422" in result.output
+        assert "object_typeを指定する場合、object_nameまたはobject_idを指定してください。" in result.output
+        assert "Value error" not in result.output
+

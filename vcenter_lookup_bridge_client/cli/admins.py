@@ -4,7 +4,7 @@ import click
 
 from vcenter_lookup_bridge_client import AdminsApi
 from vcenter_lookup_bridge_client.exceptions import ApiException
-from .formatters import output_json
+from .formatters import output_api_error, output_json
 from .i18n import _
 
 
@@ -20,7 +20,7 @@ def flush_caches(ctx):
     try:
         response = api.flush_caches()
     except ApiException as e:
-        click.echo(_("Error {status}: {reason}").format(status=e.status, reason=e.reason))
+        output_api_error(e)
         sys.exit(1)
     if ctx.obj["format"] == "json":
         output_json(response)
@@ -35,7 +35,7 @@ def reset_ws_session(ctx):
     try:
         response = api.reset_ws_session()
     except ApiException as e:
-        click.echo(_("Error {status}: {reason}").format(status=e.status, reason=e.reason), err=True)
+        output_api_error(e, err=True)
         sys.exit(1)
     if ctx.obj["format"] == "json":
         output_json(response)

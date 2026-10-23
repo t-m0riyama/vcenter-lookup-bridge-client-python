@@ -543,6 +543,15 @@ vlb --format json vms list --vm-folders Production
 vlb --format json vms list --vm-folders Production | jq '.results[].name'
 ```
 
+In table format, `events list` writes a warning to stderr when some vCenters reached the retrieval limit and the results are truncated (`truncated` in the JSON output).
+
+When the API returns an error, the CLI exits with status 1 and prints the status code followed by the reason the server returned (`detail`), for example:
+
+```text
+Error 422: Unprocessable Entity
+  object_typeを指定する場合、object_nameまたはobject_idを指定してください。
+```
+
 ---
 
 ## Quick Start

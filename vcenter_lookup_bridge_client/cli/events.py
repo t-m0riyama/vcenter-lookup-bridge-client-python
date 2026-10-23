@@ -4,10 +4,10 @@ import click
 
 from vcenter_lookup_bridge_client import EventsApi
 from vcenter_lookup_bridge_client.exceptions import ApiException
-from .formatters import output_json, output_next_cursor, output_table
+from .formatters import output_api_error, output_json, output_next_cursor, output_table, output_truncated_warning
 from .i18n import _
 
-_EVENT_COLUMNS = ["key", "created_time", "event_type", "vcenter", "event_source", "user_name", "ip_address", "description"]
+_EVENT_COLUMNS = ["key", "created_time", "event_type", "vcenter", "event_source", "user_name", "ip_address", "message"]
 
 
 @click.group(help=_("Event operations"))
@@ -67,10 +67,11 @@ def list_events(ctx, begin_time, end_time, days_ago_begin, days_ago_end,
     try:
         response = api.list_events(**kwargs)
     except ApiException as e:
-        click.echo(_("Error {status}: {reason}").format(status=e.status, reason=e.reason))
+        output_api_error(e)
         sys.exit(1)
     if ctx.obj["format"] == "json":
         output_json(response)
     else:
         output_table(response.results, _EVENT_COLUMNS)
+        output_truncated_warning(response)
         output_next_cursor(response.pagination)

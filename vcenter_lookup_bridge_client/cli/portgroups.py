@@ -4,7 +4,7 @@ import click
 
 from vcenter_lookup_bridge_client import PortgroupsApi
 from vcenter_lookup_bridge_client.exceptions import ApiException
-from .formatters import output_json, output_table
+from .formatters import output_api_error, output_json, output_table
 from .i18n import _
 
 _PORTGROUP_COLUMNS = ["name", "vcenter", "datacenter", "vlan_id", "vswitch_name"]
@@ -28,7 +28,7 @@ def list_portgroups(ctx, tag_category, tags, offset, max_results, vcenter):
     try:
         response = api.list_portgroups(tag_category=tag_category, tags=tag_list, offset=offset, max_results=max_results, vcenter=vcenter)
     except ApiException as e:
-        click.echo(_("Error {status}: {reason}").format(status=e.status, reason=e.reason))
+        output_api_error(e)
         sys.exit(1)
     if ctx.obj["format"] == "json":
         output_json(response)
