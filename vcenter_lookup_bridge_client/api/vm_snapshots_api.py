@@ -43,7 +43,7 @@ class VmSnapshotsApi:
     def get_vm_snapshots(
         self,
         vm_instance_uuid: Annotated[StrictStr, Field(description="インスタンスUUIDを指定します。※格納されている仮想マシンフォルダに関係なく、vmFolder属性はnullを返します。")],
-        vcenter: Annotated[StrictStr, Field(description="vCenterの名前を指定します。vCenter管理下の仮想マシン一覧を取得します。")],
+        vcenter: Annotated[str, Field(min_length=1, strict=True, description="仮想マシンを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。")],
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="仮想マシンのスナップショットを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="仮想マシンのスナップショットを取得する際の最大件数を指定します。")] = None,
         _request_timeout: Union[
@@ -65,7 +65,7 @@ class VmSnapshotsApi:
 
         :param vm_instance_uuid: インスタンスUUIDを指定します。※格納されている仮想マシンフォルダに関係なく、vmFolder属性はnullを返します。 (required)
         :type vm_instance_uuid: str
-        :param vcenter: vCenterの名前を指定します。vCenter管理下の仮想マシン一覧を取得します。 (required)
+        :param vcenter: 仮想マシンを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。 (required)
         :type vcenter: str
         :param offset: 仮想マシンのスナップショットを取得する際の開始位置を指定します。
         :type offset: int
@@ -125,7 +125,7 @@ class VmSnapshotsApi:
     def get_vm_snapshots_with_http_info(
         self,
         vm_instance_uuid: Annotated[StrictStr, Field(description="インスタンスUUIDを指定します。※格納されている仮想マシンフォルダに関係なく、vmFolder属性はnullを返します。")],
-        vcenter: Annotated[StrictStr, Field(description="vCenterの名前を指定します。vCenter管理下の仮想マシン一覧を取得します。")],
+        vcenter: Annotated[str, Field(min_length=1, strict=True, description="仮想マシンを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。")],
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="仮想マシンのスナップショットを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="仮想マシンのスナップショットを取得する際の最大件数を指定します。")] = None,
         _request_timeout: Union[
@@ -147,7 +147,7 @@ class VmSnapshotsApi:
 
         :param vm_instance_uuid: インスタンスUUIDを指定します。※格納されている仮想マシンフォルダに関係なく、vmFolder属性はnullを返します。 (required)
         :type vm_instance_uuid: str
-        :param vcenter: vCenterの名前を指定します。vCenter管理下の仮想マシン一覧を取得します。 (required)
+        :param vcenter: 仮想マシンを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。 (required)
         :type vcenter: str
         :param offset: 仮想マシンのスナップショットを取得する際の開始位置を指定します。
         :type offset: int
@@ -207,7 +207,7 @@ class VmSnapshotsApi:
     def get_vm_snapshots_without_preload_content(
         self,
         vm_instance_uuid: Annotated[StrictStr, Field(description="インスタンスUUIDを指定します。※格納されている仮想マシンフォルダに関係なく、vmFolder属性はnullを返します。")],
-        vcenter: Annotated[StrictStr, Field(description="vCenterの名前を指定します。vCenter管理下の仮想マシン一覧を取得します。")],
+        vcenter: Annotated[str, Field(min_length=1, strict=True, description="仮想マシンを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。")],
         offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="仮想マシンのスナップショットを取得する際の開始位置を指定します。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="仮想マシンのスナップショットを取得する際の最大件数を指定します。")] = None,
         _request_timeout: Union[
@@ -229,7 +229,7 @@ class VmSnapshotsApi:
 
         :param vm_instance_uuid: インスタンスUUIDを指定します。※格納されている仮想マシンフォルダに関係なく、vmFolder属性はnullを返します。 (required)
         :type vm_instance_uuid: str
-        :param vcenter: vCenterの名前を指定します。vCenter管理下の仮想マシン一覧を取得します。 (required)
+        :param vcenter: 仮想マシンを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。 (required)
         :type vcenter: str
         :param offset: 仮想マシンのスナップショットを取得する際の開始位置を指定します。
         :type offset: int

@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -29,9 +29,10 @@ class PaginationInfo(BaseModel):
     has_next: StrictBool = Field(description="次のページが存在するか", alias="hasNext")
     has_previous: StrictBool = Field(description="前のページが存在するか", alias="hasPrevious")
     limit: StrictInt = Field(description="取得件数制限")
+    next_cursor: Optional[StrictStr] = Field(default=None, description="次のページを取得するためのカーソル(カーソル方式に対応した一覧で、次のページがある場合のみ)", alias="nextCursor")
     offset: StrictInt = Field(description="現在のオフセット")
     total_count: StrictInt = Field(description="総件数", alias="totalCount")
-    __properties: ClassVar[List[str]] = ["hasNext", "hasPrevious", "limit", "offset", "totalCount"]
+    __properties: ClassVar[List[str]] = ["hasNext", "hasPrevious", "limit", "nextCursor", "offset", "totalCount"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -72,6 +73,11 @@ class PaginationInfo(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if next_cursor (nullable) is None
+        # and model_fields_set contains the field
+        if self.next_cursor is None and "next_cursor" in self.model_fields_set:
+            _dict['nextCursor'] = None
+
         return _dict
 
     @classmethod
@@ -87,6 +93,7 @@ class PaginationInfo(BaseModel):
             "hasNext": obj.get("hasNext"),
             "hasPrevious": obj.get("hasPrevious"),
             "limit": obj.get("limit"),
+            "nextCursor": obj.get("nextCursor"),
             "offset": obj.get("offset"),
             "totalCount": obj.get("totalCount")
         })

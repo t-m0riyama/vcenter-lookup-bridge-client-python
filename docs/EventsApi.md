@@ -8,11 +8,11 @@ Method | HTTP request | Description
 
 
 # **list_events**
-> EventListResponseSchema list_events(begin_time=begin_time, end_time=end_time, days_ago_begin=days_ago_begin, days_ago_end=days_ago_end, hours_ago_begin=hours_ago_begin, hours_ago_end=hours_ago_end, event_types=event_types, event_sources=event_sources, user_names=user_names, ip_addresses=ip_addresses, offset=offset, max_results=max_results, vcenter=vcenter)
+> EventListResponseSchema list_events(begin_time=begin_time, end_time=end_time, days_ago_begin=days_ago_begin, days_ago_end=days_ago_end, hours_ago_begin=hours_ago_begin, hours_ago_end=hours_ago_end, event_types=event_types, event_sources=event_sources, user_names=user_names, ip_addresses=ip_addresses, offset=offset, cursor=cursor, max_results=max_results, vcenter=vcenter)
 
 List Events
 
-イベント一覧を取得します。
+イベント一覧を、発生時刻の新しい順に取得します。(同じ時刻の場合はvCenter名の順、さらに新しく記録された順)続きのページは、pagination.nextCursorをcursorに指定し、1ページ目と同じ検索条件で取得してください。cursorを使うと、時間帯は1ページ目で決めたものに固定され、ページを順に読む間にイベントが増えても、それによる抜けや重複は起きません。1回の取得では、vCenterごとに、新しいもの(cursorを指定した場合はcursorより古いもの)から環境変数VLB_MAX_RETRIEVE_EVENTS_PER_VCENTERの件数(既定1000件)までを読みます。上限はevent_sources・ip_addressesで絞り込む前の件数に適用します。上限に達したvCenterがある場合はtruncatedをtrueにし、totalCountも上限までの範囲の件数になります。このとき、上限に達したvCenterで読んだ範囲までを返すため、件数がmax_resultsに満たないページや、空のページになることがあります。その場合もnextCursorで続きを取得でき、ページを進めると上限より古いイベントにも届きます。続きを読んだ結果、該当するイベントがなかった場合は、空の結果とhasNext=falseを返します。cursorで取得したページのtotalCountは、cursorより後に読んだ件数です。partialFailureがtrueのページがあった場合、取得に失敗したvCenterの、そのページの範囲の分は続きのページでも返りません。取り直すときは1ページ目から読み直してください。(レスポンスのキャッシュの有効期間中は、同じ条件の1ページ目は同じ内容になります。)offsetでページを指定した場合は、上限より古いイベントは対象外で、ページを順に読む間にイベントが増えると、ページ間で結果がずれ、抜けや重複が起きることがあります。
 
 ### Example
 
@@ -55,13 +55,14 @@ with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
     event_sources = ['event_sources_example'] # List[str] | イベントのソースを指定します。 (optional)
     user_names = ['user_names_example'] # List[str] | イベントを発生させたユーザー名を指定します。 (optional)
     ip_addresses = ['ip_addresses_example'] # List[str] | イベントを発生させたIPアドレスを指定します。 (optional)
-    offset = 0 # int | イベントを取得する際の開始位置を指定します。 (optional) (default to 0)
+    offset = 0 # int | イベントを取得する際の開始位置を指定します。(結果は発生時刻の新しい順に並びます。) cursorと同時には指定できません。 (optional) (default to 0)
     max_results = 100 # int | イベントを取得する際の最大件数を指定します。 (optional) (default to 100)
     vcenter = 'vcenter_example' # str | vCenterの名前を指定します。 (optional)
+    cursor = 'cursor_example' # str | 前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。) (optional)
 
     try:
         # List Events
-        api_response = api_instance.list_events(begin_time=begin_time, end_time=end_time, days_ago_begin=days_ago_begin, days_ago_end=days_ago_end, hours_ago_begin=hours_ago_begin, hours_ago_end=hours_ago_end, event_types=event_types, event_sources=event_sources, user_names=user_names, ip_addresses=ip_addresses, offset=offset, max_results=max_results, vcenter=vcenter)
+        api_response = api_instance.list_events(begin_time=begin_time, end_time=end_time, days_ago_begin=days_ago_begin, days_ago_end=days_ago_end, hours_ago_begin=hours_ago_begin, hours_ago_end=hours_ago_end, event_types=event_types, event_sources=event_sources, user_names=user_names, ip_addresses=ip_addresses, offset=offset, max_results=max_results, vcenter=vcenter, cursor=cursor)
         print("The response of EventsApi->list_events:\n")
         pprint(api_response)
     except Exception as e:
@@ -85,7 +86,8 @@ Name | Type | Description  | Notes
  **event_sources** | [**List[str]**](str.md)| イベントのソースを指定します。 | [optional] 
  **user_names** | [**List[str]**](str.md)| イベントを発生させたユーザー名を指定します。 | [optional] 
  **ip_addresses** | [**List[str]**](str.md)| イベントを発生させたIPアドレスを指定します。 | [optional] 
- **offset** | **int**| イベントを取得する際の開始位置を指定します。 | [optional] [default to 0]
+ **offset** | **int**| イベントを取得する際の開始位置を指定します。(結果は発生時刻の新しい順に並びます。) cursorと同時には指定できません。 | [optional] [default to 0]
+ **cursor** | **str**| 前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。) | [optional] 
  **max_results** | **int**| イベントを取得する際の最大件数を指定します。 | [optional] [default to 100]
  **vcenter** | **str**| vCenterの名前を指定します。 | [optional] 
 
@@ -107,7 +109,7 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
-**404** | 指定した条件のイベントが見つからない場合に返されます。 |  -  |
+**404** | 指定した条件のイベントが見つからない場合に返されます。offsetを指定し、上限に達したvCenterがある場合は、その旨をdetailに書きます。(上限より古いイベントは対象外のため) |  -  |
 **422** | Validation Error |  -  |
 **500** | イベント情報の一覧を取得中にエラーが発生した場合に返されます。 |  -  |
 

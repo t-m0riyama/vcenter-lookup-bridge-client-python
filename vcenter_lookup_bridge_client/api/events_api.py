@@ -52,7 +52,7 @@ class EventsApi:
         event_sources: Annotated[Optional[List[StrictStr]], Field(description="イベントのソースを指定します。")] = None,
         user_names: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたユーザー名を指定します。")] = None,
         ip_addresses: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたIPアドレスを指定します。")] = None,
-        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="イベントを取得する際の開始位置を指定します。")] = None,
+        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="イベントを取得する際の開始位置を指定します。(結果は発生時刻の新しい順に並びます。) cursorと同時には指定できません。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="イベントを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
         _request_timeout: Union[
@@ -67,10 +67,11 @@ class EventsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+        cursor: Annotated[Optional[StrictStr], Field(description="前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。)")] = None,
     ) -> EventListResponseSchema:
         """List Events
 
-        イベント一覧を取得します。
+        イベント一覧を、発生時刻の新しい順に取得します。(同じ時刻の場合はvCenter名の順、さらに新しく記録された順)続きのページは、pagination.nextCursorをcursorに指定し、1ページ目と同じ検索条件で取得してください。cursorを使うと、時間帯は1ページ目で決めたものに固定され、ページを順に読む間にイベントが増えても、それによる抜けや重複は起きません。1回の取得では、vCenterごとに、新しいもの(cursorを指定した場合はcursorより古いもの)から環境変数VLB_MAX_RETRIEVE_EVENTS_PER_VCENTERの件数(既定1000件)までを読みます。上限はevent_sources・ip_addressesで絞り込む前の件数に適用します。上限に達したvCenterがある場合はtruncatedをtrueにし、totalCountも上限までの範囲の件数になります。このとき、上限に達したvCenterで読んだ範囲までを返すため、件数がmax_resultsに満たないページや、空のページになることがあります。その場合もnextCursorで続きを取得でき、ページを進めると上限より古いイベントにも届きます。続きを読んだ結果、該当するイベントがなかった場合は、空の結果とhasNext=falseを返します。cursorで取得したページのtotalCountは、cursorより後に読んだ件数です。partialFailureがtrueのページがあった場合、取得に失敗したvCenterの、そのページの範囲の分は続きのページでも返りません。取り直すときは1ページ目から読み直してください。(レスポンスのキャッシュの有効期間中は、同じ条件の1ページ目は同じ内容になります。)offsetでページを指定した場合は、上限より古いイベントは対象外で、ページを順に読む間にイベントが増えると、ページ間で結果がずれ、抜けや重複が起きることがあります。
 
         :param begin_time: イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type begin_time: str
@@ -92,12 +93,14 @@ class EventsApi:
         :type user_names: List[str]
         :param ip_addresses: イベントを発生させたIPアドレスを指定します。
         :type ip_addresses: List[str]
-        :param offset: イベントを取得する際の開始位置を指定します。
+        :param offset: イベントを取得する際の開始位置を指定します。(結果は発生時刻の新しい順に並びます。) cursorと同時には指定できません。
         :type offset: int
         :param max_results: イベントを取得する際の最大件数を指定します。
         :type max_results: int
         :param vcenter: vCenterの名前を指定します。
         :type vcenter: str
+        :param cursor: 前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。)
+        :type cursor: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -134,6 +137,7 @@ class EventsApi:
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
+            cursor=cursor,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -170,7 +174,7 @@ class EventsApi:
         event_sources: Annotated[Optional[List[StrictStr]], Field(description="イベントのソースを指定します。")] = None,
         user_names: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたユーザー名を指定します。")] = None,
         ip_addresses: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたIPアドレスを指定します。")] = None,
-        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="イベントを取得する際の開始位置を指定します。")] = None,
+        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="イベントを取得する際の開始位置を指定します。(結果は発生時刻の新しい順に並びます。) cursorと同時には指定できません。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="イベントを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
         _request_timeout: Union[
@@ -185,10 +189,11 @@ class EventsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+        cursor: Annotated[Optional[StrictStr], Field(description="前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。)")] = None,
     ) -> ApiResponse[EventListResponseSchema]:
         """List Events
 
-        イベント一覧を取得します。
+        イベント一覧を、発生時刻の新しい順に取得します。(同じ時刻の場合はvCenter名の順、さらに新しく記録された順)続きのページは、pagination.nextCursorをcursorに指定し、1ページ目と同じ検索条件で取得してください。cursorを使うと、時間帯は1ページ目で決めたものに固定され、ページを順に読む間にイベントが増えても、それによる抜けや重複は起きません。1回の取得では、vCenterごとに、新しいもの(cursorを指定した場合はcursorより古いもの)から環境変数VLB_MAX_RETRIEVE_EVENTS_PER_VCENTERの件数(既定1000件)までを読みます。上限はevent_sources・ip_addressesで絞り込む前の件数に適用します。上限に達したvCenterがある場合はtruncatedをtrueにし、totalCountも上限までの範囲の件数になります。このとき、上限に達したvCenterで読んだ範囲までを返すため、件数がmax_resultsに満たないページや、空のページになることがあります。その場合もnextCursorで続きを取得でき、ページを進めると上限より古いイベントにも届きます。続きを読んだ結果、該当するイベントがなかった場合は、空の結果とhasNext=falseを返します。cursorで取得したページのtotalCountは、cursorより後に読んだ件数です。partialFailureがtrueのページがあった場合、取得に失敗したvCenterの、そのページの範囲の分は続きのページでも返りません。取り直すときは1ページ目から読み直してください。(レスポンスのキャッシュの有効期間中は、同じ条件の1ページ目は同じ内容になります。)offsetでページを指定した場合は、上限より古いイベントは対象外で、ページを順に読む間にイベントが増えると、ページ間で結果がずれ、抜けや重複が起きることがあります。
 
         :param begin_time: イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type begin_time: str
@@ -210,12 +215,14 @@ class EventsApi:
         :type user_names: List[str]
         :param ip_addresses: イベントを発生させたIPアドレスを指定します。
         :type ip_addresses: List[str]
-        :param offset: イベントを取得する際の開始位置を指定します。
+        :param offset: イベントを取得する際の開始位置を指定します。(結果は発生時刻の新しい順に並びます。) cursorと同時には指定できません。
         :type offset: int
         :param max_results: イベントを取得する際の最大件数を指定します。
         :type max_results: int
         :param vcenter: vCenterの名前を指定します。
         :type vcenter: str
+        :param cursor: 前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。)
+        :type cursor: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -252,6 +259,7 @@ class EventsApi:
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
+            cursor=cursor,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -288,7 +296,7 @@ class EventsApi:
         event_sources: Annotated[Optional[List[StrictStr]], Field(description="イベントのソースを指定します。")] = None,
         user_names: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたユーザー名を指定します。")] = None,
         ip_addresses: Annotated[Optional[List[StrictStr]], Field(description="イベントを発生させたIPアドレスを指定します。")] = None,
-        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="イベントを取得する際の開始位置を指定します。")] = None,
+        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="イベントを取得する際の開始位置を指定します。(結果は発生時刻の新しい順に並びます。) cursorと同時には指定できません。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="イベントを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
         _request_timeout: Union[
@@ -303,10 +311,11 @@ class EventsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+        cursor: Annotated[Optional[StrictStr], Field(description="前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。)")] = None,
     ) -> RESTResponseType:
         """List Events
 
-        イベント一覧を取得します。
+        イベント一覧を、発生時刻の新しい順に取得します。(同じ時刻の場合はvCenter名の順、さらに新しく記録された順)続きのページは、pagination.nextCursorをcursorに指定し、1ページ目と同じ検索条件で取得してください。cursorを使うと、時間帯は1ページ目で決めたものに固定され、ページを順に読む間にイベントが増えても、それによる抜けや重複は起きません。1回の取得では、vCenterごとに、新しいもの(cursorを指定した場合はcursorより古いもの)から環境変数VLB_MAX_RETRIEVE_EVENTS_PER_VCENTERの件数(既定1000件)までを読みます。上限はevent_sources・ip_addressesで絞り込む前の件数に適用します。上限に達したvCenterがある場合はtruncatedをtrueにし、totalCountも上限までの範囲の件数になります。このとき、上限に達したvCenterで読んだ範囲までを返すため、件数がmax_resultsに満たないページや、空のページになることがあります。その場合もnextCursorで続きを取得でき、ページを進めると上限より古いイベントにも届きます。続きを読んだ結果、該当するイベントがなかった場合は、空の結果とhasNext=falseを返します。cursorで取得したページのtotalCountは、cursorより後に読んだ件数です。partialFailureがtrueのページがあった場合、取得に失敗したvCenterの、そのページの範囲の分は続きのページでも返りません。取り直すときは1ページ目から読み直してください。(レスポンスのキャッシュの有効期間中は、同じ条件の1ページ目は同じ内容になります。)offsetでページを指定した場合は、上限より古いイベントは対象外で、ページを順に読む間にイベントが増えると、ページ間で結果がずれ、抜けや重複が起きることがあります。
 
         :param begin_time: イベントが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのイベントを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type begin_time: str
@@ -328,12 +337,14 @@ class EventsApi:
         :type user_names: List[str]
         :param ip_addresses: イベントを発生させたIPアドレスを指定します。
         :type ip_addresses: List[str]
-        :param offset: イベントを取得する際の開始位置を指定します。
+        :param offset: イベントを取得する際の開始位置を指定します。(結果は発生時刻の新しい順に並びます。) cursorと同時には指定できません。
         :type offset: int
         :param max_results: イベントを取得する際の最大件数を指定します。
         :type max_results: int
         :param vcenter: vCenterの名前を指定します。
         :type vcenter: str
+        :param cursor: 前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。)
+        :type cursor: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -370,6 +381,7 @@ class EventsApi:
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
+            cursor=cursor,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -404,6 +416,7 @@ class EventsApi:
         offset,
         max_results,
         vcenter,
+        cursor,
         _request_auth,
         _content_type,
         _headers,
@@ -481,6 +494,10 @@ class EventsApi:
         if vcenter is not None:
             
             _query_params.append(('vcenter', vcenter))
+            
+        if cursor is not None:
+            
+            _query_params.append(('cursor', cursor))
             
         # process the header parameters
         # process the form parameters

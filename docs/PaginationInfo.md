@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **has_next** | **bool** | 次のページが存在するか | 
 **has_previous** | **bool** | 前のページが存在するか | 
 **limit** | **int** | 取得件数制限 | 
+**next_cursor** | **str** | 次のページを取得するためのカーソル(カーソル方式に対応した一覧で、次のページがある場合のみ) | [optional] 
 **offset** | **int** | 現在のオフセット | 
 **total_count** | **int** | 総件数 | 
 

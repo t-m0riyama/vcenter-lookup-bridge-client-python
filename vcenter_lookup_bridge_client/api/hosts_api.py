@@ -44,7 +44,7 @@ class HostsApi:
     def get_host(
         self,
         host_uuid: Annotated[StrictStr, Field(description="ホストUUIDを指定します。")],
-        vcenter: Annotated[StrictStr, Field(description="vCenterの名前を指定します。")],
+        vcenter: Annotated[str, Field(min_length=1, strict=True, description="ESXiホストを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -64,7 +64,7 @@ class HostsApi:
 
         :param host_uuid: ホストUUIDを指定します。 (required)
         :type host_uuid: str
-        :param vcenter: vCenterの名前を指定します。 (required)
+        :param vcenter: ESXiホストを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。 (required)
         :type vcenter: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -118,7 +118,7 @@ class HostsApi:
     def get_host_with_http_info(
         self,
         host_uuid: Annotated[StrictStr, Field(description="ホストUUIDを指定します。")],
-        vcenter: Annotated[StrictStr, Field(description="vCenterの名前を指定します。")],
+        vcenter: Annotated[str, Field(min_length=1, strict=True, description="ESXiホストを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -138,7 +138,7 @@ class HostsApi:
 
         :param host_uuid: ホストUUIDを指定します。 (required)
         :type host_uuid: str
-        :param vcenter: vCenterの名前を指定します。 (required)
+        :param vcenter: ESXiホストを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。 (required)
         :type vcenter: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -192,7 +192,7 @@ class HostsApi:
     def get_host_without_preload_content(
         self,
         host_uuid: Annotated[StrictStr, Field(description="ホストUUIDを指定します。")],
-        vcenter: Annotated[StrictStr, Field(description="vCenterの名前を指定します。")],
+        vcenter: Annotated[str, Field(min_length=1, strict=True, description="ESXiホストを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -212,7 +212,7 @@ class HostsApi:
 
         :param host_uuid: ホストUUIDを指定します。 (required)
         :type host_uuid: str
-        :param vcenter: vCenterの名前を指定します。 (required)
+        :param vcenter: ESXiホストを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。 (required)
         :type vcenter: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

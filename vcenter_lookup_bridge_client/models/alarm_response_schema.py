@@ -32,10 +32,11 @@ class AlarmResponseSchema(BaseModel):
     created_time: StrictStr = Field(description="アラームの作成時間を示します。（ISO 8601形式）", alias="createdTime")
     datacenter: Optional[StrictStr]
     description: StrictStr = Field(description="アラームの説明を示します。")
+    key: StrictStr = Field(description="トリガー済みアラームのキーを示します。(vCenterごとに一意)")
     name: Optional[StrictStr]
     status: StrictStr = Field(description="アラームのステータスを示します。")
     vcenter: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["acknowledged", "acknowledgedTime", "alarmSource", "createdTime", "datacenter", "description", "name", "status", "vcenter"]
+    __properties: ClassVar[List[str]] = ["acknowledged", "acknowledgedTime", "alarmSource", "createdTime", "datacenter", "description", "key", "name", "status", "vcenter"]
 
     @field_validator('status')
     def status_validate_enum(cls, value):
@@ -126,6 +127,7 @@ class AlarmResponseSchema(BaseModel):
             "createdTime": obj.get("createdTime"),
             "datacenter": obj.get("datacenter"),
             "description": obj.get("description"),
+            "key": obj.get("key"),
             "name": obj.get("name"),
             "status": obj.get("status"),
             "vcenter": obj.get("vcenter")

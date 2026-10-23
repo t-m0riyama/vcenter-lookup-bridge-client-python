@@ -47,7 +47,7 @@ with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = vcenter_lookup_bridge_client.HostsApi(api_client)
     host_uuid = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' # str | ホストUUIDを指定します。
-    vcenter = 'vcenter01' # str | vCenterの名前を指定します。
+    vcenter = 'vcenter01' # str | ESXiホストを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。
 
     try:
         # Get Host
@@ -66,7 +66,7 @@ with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **host_uuid** | **str**| ホストUUIDを指定します。 | 
- **vcenter** | **str**| vCenterの名前を指定します。 | 
+ **vcenter** | **str**| ESXiホストを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。 | 
 
 ### Return type
 

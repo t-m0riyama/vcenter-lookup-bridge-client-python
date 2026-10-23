@@ -21,11 +21,14 @@ __all__ = [
     "AdminsApi",
     "AlarmsApi",
     "ClustersApi",
+    "CustomAttributesApi",
     "DatastoresApi",
     "EventsApi",
     "HealthcheckApi",
     "HostsApi",
     "PortgroupsApi",
+    "TagCategoriesApi",
+    "TagsApi",
     "VcentersApi",
     "VmFoldersApi",
     "VmSnapshotsApi",
@@ -44,6 +47,8 @@ __all__ = [
     "AlarmResponseSchema",
     "ClusterListResponseSchema",
     "ClusterResponseSchema",
+    "CustomAttributeListResponseSchema",
+    "CustomAttributeResponseSchema",
     "DatastoreListResponseSchema",
     "DatastoreResponseSchema",
     "EventListResponseSchema",
@@ -58,6 +63,10 @@ __all__ = [
     "PaginationInfo",
     "PortgroupListResponseSchema",
     "PortgroupResponseSchema",
+    "TagCategoryListResponseSchema",
+    "TagCategoryResponseSchema",
+    "TagListResponseSchema",
+    "TagResponseSchema",
     "VCenterListResponseSchema",
     "VCenterResponseSchema",
     "ValidationError",
@@ -76,11 +85,14 @@ __all__ = [
 from vcenter_lookup_bridge_client.api.admins_api import AdminsApi as AdminsApi
 from vcenter_lookup_bridge_client.api.alarms_api import AlarmsApi as AlarmsApi
 from vcenter_lookup_bridge_client.api.clusters_api import ClustersApi as ClustersApi
+from vcenter_lookup_bridge_client.api.custom_attributes_api import CustomAttributesApi as CustomAttributesApi
 from vcenter_lookup_bridge_client.api.datastores_api import DatastoresApi as DatastoresApi
 from vcenter_lookup_bridge_client.api.events_api import EventsApi as EventsApi
 from vcenter_lookup_bridge_client.api.healthcheck_api import HealthcheckApi as HealthcheckApi
 from vcenter_lookup_bridge_client.api.hosts_api import HostsApi as HostsApi
 from vcenter_lookup_bridge_client.api.portgroups_api import PortgroupsApi as PortgroupsApi
+from vcenter_lookup_bridge_client.api.tag_categories_api import TagCategoriesApi as TagCategoriesApi
+from vcenter_lookup_bridge_client.api.tags_api import TagsApi as TagsApi
 from vcenter_lookup_bridge_client.api.vcenters_api import VcentersApi as VcentersApi
 from vcenter_lookup_bridge_client.api.vm_folders_api import VmFoldersApi as VmFoldersApi
 from vcenter_lookup_bridge_client.api.vm_snapshots_api import VmSnapshotsApi as VmSnapshotsApi
@@ -103,6 +115,8 @@ from vcenter_lookup_bridge_client.models.alarm_list_response_schema import Alarm
 from vcenter_lookup_bridge_client.models.alarm_response_schema import AlarmResponseSchema as AlarmResponseSchema
 from vcenter_lookup_bridge_client.models.cluster_list_response_schema import ClusterListResponseSchema as ClusterListResponseSchema
 from vcenter_lookup_bridge_client.models.cluster_response_schema import ClusterResponseSchema as ClusterResponseSchema
+from vcenter_lookup_bridge_client.models.custom_attribute_list_response_schema import CustomAttributeListResponseSchema as CustomAttributeListResponseSchema
+from vcenter_lookup_bridge_client.models.custom_attribute_response_schema import CustomAttributeResponseSchema as CustomAttributeResponseSchema
 from vcenter_lookup_bridge_client.models.datastore_list_response_schema import DatastoreListResponseSchema as DatastoreListResponseSchema
 from vcenter_lookup_bridge_client.models.datastore_response_schema import DatastoreResponseSchema as DatastoreResponseSchema
 from vcenter_lookup_bridge_client.models.event_list_response_schema import EventListResponseSchema as EventListResponseSchema
@@ -117,6 +131,10 @@ from vcenter_lookup_bridge_client.models.host_response_schema import HostRespons
 from vcenter_lookup_bridge_client.models.pagination_info import PaginationInfo as PaginationInfo
 from vcenter_lookup_bridge_client.models.portgroup_list_response_schema import PortgroupListResponseSchema as PortgroupListResponseSchema
 from vcenter_lookup_bridge_client.models.portgroup_response_schema import PortgroupResponseSchema as PortgroupResponseSchema
+from vcenter_lookup_bridge_client.models.tag_category_list_response_schema import TagCategoryListResponseSchema as TagCategoryListResponseSchema
+from vcenter_lookup_bridge_client.models.tag_category_response_schema import TagCategoryResponseSchema as TagCategoryResponseSchema
+from vcenter_lookup_bridge_client.models.tag_list_response_schema import TagListResponseSchema as TagListResponseSchema
+from vcenter_lookup_bridge_client.models.tag_response_schema import TagResponseSchema as TagResponseSchema
 from vcenter_lookup_bridge_client.models.v_center_list_response_schema import VCenterListResponseSchema as VCenterListResponseSchema
 from vcenter_lookup_bridge_client.models.v_center_response_schema import VCenterResponseSchema as VCenterResponseSchema
 from vcenter_lookup_bridge_client.models.validation_error import ValidationError as ValidationError

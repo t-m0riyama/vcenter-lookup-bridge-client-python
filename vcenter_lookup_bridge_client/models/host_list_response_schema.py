@@ -35,8 +35,9 @@ class HostListResponseSchema(BaseModel):
     results: List[HostResponseSchema] = Field(description="実際のデータ")
     success: StrictBool = Field(description="処理成功フラグ (true|false)")
     timestamp: StrictStr = Field(description="レスポンス生成時刻")
+    truncated: Optional[StrictBool] = Field(default=False, description="取得上限に達したvCenterがあり、結果と総件数が上限までの範囲に限られているか (true|false)")
     vcenter_ws_sessions: Optional[Dict[str, Any]] = Field(default=None, alias="vcenterWsSessions")
-    __properties: ClassVar[List[str]] = ["message", "pagination", "partialFailure", "requestId", "results", "success", "timestamp", "vcenterWsSessions"]
+    __properties: ClassVar[List[str]] = ["message", "pagination", "partialFailure", "requestId", "results", "success", "timestamp", "truncated", "vcenterWsSessions"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -126,6 +127,7 @@ class HostListResponseSchema(BaseModel):
             "results": [HostResponseSchema.from_dict(_item) for _item in obj["results"]] if obj.get("results") is not None else None,
             "success": obj.get("success"),
             "timestamp": obj.get("timestamp"),
+            "truncated": obj.get("truncated") if obj.get("truncated") is not None else False,
             "vcenterWsSessions": obj.get("vcenterWsSessions")
         })
         return _obj

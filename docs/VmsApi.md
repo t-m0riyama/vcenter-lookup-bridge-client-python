@@ -47,7 +47,7 @@ with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = vcenter_lookup_bridge_client.VmsApi(api_client)
     vm_instance_uuid = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' # str | インスタンスUUIDを指定します。※格納されている仮想マシンフォルダに関係なく、vmFolder属性はnullを返します。
-    vcenter = 'vcenter01' # str | vCenterの名前を指定します。
+    vcenter = 'vcenter01' # str | 仮想マシンを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。
 
     try:
         # Get Vm
@@ -66,7 +66,7 @@ with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **vm_instance_uuid** | **str**| インスタンスUUIDを指定します。※格納されている仮想マシンフォルダに関係なく、vmFolder属性はnullを返します。 | 
- **vcenter** | **str**| vCenterの名前を指定します。 | 
+ **vcenter** | **str**| 仮想マシンを探すvCenterの名前を指定します。UUIDはvCenterをまたいで重複しうるため、また1件の取得のために全vCenterへ問い合わせないよう、必須としています。一覧で得たvcenterを指定します。 | 
 
 ### Return type
 

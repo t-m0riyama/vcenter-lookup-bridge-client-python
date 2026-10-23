@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **created_time** | **str** | アラームの作成時間を示します。（ISO 8601形式） | 
 **datacenter** | **str** |  | 
 **description** | **str** | アラームの説明を示します。 | 
+**key** | **str** | トリガー済みアラームのキーを示します。(vCenterごとに一意) | 
 **name** | **str** |  | 
 **status** | **str** | アラームのステータスを示します。 | 
 **vcenter** | **str** |  | 
