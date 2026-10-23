@@ -168,7 +168,7 @@ class TestVmSnapshotsApi:
             assert result.vm_instance_uuid == expected_result["vmInstanceUuid"]
             assert result.vcenter == expected_result["vcenter"]
             assert result.datacenter == expected_result["datacenter"]
-            assert result.vmFolder == expected_result["vmFolder"]
+            assert result.vm_folder == expected_result["vmFolder"]
 
         print(
             f"✅ VMスナップショットリスト取得テスト成功: {len(response.results)}件のVMスナップショットが見つかりました"
