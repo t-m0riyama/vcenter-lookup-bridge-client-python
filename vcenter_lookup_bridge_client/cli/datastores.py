@@ -4,7 +4,7 @@ import click
 
 from vcenter_lookup_bridge_client import DatastoresApi
 from vcenter_lookup_bridge_client.exceptions import ApiException
-from .formatters import output_json, output_table
+from .formatters import output_api_error, output_json, output_table
 from .i18n import _
 
 _DATASTORE_COLUMNS = ["name", "vcenter", "datacenter", "type", "capacity_gb", "free_space_gb"]
@@ -38,7 +38,7 @@ def list_datastores(ctx, tag_category, tags, all_datastores, offset, max_results
             all_datastores=all_datastores or None,
         )
     except ApiException as e:
-        click.echo(_("Error {status}: {reason}").format(status=e.status, reason=e.reason))
+        output_api_error(e)
         sys.exit(1)
     if ctx.obj["format"] == "json":
         output_json(response)

@@ -106,12 +106,15 @@ Class | Method | HTTP request | Description
 *AdminsApi* | [**reset_ws_session**](docs/AdminsApi.md#reset_ws_session) | **POST** /admins/ws_session/reset | Reset Ws Session
 *AlarmsApi* | [**list_alarms**](docs/AlarmsApi.md#list_alarms) | **GET** /alarms/ | List Alarms
 *ClustersApi* | [**list_clusters**](docs/ClustersApi.md#list_clusters) | **GET** /clusters/ | List Clusters
+*CustomAttributesApi* | [**list_custom_attributes**](docs/CustomAttributesApi.md#list_custom_attributes) | **GET** /custom_attributes/ | List Custom Attributes
 *DatastoresApi* | [**list_datastores**](docs/DatastoresApi.md#list_datastores) | **GET** /datastores/ | List Datastores
 *EventsApi* | [**list_events**](docs/EventsApi.md#list_events) | **GET** /events/ | List Events
 *HealthcheckApi* | [**get_service_status**](docs/HealthcheckApi.md#get_service_status) | **GET** /healthcheck/ | Get Service Status
 *HostsApi* | [**get_host**](docs/HostsApi.md#get_host) | **GET** /hosts/{host_uuid} | Get Host
 *HostsApi* | [**list_hosts**](docs/HostsApi.md#list_hosts) | **GET** /hosts/ | List Hosts
 *PortgroupsApi* | [**list_portgroups**](docs/PortgroupsApi.md#list_portgroups) | **GET** /portgroups/ | List Portgroups
+*TagCategoriesApi* | [**list_tag_categories**](docs/TagCategoriesApi.md#list_tag_categories) | **GET** /tag_categories/ | List Tag Categories
+*TagsApi* | [**list_tags**](docs/TagsApi.md#list_tags) | **GET** /tags/ | List Tags
 *VcentersApi* | [**list_vcenters**](docs/VcentersApi.md#list_vcenters) | **GET** /vcenters/ | List Vcenters
 *VmFoldersApi* | [**list_vm_folders**](docs/VmFoldersApi.md#list_vm_folders) | **GET** /vm_folders/ | List Vm Folders
 *VmSnapshotsApi* | [**get_vm_snapshots**](docs/VmSnapshotsApi.md#get_vm_snapshots) | **GET** /vm_snapshots/{vm_instance_uuid} | Get Vm Snapshots
@@ -127,6 +130,8 @@ Class | Method | HTTP request | Description
  - [AlarmResponseSchema](docs/AlarmResponseSchema.md)
  - [ClusterListResponseSchema](docs/ClusterListResponseSchema.md)
  - [ClusterResponseSchema](docs/ClusterResponseSchema.md)
+ - [CustomAttributeListResponseSchema](docs/CustomAttributeListResponseSchema.md)
+ - [CustomAttributeResponseSchema](docs/CustomAttributeResponseSchema.md)
  - [DatastoreListResponseSchema](docs/DatastoreListResponseSchema.md)
  - [DatastoreResponseSchema](docs/DatastoreResponseSchema.md)
  - [EventListResponseSchema](docs/EventListResponseSchema.md)
@@ -141,6 +146,10 @@ Class | Method | HTTP request | Description
  - [PaginationInfo](docs/PaginationInfo.md)
  - [PortgroupListResponseSchema](docs/PortgroupListResponseSchema.md)
  - [PortgroupResponseSchema](docs/PortgroupResponseSchema.md)
+ - [TagCategoryListResponseSchema](docs/TagCategoryListResponseSchema.md)
+ - [TagCategoryResponseSchema](docs/TagCategoryResponseSchema.md)
+ - [TagListResponseSchema](docs/TagListResponseSchema.md)
+ - [TagResponseSchema](docs/TagResponseSchema.md)
  - [VCenterListResponseSchema](docs/VCenterListResponseSchema.md)
  - [VCenterResponseSchema](docs/VCenterResponseSchema.md)
  - [ValidationError](docs/ValidationError.md)

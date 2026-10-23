@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -31,10 +31,11 @@ class EventResponseSchema(BaseModel):
     event_source: Optional[StrictStr] = Field(alias="eventSource")
     event_type: StrictStr = Field(description="イベントの種類を示します。", alias="eventType")
     ip_address: Optional[StrictStr] = Field(alias="ipAddress")
+    key: StrictInt = Field(description="イベントのキーを示します。(vCenterごとに一意)")
     message: StrictStr = Field(description="イベントのメッセージを示します。")
     user_name: Optional[StrictStr] = Field(alias="userName")
     vcenter: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["createdTime", "datacenter", "eventSource", "eventType", "ipAddress", "message", "userName", "vcenter"]
+    __properties: ClassVar[List[str]] = ["createdTime", "datacenter", "eventSource", "eventType", "ipAddress", "key", "message", "userName", "vcenter"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -117,6 +118,7 @@ class EventResponseSchema(BaseModel):
             "eventSource": obj.get("eventSource"),
             "eventType": obj.get("eventType"),
             "ipAddress": obj.get("ipAddress"),
+            "key": obj.get("key"),
             "message": obj.get("message"),
             "userName": obj.get("userName"),
             "vcenter": obj.get("vcenter")

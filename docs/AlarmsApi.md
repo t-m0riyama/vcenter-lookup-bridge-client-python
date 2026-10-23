@@ -8,11 +8,11 @@ Method | HTTP request | Description
 
 
 # **list_alarms**
-> AlarmListResponseSchema list_alarms(begin_time=begin_time, end_time=end_time, days_ago_begin=days_ago_begin, days_ago_end=days_ago_end, hours_ago_begin=hours_ago_begin, hours_ago_end=hours_ago_end, statuses=statuses, alarm_sources=alarm_sources, acknowledged=acknowledged, offset=offset, max_results=max_results, vcenter=vcenter)
+> AlarmListResponseSchema list_alarms(begin_time=begin_time, end_time=end_time, days_ago_begin=days_ago_begin, days_ago_end=days_ago_end, hours_ago_begin=hours_ago_begin, hours_ago_end=hours_ago_end, statuses=statuses, alarm_sources=alarm_sources, acknowledged=acknowledged, offset=offset, cursor=cursor, max_results=max_results, vcenter=vcenter)
 
 List Alarms
 
-トリガー済みのアラーム一覧を取得します。
+トリガー済みのアラーム一覧を、トリガーされた時刻の新しい順に取得します。(同じ時刻の場合はvCenter名、keyの順)続きのページは、pagination.nextCursorをcursorに指定し、1ページ目と同じ検索条件で取得してください。cursorを使うと、時間帯は1ページ目で決めたものに固定され、ページを順に読む間にアラームが増減しても、それによる抜けや重複は起きません。(読む間に新しくトリガーされたアラームは含みません。)続きを読んだ結果、該当するアラームがなかった場合は、空の結果とhasNext=falseを返します。cursorで取得したページのtotalCountは、cursorより後の件数です。partialFailureがtrueのページがあった場合、取得に失敗したvCenterの、そのページの範囲の分は続きのページでも返りません。取り直すときは1ページ目から読み直してください。(レスポンスのキャッシュの有効期間中は、同じ条件の1ページ目は同じ内容になります。)offsetでページを指定した場合は、ページを順に読む間にアラームが増減すると、ページ間で結果がずれ、抜けや重複が起きることがあります。
 
 ### Example
 
@@ -54,13 +54,14 @@ with vcenter_lookup_bridge_client.ApiClient(configuration) as api_client:
     statuses = ['statuses_example'] # List[Optional[str]] | アラームのステータスを指定します。 (optional)
     alarm_sources = ['alarm_sources_example'] # List[str] | アラームのソースを指定します。 (optional)
     acknowledged = True # bool | アラームが確認済みかどうかを指定します。 (optional)
-    offset = 0 # int | アラームを取得する際の開始位置を指定します。 (optional) (default to 0)
+    offset = 0 # int | アラームを取得する際の開始位置を指定します。(結果はトリガーされた時刻の新しい順に並びます。) cursorと同時には指定できません。 (optional) (default to 0)
     max_results = 100 # int | アラームを取得する際の最大件数を指定します。 (optional) (default to 100)
     vcenter = 'vcenter_example' # str | vCenterの名前を指定します。 (optional)
+    cursor = 'cursor_example' # str | 前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。) (optional)
 
     try:
         # List Alarms
-        api_response = api_instance.list_alarms(begin_time=begin_time, end_time=end_time, days_ago_begin=days_ago_begin, days_ago_end=days_ago_end, hours_ago_begin=hours_ago_begin, hours_ago_end=hours_ago_end, statuses=statuses, alarm_sources=alarm_sources, acknowledged=acknowledged, offset=offset, max_results=max_results, vcenter=vcenter)
+        api_response = api_instance.list_alarms(begin_time=begin_time, end_time=end_time, days_ago_begin=days_ago_begin, days_ago_end=days_ago_end, hours_ago_begin=hours_ago_begin, hours_ago_end=hours_ago_end, statuses=statuses, alarm_sources=alarm_sources, acknowledged=acknowledged, offset=offset, max_results=max_results, vcenter=vcenter, cursor=cursor)
         print("The response of AlarmsApi->list_alarms:\n")
         pprint(api_response)
     except Exception as e:
@@ -83,7 +84,8 @@ Name | Type | Description  | Notes
  **statuses** | [**List[Optional[str]]**](str.md)| アラームのステータスを指定します。 | [optional] 
  **alarm_sources** | [**List[str]**](str.md)| アラームのソースを指定します。 | [optional] 
  **acknowledged** | **bool**| アラームが確認済みかどうかを指定します。 | [optional] 
- **offset** | **int**| アラームを取得する際の開始位置を指定します。 | [optional] [default to 0]
+ **offset** | **int**| アラームを取得する際の開始位置を指定します。(結果はトリガーされた時刻の新しい順に並びます。) cursorと同時には指定できません。 | [optional] [default to 0]
+ **cursor** | **str**| 前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。) | [optional] 
  **max_results** | **int**| アラームを取得する際の最大件数を指定します。 | [optional] [default to 100]
  **vcenter** | **str**| vCenterの名前を指定します。 | [optional] 
 

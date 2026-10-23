@@ -4,7 +4,7 @@ import click
 
 from vcenter_lookup_bridge_client import VcentersApi
 from vcenter_lookup_bridge_client.exceptions import ApiException
-from .formatters import output_json, output_table
+from .formatters import output_api_error, output_json, output_table
 from .i18n import _
 
 _VCENTER_COLUMNS = ["name", "host", "version"]
@@ -25,7 +25,7 @@ def list_vcenters(ctx, offset, max_results, vcenter):
     try:
         response = api.list_vcenters(offset=offset, max_results=max_results, vcenter=vcenter)
     except ApiException as e:
-        click.echo(_("Error {status}: {reason}").format(status=e.status, reason=e.reason))
+        output_api_error(e)
         sys.exit(1)
     if ctx.obj["format"] == "json":
         output_json(response)

@@ -4,7 +4,7 @@ import click
 
 from vcenter_lookup_bridge_client import VmSnapshotsApi
 from vcenter_lookup_bridge_client.exceptions import ApiException
-from .formatters import output_json, output_table
+from .formatters import output_api_error, output_json, output_table
 from .i18n import _
 
 _SNAPSHOT_COLUMNS = ["name", "instance_uuid", "vcenter", "vm_name", "create_time", "description"]
@@ -27,7 +27,7 @@ def list_vm_snapshots(ctx, vm_folders, offset, max_results, vcenter):
     try:
         response = api.list_vm_snapshots(vm_folders=folders, offset=offset, max_results=max_results, vcenter=vcenter)
     except ApiException as e:
-        click.echo(_("Error {status}: {reason}").format(status=e.status, reason=e.reason))
+        output_api_error(e)
         sys.exit(1)
     if ctx.obj["format"] == "json":
         output_json(response)
@@ -46,7 +46,7 @@ def get_vm_snapshots(ctx, vm_instance_uuid, vcenter, offset, max_results):
     try:
         response = api.get_vm_snapshots(vm_instance_uuid=vm_instance_uuid, vcenter=vcenter, offset=offset, max_results=max_results)
     except ApiException as e:
-        click.echo(_("Error {status}: {reason}").format(status=e.status, reason=e.reason))
+        output_api_error(e)
         sys.exit(1)
     if ctx.obj["format"] == "json":
         output_json(response)

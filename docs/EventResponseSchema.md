@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **event_source** | **str** |  | 
 **event_type** | **str** | イベントの種類を示します。 | 
 **ip_address** | **str** |  | 
+**key** | **int** | イベントのキーを示します。(vCenterごとに一意) | 
 **message** | **str** | イベントのメッセージを示します。 | 
 **user_name** | **str** |  | 
 **vcenter** | **str** |  | 

@@ -68,6 +68,14 @@ VALID_LIST_PARAMETERS_HOURS_AGO = {
     "max_results": 100,
 }
 
+# イベントリストのパラメータ(正常/カーソル方式のページング)
+# 2ページ以上になるよう件数を絞る。結果が環境に依存しないよう、vCenterは指定しない
+VALID_LIST_PARAMETERS_CURSOR = {
+    "hours_ago_begin": 1,
+    "hours_ago_end": 0,
+    "max_results": 2,
+}
+
 # イベントリストのパラメータ(異常/絶対日付指定/タイムゾーン付き)
 INVALID_LIST_PARAMETERS_BEGIN_TIME = {
     "begin_time": INVALID_BEGIN_TIME,

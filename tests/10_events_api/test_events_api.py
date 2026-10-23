@@ -6,11 +6,14 @@ vCenter Lookup Bridge API - EVENTS APIテスト
 
 import pydantic
 import pytest
+from datetime import datetime
 from typing import Dict, Any
+from unittest.mock import MagicMock
 
 import vcenter_lookup_bridge_client
 from vcenter_lookup_bridge_client.models.pagination_info import PaginationInfo
 from vcenter_lookup_bridge_client.models.event_response_schema import EventResponseSchema
+from vcenter_lookup_bridge_client.models.event_list_response_schema import EventListResponseSchema
 
 
 @pytest.fixture
@@ -48,6 +51,7 @@ class TestEventsApi:
         for result in results:
             # レスポンスデータがスキーマに適合していることをチェック
             assert isinstance(result, EventResponseSchema)
+            assert isinstance(result.key, int)
 
         # ページネーション情報がスキーマに適合していることをチェック
         pagination = response.pagination
@@ -91,6 +95,7 @@ class TestEventsApi:
         for result in results:
             # レスポンスデータがスキーマに適合していることをチェック
             assert isinstance(result, EventResponseSchema)
+            assert isinstance(result.key, int)
 
         # ページネーション情報がスキーマに適合していることをチェック
         pagination = response.pagination
@@ -134,6 +139,7 @@ class TestEventsApi:
         for result in results:
             # レスポンスデータがスキーマに適合していることをチェック
             assert isinstance(result, EventResponseSchema)
+            assert isinstance(result.key, int)
 
         # ページネーション情報がスキーマに適合していることをチェック
         pagination = response.pagination
@@ -177,6 +183,7 @@ class TestEventsApi:
         for result in results:
             # レスポンスデータがスキーマに適合していることをチェック
             assert isinstance(result, EventResponseSchema)
+            assert isinstance(result.key, int)
 
         # ページネーション情報がスキーマに適合していることをチェック
         pagination = response.pagination
@@ -362,3 +369,103 @@ class TestEventsApi:
         assert len(response.results) <= 100
 
         print(f"✅ ページネーション付きイベントリスト取得テスト成功: ページ1, 1ページあたり100件")
+
+    def test_list_events_with_cursor_paging(self, api_instance, test_dataset):
+        """カーソル方式のページングで、続きのページが重複なく取得できることのテスト"""
+        params = test_dataset.VALID_LIST_PARAMETERS_CURSOR
+        page1 = api_instance.list_events(**params)
+        assert page1.success is True
+        assert isinstance(page1.pagination, PaginationInfo)
+        if not page1.pagination.next_cursor:
+            pytest.skip("次のページがあるだけのデータがないため、カーソル方式のページングを確認できません")
+        assert page1.pagination.has_next is True
+
+        # 1ページ目と同じ検索条件にcursorを加えて、続きのページを取得する
+        page2 = api_instance.list_events(**params, cursor=page1.pagination.next_cursor)
+        assert page2.success is True
+        if not page2.results:
+            # 取得上限に達したvCenterで読んだ範囲に該当するものがなかった場合などは、続きのページが空の結果になることがある
+            pytest.skip("続きのページが空のため、ページ間の重複と並び順を確認できません")
+
+        # 同じvCenterのkeyが重複しないこと
+        keys1 = {(r.vcenter, r.key) for r in page1.results}
+        keys2 = {(r.vcenter, r.key) for r in page2.results}
+        assert keys1.isdisjoint(keys2)
+
+        # 結果は発生時刻の新しい順に並ぶため、続きのページは1ページ目の最後より新しくならないこと
+        assert datetime.fromisoformat(page2.results[0].created_time) <= datetime.fromisoformat(page1.results[-1].created_time)
+
+        print(f"✅ カーソル方式のページングのテスト成功: 1ページ目{len(page1.results)}件, 2ページ目{len(page2.results)}件")
+
+
+@pytest.mark.unit
+class TestEventsApiSignature:
+    """EVENTS APIの引数の互換性テスト(APIサーバ不要)"""
+
+    @pytest.fixture
+    def mock_api_instance(self):
+        """call_apiをモックしたEVENTS APIのフィクスチャ"""
+        api_client = vcenter_lookup_bridge_client.ApiClient()
+        api_client.call_api = MagicMock()
+        api_client.response_deserialize = MagicMock()
+        return vcenter_lookup_bridge_client.EventsApi(api_client)
+
+    def test_list_events_positional_request_timeout(self, mock_api_instance):
+        """14番目の位置引数が従来どおり_request_timeoutとして扱われることを確認"""
+        mock_api_instance.list_events("2026-01-01", "2026-01-31", None, None, None, None, None, None, None, None, 0, 100, "vcenter01", 30.0)
+
+        args, kwargs = mock_api_instance.api_client.call_api.call_args
+        assert kwargs["_request_timeout"] == 30.0
+        assert "cursor" not in args[1]
+
+    def test_list_events_cursor_keyword(self, mock_api_instance):
+        """cursorをキーワード引数で指定するとクエリに付与されることを確認"""
+        mock_api_instance.list_events(cursor="abc", max_results=10)
+
+        args, _ = mock_api_instance.api_client.call_api.call_args
+        assert "cursor=abc" in args[1]
+        assert "max_results=10" in args[1]
+
+
+@pytest.mark.unit
+class TestEventListResponseSchemaModel:
+    """EVENTSのレスポンスモデルのテスト(APIサーバ不要)"""
+
+    def _response(self, result, **kwargs):
+        return {
+            "results": [result],
+            "success": True,
+            "partialFailure": False,
+            "timestamp": "2026-01-01T00:00:00+00:00",
+            **kwargs,
+        }
+
+    def test_key_and_next_cursor(self):
+        """key・truncated・pagination.nextCursorが読み込まれることを確認"""
+        response = EventListResponseSchema.from_dict(
+            self._response(
+                {"key": 12345, "message": "m", "createdTime": "2026-01-01T00:00:00+00:00", "eventType": "VmPoweredOnEvent", "eventSource": None, "userName": None, "ipAddress": None, "vcenter": "vcenter01", "datacenter": None},
+                truncated=True,
+                pagination={"totalCount": 2, "offset": 0, "limit": 1, "hasNext": True, "hasPrevious": False, "nextCursor": "abc"},
+            )
+        )
+        assert isinstance(response.results[0].key, int)
+        assert response.truncated is True
+        assert response.pagination.next_cursor == "abc"
+        assert response.to_dict()["pagination"]["nextCursor"] == "abc"
+
+    def test_truncated_default_false(self):
+        """truncatedがない場合はFalse、nextCursorがない場合はNoneになることを確認"""
+        response = EventListResponseSchema.from_dict(
+            self._response(
+                {"key": 12345, "message": "m", "createdTime": "2026-01-01T00:00:00+00:00", "eventType": "VmPoweredOnEvent", "eventSource": None, "userName": None, "ipAddress": None, "vcenter": "vcenter01", "datacenter": None},
+                pagination={"totalCount": 1, "offset": 0, "limit": 100, "hasNext": False, "hasPrevious": False},
+            )
+        )
+        assert response.truncated is False
+        assert response.pagination.next_cursor is None
+
+    def test_key_required(self):
+        """keyは必須のため、keyのない結果は検証エラーになることを確認"""
+        with pytest.raises(pydantic.ValidationError):
+            EventListResponseSchema.from_dict(self._response({"message": "m", "createdTime": "2026-01-01T00:00:00+00:00", "eventType": "VmPoweredOnEvent", "eventSource": None, "userName": None, "ipAddress": None, "vcenter": "vcenter01", "datacenter": None}))

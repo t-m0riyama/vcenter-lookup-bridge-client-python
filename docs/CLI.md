@@ -308,7 +308,8 @@ vlb events list [time range options] [filter options]
 | `--user-names` | Username(s), comma-separated |
 | `--ip-addresses` | IP address(es), comma-separated |
 | `--vcenter` | Filter by vCenter name |
-| `--offset` | Offset for pagination (default: `0`) |
+| `--offset` | Offset for pagination (default: `0`). Cannot be combined with `--cursor` |
+| `--cursor` | Cursor for the next page (`pagination.nextCursor` of the previous page) |
 | `--max-results` | Maximum number of results (default: `100`) |
 
 ```sh
@@ -322,6 +323,16 @@ vlb events list --days-ago-begin 7 --days-ago-end 0 --user-names administrator
 vlb --format json events list \
     --begin-time 2026-04-01T00:00:00 \
     --end-time 2026-04-15T23:59:59
+```
+
+**Cursor paging:** Results are sorted newest first. In table format, when there is a next page, `Next cursor: <cursor>` is written to stderr (the table on stdout is unaffected). Pass it to `--cursor` with the same filter options to get the next page. Unlike `--offset`, cursor paging does not skip or duplicate events that are added while you read the pages. In JSON format, read `pagination.next_cursor` instead.
+
+```sh
+# First page (the cursor for the next page is printed to stderr)
+vlb events list --days-ago-begin 7 --days-ago-end 0 --max-results 50
+
+# Next page: same filter options plus --cursor
+vlb events list --days-ago-begin 7 --days-ago-end 0 --max-results 50 --cursor <cursor>
 ```
 
 ---
@@ -352,7 +363,8 @@ vlb alarms list [time range options] [filter options]
 | `--alarm-sources` | Alarm source(s), comma-separated |
 | `--acknowledged [true\|false]` | Filter by acknowledged flag |
 | `--vcenter` | Filter by vCenter name |
-| `--offset` | Offset for pagination (default: `0`) |
+| `--offset` | Offset for pagination (default: `0`). Cannot be combined with `--cursor` |
+| `--cursor` | Cursor for the next page (`pagination.nextCursor` of the previous page) |
 | `--max-results` | Maximum number of results (default: `100`) |
 
 ```sh
@@ -362,6 +374,97 @@ vlb alarms list --hours-ago-begin 1 --hours-ago-end 0 \
 
 # All alarms from the last 3 days in JSON format
 vlb --format json alarms list --days-ago-begin 3 --days-ago-end 0
+```
+
+**Cursor paging:** Results are sorted newest first. In table format, when there is a next page, `Next cursor: <cursor>` is written to stderr (the table on stdout is unaffected). Pass it to `--cursor` with the same filter options to get the next page. Unlike `--offset`, cursor paging does not skip or duplicate alarms that are added while you read the pages. In JSON format, read `pagination.next_cursor` instead.
+
+```sh
+# First page (the cursor for the next page is printed to stderr)
+vlb alarms list --days-ago-begin 7 --days-ago-end 0 --max-results 50
+
+# Next page: same filter options plus --cursor
+vlb alarms list --days-ago-begin 7 --days-ago-end 0 --max-results 50 --cursor <cursor>
+```
+
+---
+
+### tags  Tags
+
+#### `vlb tags list`
+
+List tags. With `--object-type` and `--object-name` (or `--object-id` for VMs), list only the tags assigned to that object.
+
+```sh
+vlb tags list [options]
+```
+
+| Option | Required | Default | Description |
+|---|---|---|---|
+| `--tag-category` |  |  | List only the tags in this category |
+| `--object-type` |  |  | Type of the object to look up assignments for: `VirtualMachine`, `HostSystem`, `Datastore`, `ClusterComputeResource`, `Network` (`Network` covers both standard and distributed port groups) |
+| `--object-name` |  |  | Name of the object. If several objects share the name, the assignments of all of them are listed |
+| `--object-id` |  |  | Instance UUID of the VM (`--object-type VirtualMachine` only) |
+| `--vcenter` |  |  | Filter by vCenter name |
+| `--offset` |  | `0` | Offset for pagination |
+| `--max-results` |  | `100` | Maximum number of results |
+
+```sh
+# All tags in a category
+vlb tags list --tag-category Environment
+
+# Tags assigned to a VM
+vlb tags list --object-type VirtualMachine --object-name vm01
+```
+
+---
+
+### tag-categories  Tag Categories
+
+#### `vlb tag-categories list`
+
+List tag categories.
+
+```sh
+vlb tag-categories list [options]
+```
+
+| Option | Required | Default | Description |
+|---|---|---|---|
+| `--vcenter` |  |  | Filter by vCenter name |
+| `--offset` |  | `0` | Offset for pagination |
+| `--max-results` |  | `100` | Maximum number of results |
+
+```sh
+vlb tag-categories list
+```
+
+---
+
+### custom-attributes  Custom Attributes
+
+#### `vlb custom-attributes list`
+
+List custom attribute definitions. With `--object-type` and `--object-name` (or `--object-id` for VMs), list only the custom attributes that have a value on that object, together with the values.
+
+```sh
+vlb custom-attributes list [options]
+```
+
+| Option | Required | Default | Description |
+|---|---|---|---|
+| `--object-type` |  |  | Alone: list only the definitions for this type (exact match; `Global` for global attributes). With `--object-name`/`--object-id`: type of the object to look up (`VirtualMachine`, `HostSystem`, `Datastore`, `ClusterComputeResource`, `Network`) |
+| `--object-name` |  |  | Name of the object. If several objects share the name, the values of all of them are listed |
+| `--object-id` |  |  | Instance UUID of the VM (`--object-type VirtualMachine` only) |
+| `--vcenter` |  |  | Filter by vCenter name |
+| `--offset` |  | `0` | Offset for pagination |
+| `--max-results` |  | `100` | Maximum number of results |
+
+```sh
+# Definitions for VMs
+vlb custom-attributes list --object-type VirtualMachine
+
+# Values set on a VM
+vlb custom-attributes list --object-type VirtualMachine --object-name vm01
 ```
 
 ---
@@ -438,6 +541,15 @@ vlb --format json vms list --vm-folders Production
 
 # Combine with jq to extract VM names
 vlb --format json vms list --vm-folders Production | jq '.results[].name'
+```
+
+In table format, `events list` writes a warning to stderr when some vCenters reached the retrieval limit and the results are truncated (`truncated` in the JSON output).
+
+When the API returns an error, the CLI exits with status 1 and prints the status code followed by the reason the server returned (`detail`), for example:
+
+```text
+Error 422: Unprocessable Entity
+  object_typeを指定する場合、object_nameまたはobject_idを指定してください。
 ```
 
 ---

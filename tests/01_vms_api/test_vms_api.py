@@ -7,6 +7,7 @@ vCenter Lookup Bridge API - VMs APIテスト
 import pydantic
 import pytest
 from typing import Dict, Any
+from unittest.mock import MagicMock
 
 import vcenter_lookup_bridge_client
 from vcenter_lookup_bridge_client.models.pagination_info import PaginationInfo
@@ -217,3 +218,19 @@ class TestVmsApi:
                 print(f"✅ 空の結果フィルターテスト成功: 404エラーが正しく返されました: {str(e)}")
             else:
                 pytest.fail(f"空の結果フィルターテストで予期しないエラーが発生しました: {str(e)}")
+
+
+@pytest.mark.unit
+class TestVmsApiEmptyVcenter:
+    """VMS APIのUUID指定の取得で、空のvcenterを送らないことのテスト(APIサーバ不要)"""
+
+    def test_get_vm_with_empty_vcenter(self):
+        """空のvcenterはクライアント側で検証エラーになり、APIを呼び出さないことを確認"""
+        api_client = vcenter_lookup_bridge_client.ApiClient()
+        api_client.call_api = MagicMock()
+        api_instance = vcenter_lookup_bridge_client.VmsApi(api_client)
+
+        with pytest.raises(pydantic.ValidationError):
+            api_instance.get_vm("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", vcenter="")
+        api_client.call_api.assert_not_called()
+

@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **results** | [**List[AlarmResponseSchema]**](AlarmResponseSchema.md) | 実際のデータ | 
 **success** | **bool** | 処理成功フラグ (true|false) | 
 **timestamp** | **str** | レスポンス生成時刻 | 
+**truncated** | **bool** | 取得上限に達したvCenterがあり、結果と総件数が上限までの範囲に限られているか (true|false) | [optional] [default to False]
 **vcenter_ws_sessions** | **object** |  | [optional] 
 
 ## Example

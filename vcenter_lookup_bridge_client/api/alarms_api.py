@@ -51,7 +51,7 @@ class AlarmsApi:
         statuses: Annotated[Optional[List[Optional[StrictStr]]], Field(description="アラームのステータスを指定します。")] = None,
         alarm_sources: Annotated[Optional[List[StrictStr]], Field(description="アラームのソースを指定します。")] = None,
         acknowledged: Annotated[Optional[StrictBool], Field(description="アラームが確認済みかどうかを指定します。")] = None,
-        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="アラームを取得する際の開始位置を指定します。")] = None,
+        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="アラームを取得する際の開始位置を指定します。(結果はトリガーされた時刻の新しい順に並びます。) cursorと同時には指定できません。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="アラームを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
         _request_timeout: Union[
@@ -66,10 +66,11 @@ class AlarmsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+        cursor: Annotated[Optional[StrictStr], Field(description="前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。)")] = None,
     ) -> AlarmListResponseSchema:
         """List Alarms
 
-        トリガー済みのアラーム一覧を取得します。
+        トリガー済みのアラーム一覧を、トリガーされた時刻の新しい順に取得します。(同じ時刻の場合はvCenter名、keyの順)続きのページは、pagination.nextCursorをcursorに指定し、1ページ目と同じ検索条件で取得してください。cursorを使うと、時間帯は1ページ目で決めたものに固定され、ページを順に読む間にアラームが増減しても、それによる抜けや重複は起きません。(読む間に新しくトリガーされたアラームは含みません。)続きを読んだ結果、該当するアラームがなかった場合は、空の結果とhasNext=falseを返します。cursorで取得したページのtotalCountは、cursorより後の件数です。partialFailureがtrueのページがあった場合、取得に失敗したvCenterの、そのページの範囲の分は続きのページでも返りません。取り直すときは1ページ目から読み直してください。(レスポンスのキャッシュの有効期間中は、同じ条件の1ページ目は同じ内容になります。)offsetでページを指定した場合は、ページを順に読む間にアラームが増減すると、ページ間で結果がずれ、抜けや重複が起きることがあります。
 
         :param begin_time: アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type begin_time: str
@@ -89,12 +90,14 @@ class AlarmsApi:
         :type alarm_sources: List[str]
         :param acknowledged: アラームが確認済みかどうかを指定します。
         :type acknowledged: bool
-        :param offset: アラームを取得する際の開始位置を指定します。
+        :param offset: アラームを取得する際の開始位置を指定します。(結果はトリガーされた時刻の新しい順に並びます。) cursorと同時には指定できません。
         :type offset: int
         :param max_results: アラームを取得する際の最大件数を指定します。
         :type max_results: int
         :param vcenter: vCenterの名前を指定します。
         :type vcenter: str
+        :param cursor: 前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。)
+        :type cursor: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -130,6 +133,7 @@ class AlarmsApi:
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
+            cursor=cursor,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -165,7 +169,7 @@ class AlarmsApi:
         statuses: Annotated[Optional[List[Optional[StrictStr]]], Field(description="アラームのステータスを指定します。")] = None,
         alarm_sources: Annotated[Optional[List[StrictStr]], Field(description="アラームのソースを指定します。")] = None,
         acknowledged: Annotated[Optional[StrictBool], Field(description="アラームが確認済みかどうかを指定します。")] = None,
-        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="アラームを取得する際の開始位置を指定します。")] = None,
+        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="アラームを取得する際の開始位置を指定します。(結果はトリガーされた時刻の新しい順に並びます。) cursorと同時には指定できません。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="アラームを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
         _request_timeout: Union[
@@ -180,10 +184,11 @@ class AlarmsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+        cursor: Annotated[Optional[StrictStr], Field(description="前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。)")] = None,
     ) -> ApiResponse[AlarmListResponseSchema]:
         """List Alarms
 
-        トリガー済みのアラーム一覧を取得します。
+        トリガー済みのアラーム一覧を、トリガーされた時刻の新しい順に取得します。(同じ時刻の場合はvCenter名、keyの順)続きのページは、pagination.nextCursorをcursorに指定し、1ページ目と同じ検索条件で取得してください。cursorを使うと、時間帯は1ページ目で決めたものに固定され、ページを順に読む間にアラームが増減しても、それによる抜けや重複は起きません。(読む間に新しくトリガーされたアラームは含みません。)続きを読んだ結果、該当するアラームがなかった場合は、空の結果とhasNext=falseを返します。cursorで取得したページのtotalCountは、cursorより後の件数です。partialFailureがtrueのページがあった場合、取得に失敗したvCenterの、そのページの範囲の分は続きのページでも返りません。取り直すときは1ページ目から読み直してください。(レスポンスのキャッシュの有効期間中は、同じ条件の1ページ目は同じ内容になります。)offsetでページを指定した場合は、ページを順に読む間にアラームが増減すると、ページ間で結果がずれ、抜けや重複が起きることがあります。
 
         :param begin_time: アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type begin_time: str
@@ -203,12 +208,14 @@ class AlarmsApi:
         :type alarm_sources: List[str]
         :param acknowledged: アラームが確認済みかどうかを指定します。
         :type acknowledged: bool
-        :param offset: アラームを取得する際の開始位置を指定します。
+        :param offset: アラームを取得する際の開始位置を指定します。(結果はトリガーされた時刻の新しい順に並びます。) cursorと同時には指定できません。
         :type offset: int
         :param max_results: アラームを取得する際の最大件数を指定します。
         :type max_results: int
         :param vcenter: vCenterの名前を指定します。
         :type vcenter: str
+        :param cursor: 前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。)
+        :type cursor: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -244,6 +251,7 @@ class AlarmsApi:
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
+            cursor=cursor,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -279,7 +287,7 @@ class AlarmsApi:
         statuses: Annotated[Optional[List[Optional[StrictStr]]], Field(description="アラームのステータスを指定します。")] = None,
         alarm_sources: Annotated[Optional[List[StrictStr]], Field(description="アラームのソースを指定します。")] = None,
         acknowledged: Annotated[Optional[StrictBool], Field(description="アラームが確認済みかどうかを指定します。")] = None,
-        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="アラームを取得する際の開始位置を指定します。")] = None,
+        offset: Annotated[Optional[Annotated[int, Field(strict=True, ge=0)]], Field(description="アラームを取得する際の開始位置を指定します。(結果はトリガーされた時刻の新しい順に並びます。) cursorと同時には指定できません。")] = None,
         max_results: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="アラームを取得する際の最大件数を指定します。")] = None,
         vcenter: Annotated[Optional[StrictStr], Field(description="vCenterの名前を指定します。")] = None,
         _request_timeout: Union[
@@ -294,10 +302,11 @@ class AlarmsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+        cursor: Annotated[Optional[StrictStr], Field(description="前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。)")] = None,
     ) -> RESTResponseType:
         """List Alarms
 
-        トリガー済みのアラーム一覧を取得します。
+        トリガー済みのアラーム一覧を、トリガーされた時刻の新しい順に取得します。(同じ時刻の場合はvCenter名、keyの順)続きのページは、pagination.nextCursorをcursorに指定し、1ページ目と同じ検索条件で取得してください。cursorを使うと、時間帯は1ページ目で決めたものに固定され、ページを順に読む間にアラームが増減しても、それによる抜けや重複は起きません。(読む間に新しくトリガーされたアラームは含みません。)続きを読んだ結果、該当するアラームがなかった場合は、空の結果とhasNext=falseを返します。cursorで取得したページのtotalCountは、cursorより後の件数です。partialFailureがtrueのページがあった場合、取得に失敗したvCenterの、そのページの範囲の分は続きのページでも返りません。取り直すときは1ページ目から読み直してください。(レスポンスのキャッシュの有効期間中は、同じ条件の1ページ目は同じ内容になります。)offsetでページを指定した場合は、ページを順に読む間にアラームが増減すると、ページ間で結果がずれ、抜けや重複が起きることがあります。
 
         :param begin_time: アラームが発生したと思われる時間帯の開始時間を指定します。(指定しない場合は7日前からのアラームを取得します。) \\*\\_time, days_ago\\_\\*, hours_ago\\_\\* パラメータはいずれか1種類のみを指定してください。
         :type begin_time: str
@@ -317,12 +326,14 @@ class AlarmsApi:
         :type alarm_sources: List[str]
         :param acknowledged: アラームが確認済みかどうかを指定します。
         :type acknowledged: bool
-        :param offset: アラームを取得する際の開始位置を指定します。
+        :param offset: アラームを取得する際の開始位置を指定します。(結果はトリガーされた時刻の新しい順に並びます。) cursorと同時には指定できません。
         :type offset: int
         :param max_results: アラームを取得する際の最大件数を指定します。
         :type max_results: int
         :param vcenter: vCenterの名前を指定します。
         :type vcenter: str
+        :param cursor: 前のページのpagination.nextCursorを指定すると、その続きを取得します。1ページ目と同じ検索条件と一緒に指定してください。(max_resultsは変えても構いません。)
+        :type cursor: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -358,6 +369,7 @@ class AlarmsApi:
             offset=offset,
             max_results=max_results,
             vcenter=vcenter,
+            cursor=cursor,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -391,6 +403,7 @@ class AlarmsApi:
         offset,
         max_results,
         vcenter,
+        cursor,
         _request_auth,
         _content_type,
         _headers,
@@ -462,6 +475,10 @@ class AlarmsApi:
         if vcenter is not None:
             
             _query_params.append(('vcenter', vcenter))
+            
+        if cursor is not None:
+            
+            _query_params.append(('cursor', cursor))
             
         # process the header parameters
         # process the form parameters

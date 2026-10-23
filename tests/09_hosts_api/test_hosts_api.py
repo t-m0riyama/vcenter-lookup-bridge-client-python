@@ -7,6 +7,7 @@ vCenter Lookup Bridge API - HOSTS APIテスト
 import pydantic
 import pytest
 from typing import Dict, Any
+from unittest.mock import MagicMock
 
 import vcenter_lookup_bridge_client
 from vcenter_lookup_bridge_client.models.pagination_info import PaginationInfo
@@ -202,3 +203,19 @@ class TestHostsApi:
         assert len(response.results) <= 100
 
         print(f"✅ ページネーション付きホストリスト取得テスト成功: ページ1, 1ページあたり100件")
+
+
+@pytest.mark.unit
+class TestHostsApiEmptyVcenter:
+    """HOSTS APIのUUID指定の取得で、空のvcenterを送らないことのテスト(APIサーバ不要)"""
+
+    def test_get_host_with_empty_vcenter(self):
+        """空のvcenterはクライアント側で検証エラーになり、APIを呼び出さないことを確認"""
+        api_client = vcenter_lookup_bridge_client.ApiClient()
+        api_client.call_api = MagicMock()
+        api_instance = vcenter_lookup_bridge_client.HostsApi(api_client)
+
+        with pytest.raises(pydantic.ValidationError):
+            api_instance.get_host("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", vcenter="")
+        api_client.call_api.assert_not_called()
+
