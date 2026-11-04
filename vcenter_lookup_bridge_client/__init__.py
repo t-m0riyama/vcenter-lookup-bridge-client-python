@@ -14,7 +14,7 @@
 """  # noqa: E501
 
 
-__version__ = "1.6.0"
+__version__ = "1.6.8"
 
 # Define package exports
 __all__ = [
@@ -67,6 +67,8 @@ __all__ = [
     "TagCategoryResponseSchema",
     "TagListResponseSchema",
     "TagResponseSchema",
+    "ThreadPoolResponseSchema",
+    "ThreadPoolSchema",
     "VCenterListResponseSchema",
     "VCenterResponseSchema",
     "ValidationError",
@@ -135,6 +137,8 @@ from vcenter_lookup_bridge_client.models.tag_category_list_response_schema impor
 from vcenter_lookup_bridge_client.models.tag_category_response_schema import TagCategoryResponseSchema as TagCategoryResponseSchema
 from vcenter_lookup_bridge_client.models.tag_list_response_schema import TagListResponseSchema as TagListResponseSchema
 from vcenter_lookup_bridge_client.models.tag_response_schema import TagResponseSchema as TagResponseSchema
+from vcenter_lookup_bridge_client.models.thread_pool_response_schema import ThreadPoolResponseSchema as ThreadPoolResponseSchema
+from vcenter_lookup_bridge_client.models.thread_pool_schema import ThreadPoolSchema as ThreadPoolSchema
 from vcenter_lookup_bridge_client.models.v_center_list_response_schema import VCenterListResponseSchema as VCenterListResponseSchema
 from vcenter_lookup_bridge_client.models.v_center_response_schema import VCenterResponseSchema as VCenterResponseSchema
 from vcenter_lookup_bridge_client.models.validation_error import ValidationError as ValidationError

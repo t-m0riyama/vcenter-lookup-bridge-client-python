@@ -100,6 +100,18 @@ class TestOutputTable:
         output_table([item], ["name", "vcenter"], file=buf)
         assert "vm1" in buf.getvalue()
 
+    def test_output_table_preserves_zero(self):
+        """数値の 0 は空文字にせずそのまま表示する"""
+        item = MagicMock()
+        item.status = "saturated"
+        item.available_tokens = 0
+        item.tasks_waiting = 0
+        buf = StringIO()
+        output_table([item], ["status", "available_tokens", "tasks_waiting"], file=buf)
+        line = next(row for row in buf.getvalue().splitlines() if row.startswith("saturated"))
+        cells = line.split()
+        assert cells == ["saturated", "0", "0"]
+
 
 @pytest.mark.unit
 class TestOutputTableStrColumns:
@@ -168,6 +180,14 @@ class TestOutputApiError:
         out = self._output(capsys, ApiException(status=500, reason="Server Error"))
         out += self._output(capsys, ApiException(status=502, reason="Bad Gateway", body="<html>Bad Gateway</html>"))
         assert out.splitlines() == ["Error 500: Server Error", "Error 502: Bad Gateway"]
+
+    def test_retry_after_header(self, capsys):
+        """Retry-After ヘッダがある場合は待つ秒数を表示する"""
+        e = ApiException(status=503, reason="Service Unavailable")
+        e.headers = {"Retry-After": "5"}
+        out = self._output(capsys, e)
+        assert "Error 503: Service Unavailable" in out
+        assert "Retry-After: 5" in out
 
 
 @pytest.mark.unit

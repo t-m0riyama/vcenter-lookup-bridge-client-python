@@ -188,8 +188,15 @@ msgid "Clear down-mark for all vCenters"
 msgstr "Clear down-mark for all vCenters"
 
 # healthcheck.py
-msgid "Run a service health check"
-msgstr "Run a service health check"
+msgid "Service health check operations"
+msgstr "Service health check operations"
+
+msgid "Check the AnyIO default thread pool status"
+msgstr "Check the AnyIO default thread pool status"
+
+# formatters.py
+msgid "Retry-After: {seconds}"
+msgstr "Retry-After: {seconds}"
 
 # events.py / alarms.py (cursor paging)
 msgid "Cursor for the next page (pagination.nextCursor of the previous page)"

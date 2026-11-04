@@ -375,3 +375,34 @@ def make_healthcheck_response(result=None):
     m.results = result if result is not None else make_healthcheck_results()
     m.model_dump = MagicMock(return_value={"success": True, "results": {"status": m.results.status}})
     return m
+
+
+def make_threadpool_results(**kwargs):
+    m = MagicMock()
+    m.status = kwargs.get("status", "ok")
+    m.process_id = kwargs.get("process_id", 1234)
+    m.total_tokens = kwargs.get("total_tokens", 40)
+    m.borrowed_tokens = kwargs.get("borrowed_tokens", 2)
+    m.available_tokens = kwargs.get("available_tokens", 38)
+    m.tasks_waiting = kwargs.get("tasks_waiting", 0)
+    return m
+
+
+def make_threadpool_response(result=None, **kwargs):
+    m = MagicMock()
+    m.success = kwargs.get("success", True)
+    m.results = result if result is not None else make_threadpool_results(**kwargs)
+    m.model_dump = MagicMock(
+        return_value={
+            "success": m.success,
+            "results": {
+                "status": m.results.status,
+                "process_id": m.results.process_id,
+                "total_tokens": m.results.total_tokens,
+                "borrowed_tokens": m.results.borrowed_tokens,
+                "available_tokens": m.results.available_tokens,
+                "tasks_waiting": m.results.tasks_waiting,
+            },
+        }
+    )
+    return m
