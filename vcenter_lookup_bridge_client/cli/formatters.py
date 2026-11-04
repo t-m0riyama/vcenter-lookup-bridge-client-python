@@ -22,6 +22,14 @@ def output_json(data: Any, file=None) -> None:
     click.echo(json.dumps(serialized, indent=2, default=str), file=file)
 
 
+def _table_cell(item: Any, col: str) -> str:
+    """テーブルセルの文字列にする。None だけ空文字にし、0 は残す"""
+    value = getattr(item, col, None)
+    if value is None:
+        return ""
+    return str(value)
+
+
 def output_table(data: List[Any], columns: List[str], file=None, str_columns: Optional[List[str]] = None) -> None:
     """データをテーブル形式で出力する
 
@@ -31,7 +39,7 @@ def output_table(data: List[Any], columns: List[str], file=None, str_columns: Op
         file = sys.stdout
     rows = []
     for item in data:
-        row = [str(getattr(item, col, "") or "") for col in columns]
+        row = [_table_cell(item, col) for col in columns]
         rows.append(row)
     disable_numparse = [columns.index(col) for col in str_columns if col in columns] if str_columns else False
     click.echo(tabulate(rows, headers=columns, tablefmt="simple", disable_numparse=disable_numparse), file=file)

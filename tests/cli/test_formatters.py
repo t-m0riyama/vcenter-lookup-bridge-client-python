@@ -100,6 +100,18 @@ class TestOutputTable:
         output_table([item], ["name", "vcenter"], file=buf)
         assert "vm1" in buf.getvalue()
 
+    def test_output_table_preserves_zero(self):
+        """数値の 0 は空文字にせずそのまま表示する"""
+        item = MagicMock()
+        item.status = "saturated"
+        item.available_tokens = 0
+        item.tasks_waiting = 0
+        buf = StringIO()
+        output_table([item], ["status", "available_tokens", "tasks_waiting"], file=buf)
+        line = next(row for row in buf.getvalue().splitlines() if row.startswith("saturated"))
+        cells = line.split()
+        assert cells == ["saturated", "0", "0"]
+
 
 @pytest.mark.unit
 class TestOutputTableStrColumns:

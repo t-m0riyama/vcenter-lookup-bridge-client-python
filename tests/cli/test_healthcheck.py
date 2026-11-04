@@ -93,6 +93,9 @@ class TestHealthcheckThreadpool:
             result = cli_runner.invoke(cli, BASE_ARGS + ["healthcheck", "threadpool"])
         assert result.exit_code == 1
         assert "saturated" in result.output
+        # available_tokens=0 が空セルにならないこと
+        data_line = next(line for line in result.stdout.splitlines() if "saturated" in line)
+        assert "0" in data_line.split()
 
     def test_threadpool_saturated_uses_deserialized_data(self, cli_runner):
         """本番経路と同様、e.data に復元済みモデルがある場合も表示する"""
