@@ -119,5 +119,37 @@ class TestHealthcheckThreadpool:
             mock_cls.return_value.get_threadpool_status.side_effect = exc
             result = cli_runner.invoke(cli, BASE_ARGS + ["healthcheck", "threadpool"])
         assert result.exit_code == 1
-        assert "saturated" in result.output
-        assert "Retry-After: 1" in result.output
+        assert "saturated" in result.stdout
+        assert "Retry-After: 1" in result.stderr
+        assert "Retry-After" not in result.stdout
+
+    def test_threadpool_saturated_json_keeps_stdout_parseable(self, cli_runner):
+        """--format json のとき Retry-After は stderr に出し、stdout の JSON を壊さない"""
+        response = ThreadPoolResponseSchema.from_dict(
+            {
+                "results": {
+                    "status": "saturated",
+                    "process_id": 99,
+                    "total_tokens": 40,
+                    "borrowed_tokens": 40,
+                    "available_tokens": 0,
+                    "tasks_waiting": 3,
+                },
+                "success": False,
+                "partialFailure": False,
+                "message": "スレッド枠に空きがありません",
+                "timestamp": "2026-11-04T12:00:00.000000+09:00",
+            }
+        )
+        exc = ApiException(status=503, reason="Service Unavailable")
+        exc.data = response
+        exc.headers = {"Retry-After": "1"}
+        with patch("vcenter_lookup_bridge_client.cli.healthcheck.HealthcheckApi") as mock_cls:
+            mock_cls.return_value.get_threadpool_status.side_effect = exc
+            result = cli_runner.invoke(
+                cli, BASE_ARGS + ["--format", "json", "healthcheck", "threadpool"]
+            )
+        assert result.exit_code == 1
+        parsed = json.loads(result.stdout)
+        assert parsed["results"]["status"] == "saturated"
+        assert "Retry-After: 1" in result.stderr

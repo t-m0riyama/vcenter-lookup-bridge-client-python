@@ -66,7 +66,8 @@ def threadpool(ctx):
                     response = None
             if response is not None:
                 _output_threadpool(ctx, response)
-                output_retry_after(e)
+                # JSON 出力を壊さないよう、Retry-After は標準エラーへ出す
+                output_retry_after(e, err=True)
                 sys.exit(1)
         output_api_error(e)
         sys.exit(1)
