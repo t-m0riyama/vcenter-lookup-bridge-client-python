@@ -188,8 +188,15 @@ msgid "Clear down-mark for all vCenters"
 msgstr "全 vCenter のダウンマークをクリアします"
 
 # healthcheck.py
-msgid "Run a service health check"
-msgstr "サービスのヘルスチェックを実行します"
+msgid "Service health check operations"
+msgstr "サービスのヘルスチェック操作"
+
+msgid "Check the AnyIO default thread pool status"
+msgstr "AnyIO 既定スレッド枠の状態を確認します"
+
+# formatters.py
+msgid "Retry-After: {seconds}"
+msgstr "Retry-After: {seconds}"
 
 # events.py / alarms.py (cursor paging)
 msgid "Cursor for the next page (pagination.nextCursor of the previous page)"

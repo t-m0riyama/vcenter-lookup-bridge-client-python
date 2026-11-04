@@ -75,6 +75,28 @@ def _error_details(body: Any) -> List[str]:
     return lines
 
 
+def _retry_after_seconds(headers: Any) -> Optional[str]:
+    """Retry-After ヘッダの値があれば返す"""
+    if not headers:
+        return None
+    if hasattr(headers, "get"):
+        value = headers.get("Retry-After")
+        if value is None:
+            value = headers.get("retry-after")
+        if value is not None:
+            return str(value)
+    return None
+
+
+def output_retry_after(e: Any, err: bool = False) -> None:
+    """Retry-After ヘッダがあれば、待つ秒数を出力する"""
+    from .i18n import _
+
+    retry_after = _retry_after_seconds(getattr(e, "headers", None))
+    if retry_after is not None:
+        click.echo(_("Retry-After: {seconds}").format(seconds=retry_after), err=err)
+
+
 def output_api_error(e: Any, err: bool = False) -> None:
     """APIの例外を、ステータスとサーバが返したdetailとあわせて出力する"""
     from .i18n import _
@@ -82,6 +104,7 @@ def output_api_error(e: Any, err: bool = False) -> None:
     click.echo(_("Error {status}: {reason}").format(status=e.status, reason=e.reason), err=err)
     for line in _error_details(getattr(e, "body", None)):
         click.echo(f"  {line}", err=err)
+    output_retry_after(e, err=err)
 
 
 def output_truncated_warning(response: Any, file=None) -> None:

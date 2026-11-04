@@ -515,11 +515,28 @@ vlb admins reset-ws-session
 
 ### healthcheck
 
-Run a health check against the service.
+Run a health check against the service. Without a subcommand, returns the service status. `vcenterWsSessions` values may be `alive`, `dead`, `checking`, or `unknown`.
 
 ```sh
 vlb healthcheck
 ```
+
+#### `vlb healthcheck threadpool`
+
+Check the AnyIO default thread pool on the worker that answered. When the pool is saturated, the command prints the same body as a successful response and exits with code 1.
+
+```sh
+vlb healthcheck threadpool
+```
+
+| Column | Description |
+|---|---|
+| `status` | `ok` or `saturated` |
+| `process_id` | Worker process PID |
+| `total_tokens` | Thread pool size |
+| `borrowed_tokens` | Tokens in use |
+| `available_tokens` | Free tokens |
+| `tasks_waiting` | Tasks waiting for a token |
 
 ---
 

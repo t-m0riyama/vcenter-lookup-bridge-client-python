@@ -169,6 +169,14 @@ class TestOutputApiError:
         out += self._output(capsys, ApiException(status=502, reason="Bad Gateway", body="<html>Bad Gateway</html>"))
         assert out.splitlines() == ["Error 500: Server Error", "Error 502: Bad Gateway"]
 
+    def test_retry_after_header(self, capsys):
+        """Retry-After ヘッダがある場合は待つ秒数を表示する"""
+        e = ApiException(status=503, reason="Service Unavailable")
+        e.headers = {"Retry-After": "5"}
+        out = self._output(capsys, e)
+        assert "Error 503: Service Unavailable" in out
+        assert "Retry-After: 5" in out
+
 
 @pytest.mark.unit
 class TestOutputTruncatedWarning:
